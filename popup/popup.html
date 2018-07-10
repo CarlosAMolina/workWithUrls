@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="popup.css"/>
+  </head>
+
+<body>
+  <div id="popup-content">
+    <div>
+      <p>URLs</p>
+      <textarea id="inputUrls" class="input" type="text" style="width:500px;min-width:305px" rows="4"></textarea>
+    </div>
+    <button title="Configuration" class="button menuButton showConfig" style="width:18.7%"><img src="/icons/configuration.png"/></button>
+    <button title="Copy to clipboard" class="button menuButton copy" style="width:18.7%"><img src="/icons/copy.png"/></button>
+    <button title="Deobfuscate" class="button menuButton deobfuscate" style="width:18.7%"><img src="/icons/deobfuscate.png"/></button>
+    <button title="Obfuscate" class="button menuButton obfuscate" style="width:18.7%"><img src="/icons/obfuscate.png"/></button>
+    <button title="Open Urls" class="button menuButton openUrls" style="width:18.7%"><img src="/icons/globe.png"/></button>
+    <div id="menuConfig" class="backGroundGrey hidden">
+      <p><u>Open all paths</u></p>
+      <label class="switch">
+        <input id="boxPaths" class="openPaths" type="checkbox"> 
+        <span class="slider round"></span> 
+      </label>
+      <p><u>Rules (regular expressions)</u></p>
+      <div>
+        <input id="inputDeobfuscation" type="radio" name="ruleType" class="inputDeobfuscation"><label style="font-size:15px;">Deobfuscation</label>
+      </div>
+      <input id="inputObfuscation" type="radio" name="ruleType" class="inputObfuscation"><label style="font-size:15px;">Obfuscation</label>
+      <p id="pInput">Value to change</p>
+      <input id="inputValueOld" class="input" type="text" style="width:96%;resize:vertical" rows="1" disabled></input>
+      <p id="pInput">New value</p>
+      <input id="inputValueNew" class="input" type="text" style="width:96%;resize:vertical" rows="1" disabled></input>
+      <button id="buttonAdd" class="button menuButton addRule" style="width:49%" disabled>Add</button>
+      <button id="buttonClearAll" class="button menuButton clearAllInfo" style="width:49%" disabled>Clear all</button>
+      <div class="clearfix">
+      </div>
+      <div class="info-container">
+      </div>
+    </div>
+  </div>
+  <div id="error-content" class="hidden">
+    <p>Cannot work on this web page.</p>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
