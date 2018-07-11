@@ -9,11 +9,13 @@ Firefox add-on to work with URLs:
 
 **Open all paths**
 
+To open all the paths of the given URLs, the option 'Open all paths' in the configuration menu must be activated.  
+
 Example. With the following URLs:  
 https://github.com/CarlosAMolina  
 www.example.com/a/b/  
 
-The add-on opens these URLs in new tabs:  
+The add-on will open these URLs in new tabs:  
 https://github.com/CarlosAMolina  
 https://github.com  
 http://www.example.com/a/b  
