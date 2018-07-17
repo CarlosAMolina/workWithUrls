@@ -1,4 +1,3 @@
-var idElement2Change;
 var infoContainer = document.querySelector('.info-container');
 var openPaths = 0;
 function rule(type, valueOld, valueNew) {
@@ -169,21 +168,22 @@ function popupMain() {
   // listen to clicks on the buttons
   document.addEventListener('click', (e) => {
 
-    function showOrHideInfo(){
+    function showOrHideInfo(idElements2Change){ // idElements2Change: array
 
-      function hideInfo(){
+      function hideInfo(idElement2Change){
         document.querySelector('#'+idElement2Change).classList.add('hidden');
       }
 
-      function showTagsInfo(){
+      function showTagsInfo(idElement2Change){
         document.querySelector('#'+idElement2Change).classList.remove('hidden');
       }
-
-      if (document.getElementById(idElement2Change).classList.contains('hidden')){
-        showTagsInfo();
-      } else {
-        hideInfo();
-      }
+      idElements2Change.forEach(function(idElement2Change){
+        if (document.getElementById(idElement2Change).classList.contains('hidden')){
+          showTagsInfo(idElement2Change);
+        } else {
+          hideInfo(idElement2Change);
+        }
+      });
     }
 
     function enableElements(idElements2Change){
@@ -270,27 +270,46 @@ function popupMain() {
     }
 
     // save input boxes info
-    function saveRule(){
-      
-      function saveInfo(ids2save,values2save) {
-        for (var i = 0; i < ids2save.length; i++) {
-          var storingInfo = browser.storage.local.set({[ids2save[i]]:values2save[i]});
-          storingInfo.then(() => {
-          }, reportError);
+    function saveRules(){
+
+      function saveRule(values2save){
+
+        function saveInfo(ids2save,values2save) {
+          for (var i = 0; i < ids2save.length; i++) {
+            var storingInfo = browser.storage.local.set({[ids2save[i]]:values2save[i]});
+            storingInfo.then(() => {
+            }, reportError);
+          }
+        }
+
+        var ids2save = [ruleType + '_old_' + values2save[0], ruleType + '_new_' + values2save[0]];
+        var gettingItem = browser.storage.local.get(ids2save[0]);
+        gettingItem.then((result) => { // result: empty object if the searched value is not stored
+          var searchInStorage = Object.keys(result); // array with the searched value if it is stored
+          if(searchInStorage.length < 1) { // searchInStorage.length < 1 -> no stored
+            saveInfo(ids2save,values2save);
+            showStoredInfo(values2save);
+            getRules();
+          }
+        }, reportError);
+      }
+
+      function getValues(){
+        if (document.getElementById('boxRules').checked == false){
+          return [document.querySelector('div.backGroundGrey input[id="inputValueOld"]').value, document.querySelector('div.backGroundGrey input[id="inputValueNew"]').value];
+        } else {
+          return document.querySelector('textarea[id="inputRules"]').value.split('\n');
         }
       }
-         
-      var values2save = [document.querySelector('div.backGroundGrey input[id="inputValueOld"]').value, document.querySelector('div.backGroundGrey input[id="inputValueNew"]').value];
-      var ids2save = [ruleType + '_old_' + values2save[0], ruleType + '_new_' + values2save[0]];
-      var gettingItem = browser.storage.local.get(ids2save[0]);
-      gettingItem.then((result) => { // result: empty object if the searched value is not stored
-        var searchInStorage = Object.keys(result); // array with the searched value if it is stored
-        if(searchInStorage.length < 1) { // searchInStorage.length < 1 -> no stored
-          saveInfo(ids2save,values2save);
-          showStoredInfo(values2save);
-          getRules();
+
+      var valuesRules = getValues();
+      for (var i = 0; i < valuesRules.length; i+=2) {
+        if (typeof valuesRules[i+1] != 'undefined'){
+          saveRule([valuesRules[i],valuesRules[i+1]]);
+        } else {
+          saveRule([valuesRules[i],'']);
         }
-      }, reportError);      
+      }
     }
 
     // clear display/storage
@@ -330,8 +349,9 @@ function popupMain() {
     }
 
     if (e.target.classList.contains('showConfig')){
-      idElement2Change='menuConfig';
-      showOrHideInfo();
+      showOrHideInfo(['menuConfig','divInputRule','menuConfig2']);
+    } else if (e.target.classList.contains('openRules')){
+      showOrHideInfo(['divInputRule','divInputRules']);
     } else if (e.target.classList.contains('copy')){
       document.getElementById('inputUrls').select();
       document.execCommand('copy');
@@ -349,14 +369,14 @@ function popupMain() {
       ruleType = ruleObfuscate;
       notShowRules();
       showStoredRulesType();
-      enableElements(['pInput','inputValueOld','inputValueNew','buttonAdd','buttonClearAll']);
+      enableElements(['pInputOld','pInputNew','inputValueOld','inputValueNew','inputRules','buttonAdd','buttonClearAll']);
     } else if (e.target.classList.contains('inputDeobfuscation')){
       ruleType = ruleDeobfuscate;
       notShowRules();
       showStoredRulesType();
-      enableElements(['pInput','inputValueOld','inputValueNew','buttonAdd','buttonClearAll']);
+      enableElements(['pInputOld','pInputNew','inputValueOld','inputValueNew','inputRules','buttonAdd','buttonClearAll']);
     } else if (e.target.classList.contains('addRule')){
-      saveRule();
+      saveRules();
     } else if (e.target.classList.contains('clearAllInfo')){
       browser.tabs.query({active: true, currentWindow: true})
         .then(clearStorageInfo)
