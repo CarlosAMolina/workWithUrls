@@ -209,7 +209,7 @@ function popupMain() {
       var ruleValues = rules[ruleTypes.indexOf(ruleType)];
       if (ruleValues.valuesOld.length != 0){
         var urlsFinal = '';
-        urls = document.querySelector('textarea[id="inputUrls"]').value.split('\n');
+        urls = document.getElementById('inputUrls').value.split('\n');
         urls.forEach( function(url2Change) {
           for (var i = 0; i < ruleValues.valuesOld.length; i++) {
             var regex = new RegExp(ruleValues.valuesOld[i], "g");
@@ -258,7 +258,7 @@ function popupMain() {
         }
       }
 
-      urls = document.querySelector('textarea[id="inputUrls"]').value.split('\n');
+      urls = document.getElementById('inputUrls').value.split('\n');
       if (document.getElementById('boxPaths').checked == true){
         openPaths(urls);
       }
@@ -296,9 +296,9 @@ function popupMain() {
 
       function getValues(){
         if (document.getElementById('boxRules').checked == false){
-          return [document.querySelector('div.backGroundGrey input[id="inputValueOld"]').value, document.querySelector('div.backGroundGrey input[id="inputValueNew"]').value];
+          return [document.getElementById('inputValueOld').value, document.getElementById('inputValueNew').value];
         } else {
-          return document.querySelector('textarea[id="inputRules"]').value.split('\n');
+          return document.getElementById('inputRules').value.split('\n');
         }
       }
 
@@ -348,13 +348,35 @@ function popupMain() {
       });
     }
 
+    function copy2clipboard (idWithInfo){
+      document.getElementById(idWithInfo).select();
+      document.execCommand('copy');
+    }
+
+    function copyRules(){
+      document.getElementById('boxRules').checked = true;
+      document.querySelector('#divInputRule').classList.add('hidden');
+      document.querySelector('#divInputRules').classList.remove('hidden');
+      var rulesType = rules.find( result => result.type === ruleType );
+      var rulesTypeStr = '';
+      for (var i = 0; i<rulesType['valuesOld'].length; i++) {
+        rulesTypeStr += rulesType['valuesOld'][i] + '\n' + rulesType['valuesNew'][i] + '\n';
+      }
+      rulesTypeStr = rulesTypeStr.replace(/\n$/, ""); // remove the last \n
+      document.getElementById('inputRules').value = rulesTypeStr;
+      copy2clipboard ('inputRules');
+    }
+
     if (e.target.classList.contains('showConfig')){
       showOrHideInfo(['menuConfig','divInputRule','menuConfig2']);
     } else if (e.target.classList.contains('openRules')){
       showOrHideInfo(['divInputRule','divInputRules']);
     } else if (e.target.classList.contains('copy')){
-      document.getElementById('inputUrls').select();
-      document.execCommand('copy');
+      if (document.getElementById('inputUrls').value !== ''){
+        copy2clipboard ('inputUrls');
+      } else if (ruleType !== ''){
+        copyRules();
+      }
     } else if (e.target.classList.contains('deobfuscate')){
       ruleType = ruleDeobfuscate;
       modifyText();

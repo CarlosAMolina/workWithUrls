@@ -57,6 +57,19 @@ hXXps[:]//github[.]com/CarlosAMolina --> https://github.com/CarlosAMolina
 These rules are stored and can be modified.  
 <br/>
 
+**Copy**  
+
+The 'Copy' button allows you to:  
+- Copy the contents of the URLs box.  
+- Copy stored rules.  
+To copy the stored rules, the URLs box must be empty and you have to select a rule type (deobfuscation or obfuscation). Then, the deobfuscation or obfuscation rules are stored in the clipboard with this format:  
+vale to change 1  
+new value 1  
+value to change 2  
+new value 2  
+...  
+<br/>
+
 **Download link**  
 <p>https://addons.mozilla.org/addon/urls-open-paths-and-obfuscate/
 <br/>
