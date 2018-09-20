@@ -168,11 +168,11 @@ function popupMain() {
   // listen to clicks on the buttons
   document.addEventListener('click', (e) => {
 
-    function showOrHideInfo(idElements2Change){ // idElements2Change: array
+    function hideInfo(idElement2Change){
+      document.querySelector('#'+idElement2Change).classList.add('hidden');
+    }
 
-      function hideInfo(idElement2Change){
-        document.querySelector('#'+idElement2Change).classList.add('hidden');
-      }
+    function showOrHideInfo(idElements2Change){ // idElements2Change: array
 
       function showTagsInfo(idElement2Change){
         document.querySelector('#'+idElement2Change).classList.remove('hidden');
@@ -368,7 +368,12 @@ function popupMain() {
     }
 
     if (e.target.classList.contains('showConfig')){
-      showOrHideInfo(['menuConfig','divInputRule','menuConfig2']);
+      showOrHideInfo(['menuConfig']);
+      if (document.getElementById('menuRules').classList.contains('hidden') == false){
+        hideInfo('menuRules');
+      }
+    } else if (e.target.classList.contains('configRules')){
+      showOrHideInfo(['menuRules']);
     } else if (e.target.classList.contains('openRules')){
       showOrHideInfo(['divInputRule','divInputRules']);
     } else if (e.target.classList.contains('copy')){

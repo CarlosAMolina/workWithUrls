@@ -23,6 +23,9 @@
         <input id="boxPaths" class="openPaths" type="checkbox"> 
         <span class="slider round"></span> 
       </label>
+      <button id="rulesConfig" class="button menuButton configRules" style="width:96%">Rules configuration</button>
+    </div>
+    <div id="menuRules" class="backGroundGrey hidden">
       <p><u>Rules (regular expressions)</u></p>
       <div>
         <input id="inputDeobfuscation" type="radio" name="ruleType" class="inputDeobfuscation"><label style="font-size:15px;">Deobfuscation</label>
@@ -35,18 +38,16 @@
           <span class="slider round"></span> 
         </label>
       </div>
-    </div>
-    <div id="divInputRule" class="backGroundGrey hidden">
-      <p id="pInputOld">Value to change</p>
-      <input id="inputValueOld" class="input" type="text" style="width:96%;resize:vertical" rows="1" disabled></input>
-      <p id="pInputNew">New value</p>
-      <input id="inputValueNew" class="input" type="text" style="width:96%;resize:vertical" rows="1" disabled></input>
-    </div>
-    <div id="divInputRules" class="backGroundGrey hidden">
-      <p id="pInputRules">Value to change (line i). New value (line i+1)</p>
-      <textarea id="inputRules" class="input" type="text" style="width:99%" rows="5" disabled></textarea>
-    </div>
-    <div id="menuConfig2" class="backGroundGrey hidden">
+      <div id="divInputRule">
+        <p id="pInputOld">Value to change</p>
+        <input id="inputValueOld" class="input" type="text" style="width:96%;resize:vertical" rows="1"   disabled></input>
+        <p id="pInputNew">New value</p>
+        <input id="inputValueNew" class="input" type="text" style="width:96%;resize:vertical" rows="1"   disabled></input>
+      </div>
+      <div id="divInputRules" class="backGroundGrey hidden">
+        <p id="pInputRules">Value to change (line i). New value (line i+1)</p>
+        <textarea id="inputRules" class="input" type="text" style="width:99%" rows="5" disabled></textarea>
+      </div>
       <button id="buttonAdd" class="button menuButton addRule" style="width:49%" disabled>Add</button>
       <button id="buttonClearAll" class="button menuButton clearAllInfo" style="width:49%" disabled>Clear all</button>
       <div class="clearfix">
