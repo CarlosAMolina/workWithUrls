@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "URLs open paths and obfuscate",
-  "version": "1.2.0",
+  "version": "1.2.1",
   
   "description": "Firefox add-on to work with URLs: open, open paths, obfuscate and deobfuscate.",
   "homepage_url": "https://github.com/CarlosAMolina/workWithUrls",
