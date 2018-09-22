@@ -206,20 +206,46 @@ function popupMain() {
     }
 
     function modifyText(){
-      var ruleValues = rules[ruleTypes.indexOf(ruleType)];
-      if (ruleValues.valuesOld.length != 0){
-        var urlsFinal = '';
-        urls = document.getElementById('inputUrls').value.split('\n');
+
+      function workWithObfuscation(){
+        var ruleValues = rules[ruleTypes.indexOf(ruleType)];
+        if (ruleValues.valuesOld.length != 0){
+          urls.forEach( function(url2Change) {
+            for (var i = 0; i < ruleValues.valuesOld.length; i++) {
+              var regex = new RegExp(ruleValues.valuesOld[i], "g");
+              url2Change = url2Change.replace(regex, ruleValues.valuesNew[i]);
+            }
+            urlsFinal += url2Change + '\n';
+          });
+          urlsFinal = urlsFinal.replace(/\n$/, ""); // remove the last \ns
+        }
+        return urlsFinal
+      }
+
+      function workWithCodification(){
         urls.forEach( function(url2Change) {
-          for (var i = 0; i < ruleValues.valuesOld.length; i++) {
-            var regex = new RegExp(ruleValues.valuesOld[i], "g");
-            url2Change = url2Change.replace(regex, ruleValues.valuesNew[i]);
+          try{
+            url2Change = decodeURIComponent(url2Change);
+          } catch(e) { // URIError: malformed URI sequence
+            url2Change = e;
           }
           urlsFinal += url2Change + '\n';
         });
         urlsFinal = urlsFinal.replace(/\n$/, ""); // remove the last \n
-        document.getElementById('inputUrls').value = urlsFinal;
+        return urlsFinal;
       }
+
+      var urlsFinal = '';
+      urls = document.getElementById('inputUrls').value.split('\n');
+      if ((document.getElementById('boxDecode').checked == true) && (ruleType == ruleDeobfuscate)){
+        urlsFinal = workWithCodification();
+      } else {
+        urlsFinal = workWithObfuscation();
+      }
+      if (urlsFinal == ''){
+        urlsFinal = document.getElementById('inputUrls').value;
+      }
+      document.getElementById('inputUrls').value = urlsFinal;
     }
 
     function openUrls(){
@@ -382,7 +408,7 @@ function popupMain() {
       } else if (ruleType !== ''){
         copyRules();
       }
-    } else if (e.target.classList.contains('deobfuscate')){
+    } else if (e.target.classList.contains('cleanUrl')){
       ruleType = ruleDeobfuscate;
       modifyText();
     } else if (e.target.classList.contains('obfuscate')){

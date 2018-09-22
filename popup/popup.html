@@ -14,13 +14,18 @@
     </div>
     <button title="Configuration" class="button menuButton showConfig" style="width:18.7%"><img src="/icons/configuration.png"/></button>
     <button title="Copy to clipboard" class="button menuButton copy" style="width:18.7%"><img src="/icons/copy.png"/></button>
-    <button title="Deobfuscate" class="button menuButton deobfuscate" style="width:18.7%"><img src="/icons/deobfuscate.png"/></button>
+    <button title="Clean URLs" class="button menuButton cleanUrl" style="width:18.7%"><img src="/icons/cleanUrl.png"/></button>
     <button title="Obfuscate" class="button menuButton obfuscate" style="width:18.7%"><img src="/icons/obfuscate.png"/></button>
     <button title="Open Urls" class="button menuButton openUrls" style="width:18.7%"><img src="/icons/globe.png"/></button>
     <div id="menuConfig" class="backGroundGrey hidden">
       <p><u>Open all paths</u></p>
       <label class="switch">
         <input id="boxPaths" class="openPaths" type="checkbox"> 
+        <span class="slider round"></span> 
+      </label>
+      <p><u>Decode URLs</u></p>
+      <label class="switch">
+        <input id="boxDecode" type="checkbox"> 
         <span class="slider round"></span> 
       </label>
       <button id="rulesConfig" class="button menuButton configRules" style="width:99%">Rules configuration</button>

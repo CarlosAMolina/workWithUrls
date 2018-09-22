@@ -3,7 +3,7 @@
 Firefox add-on to work with URLs:
 - Open, you can open all paths
 - Obfuscate
-- Deobfuscate
+- Deobfuscate and decode
 - Copy
 <br/>
 
@@ -23,7 +23,7 @@ http://www.example.com/a
 http://www.example.com/  
 <br/>
 
-**(De)obfuscation**
+**(De)obfuscation and decoding**
 
 The (de)obfuscation rules use regular expressions. Example:  
 - Obfuscation rules:  
@@ -55,6 +55,13 @@ http
 hXXps[:]//github[.]com/CarlosAMolina --> https://github.com/CarlosAMolina  
 
 These rules are stored and can be modified.  
+
+To decode URLs, click on the 'Configuration' button and the 'Decode URLs' box, after that, use the 'Clean URLs' button.  
+
+This options uses the JavaScript's decodeURIComponent() function.  
+
+- Decoding result:  
+http%3A%2F%2Fexample.com%2Fabcd%3Flanguage%3DEN --> http://example.com/abcd?language=EN 
 <br/>
 
 **Copy**  
