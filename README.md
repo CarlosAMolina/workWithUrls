@@ -78,7 +78,7 @@ new value 2
 <br/>
 
 **Download link**  
-<p>https://addons.mozilla.org/addon/urls-open-paths-and-obfuscate/
+<p>https://addons.mozilla.org/addon/workwithurls/
 <br/>
 <br/>
 
