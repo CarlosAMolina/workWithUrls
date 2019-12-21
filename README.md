@@ -91,3 +91,25 @@ Toggle Switch https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_swit
 
 - Images  
 See icons/LICENSE
+
+## How work with this project
+
+If you want to improve or test this project on your pc, please follow these steps.
+
+1. Clone the project.
+
+~~~
+git clone https://github.com/CarlosAMolina/workWithUrls
+~~~
+
+2. Run the addon.
+
+After modify the project, test it with Firefox.
+
+First, package the extension:
+
+https://extensionworkshop.com/documentation/publish/package-your-extension/
+
+Install the addon, read 'Trying it out' section of the following URL:
+
+https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension
