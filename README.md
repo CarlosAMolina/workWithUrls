@@ -113,3 +113,4 @@ https://extensionworkshop.com/documentation/publish/package-your-extension/
 Install the addon, read 'Trying it out' section of the following URL:
 
 https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension
+
