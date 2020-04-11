@@ -7,9 +7,19 @@ Firefox add-on to work with URLs:
 - Copy
 <br/>
 
+## Requirements
+
+### Disable pop-up blocker
+
+To allow the addon to open multiple URLs, navigate to 'about:preferences#privacy' and, under the 'Permissions' section uncheck te box next to 'Block pop-up windows'.
+
+https://support.mozilla.org/en-US/kb/pop-blocker-settings-exceptions-troubleshooting#w_pop-up-blocker-settings
+
+## Addon options
+
 **Open all paths**
 
-To open all the paths of the given URLs, the option 'Open all paths' in the configuration menu must be activated.  
+To open all the paths of the given URLs, the option 'Open all paths' in the addon's configuration menu must be activated.  
 
 Example. With the following URLs:  
 https://github.com/CarlosAMolina  
