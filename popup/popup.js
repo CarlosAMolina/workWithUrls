@@ -1,3 +1,4 @@
+// Global variables.
 var infoContainer = document.querySelector('.info-container');
 var openPaths = 0;
 function rule(type, valueOld, valueNew) {
@@ -11,6 +12,9 @@ var ruleType = '';
 var ruleTypes = [ruleObfuscate,ruleDeobfuscate];
 var rules = [];
 var urls = [];
+// Variable to save the result of window.open()
+// https://developer.mozilla.org/en-US/docs/Web/API/Window/open
+var windowObjectReference = null;
 
 function popupMain() {
 
@@ -50,14 +54,14 @@ function popupMain() {
     }, reportError);
   }
 
-  // error
+  // Error.
   function reportError(error) {
     console.error(`Error: ${error}`);
   }
 
-  // display info
+  // Display info.
   function showStoredInfo(eValues) {
-    // display box
+    // Display box.
     var entry = document.createElement('div');
     var entryDisplay = document.createElement('div');
     var entryValue = document.createElement('p');
@@ -250,12 +254,17 @@ function popupMain() {
 
     function openUrls(){
 
+      /* Open all paths of the URLs.
+      :param urls: list of strings, URLs to open.
+      :return: null.
+       */
       function openPaths(urls){
         urls.forEach( function(url) {
           if (url.slice(-1) == '/'){
             url = url.substring(0, url.length -1);
           }
           while (url.slice(-1) != '/') {
+            url = getUrlWithProtocol(url)
             openUrl(url);
             if ( url.indexOf('/') != -1 ){
               url = url.slice(0, url.lastIndexOf('/'));
@@ -267,29 +276,40 @@ function popupMain() {
         });
       }
   
-      function openUrl(url){
-
-        function checkProtocol(url){
-          if (url.substring(0, 4).toLowerCase() != 'http'){
-            return 'http://'+url;
-          }
-          return url;
+      /* If the URL has not got protocol, add one.
+      :param url: str, url to check.
+      :return url: str, url with protocol.
+      */
+      function getUrlWithProtocol(url){
+        if (url.substring(0, 4).toLowerCase() != 'http'){
+          return 'http://'+url;
         }
+        return url;
+      }
 
+      /* Open an url and catches possible exception.
+      :param url: str, url to check.
+      :return null.
+      */
+      function openUrl(url){
         try{
-          window.open(checkProtocol(url));
+          windowObjectReference = window.open(url);
+          console.log('Done open url \'' + url + '\'. Window object reference: ' + windowObjectReference)
         }
         catch(error){
           reportError(error);
         }
       }
 
+      // Get URLs at the input box.
       urls = document.getElementById('inputUrls').value.split('\n');
+      console.log('URLs at the input box: ' + urls)
       if (document.getElementById('boxPaths').checked == true){
         openPaths(urls);
       }
       else {
         urls.forEach( function(url) {
+          url = getUrlWithProtocol(url)
           openUrl(url);
         });
       }
