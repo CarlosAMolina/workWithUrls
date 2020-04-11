@@ -99,7 +99,7 @@ If you want to improve or test this project on your pc, please follow these step
 1. Clone the project.
 
 ~~~
-git clone git@github.com:CarlosAMolina/requests_custom
+git clone git@github.com:CarlosAMolina/workWithUrls
 ~~~
 
 2. Run the addon.
