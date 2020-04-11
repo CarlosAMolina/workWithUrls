@@ -16,6 +16,24 @@ var urls = [];
 // https://developer.mozilla.org/en-US/docs/Web/API/Window/open
 var windowObjectReference = null;
 
+// https://stackoverflow.com/questions/951021/what-is-the-javascript-version-of-sleep
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function demo() {
+  console.log('Taking a break...');
+  await sleep(2000);
+  console.log('Two seconds later, showing sleep in a loop...');
+
+  // Sleep in loop
+  for (let i = 0; i < 5; i++) {
+    if (i === 3)
+      await sleep(2000);
+    console.log(i);
+  }
+}
+
 function popupMain() {
 
   initializePopup();
@@ -293,6 +311,7 @@ function popupMain() {
       */
       function openUrl(url){
         try{
+          demo();
           windowObjectReference = window.open(url);
           console.log('Done open url \'' + url + '\'. Window object reference: ' + windowObjectReference)
         }
