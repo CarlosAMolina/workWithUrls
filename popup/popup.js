@@ -445,6 +445,8 @@ function popupMain() {
       if (document.getElementById('menuRules').classList.contains('hidden') == false){
         hideInfo('menuRules');
       }
+    } else if (e.target.classList.contains('configLazyLoading')){
+      showOrHideInfo(['menuLazyLoading']);
     } else if (e.target.classList.contains('configRules')){
       showOrHideInfo(['menuRules']);
     } else if (e.target.classList.contains('openRules')){
