@@ -332,7 +332,7 @@ function popupMain() {
       else {
         var urlsLength = urls.length;
         for (var i = 0; i < urlsLength; i++) { 
-          console.log(i);
+          console.log('Init url ' + i + '/' + urlsLength + ': \'' + url + '\'');
           var url = urls[i];
           url = getUrlWithProtocol(url);
           console.log('Init. Wait some seconds.');
