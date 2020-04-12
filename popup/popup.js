@@ -27,11 +27,11 @@ async function demo() {
   console.log('Two seconds later, showing sleep in a loop...');
 
   // Sleep in loop
-  for (let i = 0; i < 5; i++) {
-    if (i === 3)
+  for (let i = 0; i < 6; i++) {
+      console.log('Loop ' + i)
       await sleep(2000);
-    console.log(i);
-  }
+      console.log('Loop ' + i + ' done')
+    }
 }
 
 function popupMain() {
@@ -270,7 +270,11 @@ function popupMain() {
       document.getElementById('inputUrls').value = urlsFinal;
     }
 
-    function openUrls(){
+    /* Open URLs and its paths if option checked.
+    :param: null.
+    :return: null.
+    */
+    async function openUrls(){
 
       /* Open all paths of the URLs.
       :param urls: list of strings, URLs to open.
@@ -311,7 +315,6 @@ function popupMain() {
       */
       function openUrl(url){
         try{
-          demo();
           windowObjectReference = window.open(url);
           console.log('Done open url \'' + url + '\'. Window object reference: ' + windowObjectReference)
         }
@@ -327,11 +330,19 @@ function popupMain() {
         openPaths(urls);
       }
       else {
-        urls.forEach( function(url) {
-          url = getUrlWithProtocol(url)
+        var urlsLength = urls.length;
+        for (var i = 0; i < urlsLength; i++) { 
+          console.log(i);
+          var url = urls[i];
+          url = getUrlWithProtocol(url);
+          console.log('Init. Wait some seconds.');
+          await sleep(2000);
+          console.log('Done. Wait some seconds.');
+          console.log(url);
           openUrl(url);
-        });
+        }
       }
+
     }
 
     // save input boxes info
