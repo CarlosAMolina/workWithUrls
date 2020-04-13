@@ -1,10 +1,11 @@
 # Work with URLs
 
 Firefox add-on to work with URLs:
-- Open, you can open all paths
-- Obfuscate
-- Deobfuscate and decode
-- Copy
+- Open, you can open all paths.
+- Obfuscate.
+- Deobfuscate and decode.
+- Copy.
+- Lazy loading.
 <br/>
 
 ## Requirements
@@ -87,10 +88,19 @@ new value 2
 ...  
 <br/>
 
+**Lazy loading**
+
+You can configure a time to wait between each URL oppened by the addon.
+
+To set this time, click on the 'Configuration' button at the addon's popup, select the 'Lazy loading configuration' button and specify the desired miliseconds, save this value clicking on the 'Update' button.
+
 **Download link**  
 <p>https://addons.mozilla.org/addon/workwithurls/
 <br/>
 <br/>
+
+**Project's code**  
+https://github.com/CarlosAMolina/workWithUrls
 
 **Resources**
 - Code  
