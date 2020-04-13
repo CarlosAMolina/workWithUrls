@@ -64,6 +64,7 @@ function popupMain() {
           lazyLoadingTime = 0
           console.log('Not previous stored lazy loading time value. Return (type ' + typeof(lazyLoadingTime) + '): \'' + lazyLoadingTime + '\'');
         }
+        // Set value at the popup.
         document.getElementById('inputLazyLoading').value = lazyLoadingTime;
         return lazyLoadingTime;
       }, reportError);
@@ -380,7 +381,7 @@ function popupMain() {
     function saveLazyLoading(){
       var lazyLoadingTime = document.getElementById('inputLazyLoading').value;
       console.log('Lazy loading time: \'' + lazyLoadingTime + '\'');
-      // Convert input to integer.
+      // Convert input to type number.
       // Example: 1a -> 1, 1.1 -> 1, a1 -> Nan
       lazyLoadingTime = parseInt(lazyLoadingTime);
       // Update input box value with the modified value.
@@ -395,10 +396,14 @@ function popupMain() {
         // Quit possible previous red error border.
         document.querySelector('#inputLazyLoading').style.removeProperty("box-shadow");
       }
+      // Set value >= 0. Type number.
+      lazyLoadingTime = Math.abs(lazyLoadingTime)
       // Save value to the local storage.
       var storingInfo = browser.storage.local.set({['idLazyLoadingTime']:lazyLoadingTime});
       storingInfo.then(() => {
       }, reportError);
+      // Set value at the popup.
+      document.getElementById('inputLazyLoading').value = lazyLoadingTime;
       return true;
     }
 
