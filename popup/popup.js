@@ -32,12 +32,14 @@ function popupMain() {
   
   function initializePopup() {
 
-    // get value of the open paths option 
+    // Get value of the open paths option at the storage.
     function getOpenPaths(){
       var gettingItem = browser.storage.local.get('idOpenPaths');
-      gettingItem.then((result) => { // result: empty object if the searched value is not stored
-        if ( (typeof result.idOpenPaths != 'undefined') && (result.idOpenPaths == 1) ){ // undefined -> open paths option has never been used
-          // on/off openPaths switch
+      // Object result: empty object if the searched value is not stored.
+      gettingItem.then((result) => {
+        // Undefined -> open paths option has never been used.
+        if ( (typeof result.idOpenPaths != 'undefined') && (result.idOpenPaths == 1) ){
+          // On/off openPaths switch.
           document.getElementById('boxPaths').checked = true;
         } else {
           document.getElementById('boxPaths').checked = false;
@@ -45,8 +47,22 @@ function popupMain() {
       }, reportError);
     }
    
+    // Get Lazy Loading time value at the storage.
+    function getStorageLazyLoading(){
+      var gettingItem = browser.storage.local.get('idLazyLoadingTime');
+      // Object result: empty object if the searched value is not stored.
+      gettingItem.then((result) => {
+        // Undefined -> Lazy Loading time value option has never been set.
+        if ( (typeof result.idLazyLoadingTime != 'undefined') ){
+          // on/off openPaths switch
+          document.getElementById('inputLazyLoading').value = result.idLazyLoadingTime;
+        }
+      }, reportError);
+    }
+
     getOpenPaths();
     getRules();
+    getStorageLazyLoading();
   }
 
   function getRules(){
@@ -370,6 +386,10 @@ function popupMain() {
         // Quit possible previous red error border.
         document.querySelector('#inputLazyLoading').style.removeProperty("box-shadow");
       }
+      // Save value to the local storage.
+      var storingInfo = browser.storage.local.set({['idLazyLoadingTime']:lazyLoadingTime});
+      storingInfo.then(() => {
+      }, reportError);
       return true;
     }
 
