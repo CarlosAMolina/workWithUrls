@@ -5,6 +5,7 @@ https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/stora
 
 // Global variables.
 var infoContainer = document.querySelector('.info-container');
+var lazyLoadingTime = 0;
 var openPaths = 0;
 function rule(type, valueOld, valueNew) {
   this.type = type;
@@ -47,29 +48,6 @@ function popupMain() {
       }, reportError);
     }
    
-    /* Get Lazy Loading time value at the storage and set value at the popup.
-    :param: no param.
-    :return lazyLoadingTime: number, stored value or 0 if no stored value.
-    */
-    function getStorageLazyLoading(){
-      var gettingItem = browser.storage.local.get('idLazyLoadingTime');
-      var lazyLoadingTime = 0
-      // Object result: empty object if the searched value is not stored.
-      gettingItem.then((result) => {
-        lazyLoadingTime = result.idLazyLoadingTime;
-        // Undefined -> Lazy Loading time value option has never been set.
-        if ( (typeof lazyLoadingTime != 'undefined') ){
-          console.log('Stored lazy loading time (type ' + typeof(lazyLoadingTime) + '): \'' + lazyLoadingTime + '\'');
-        } else{
-          lazyLoadingTime = 0
-          console.log('Not previous stored lazy loading time value. Return (type ' + typeof(lazyLoadingTime) + '): \'' + lazyLoadingTime + '\'');
-        }
-        // Set value at the popup.
-        document.getElementById('inputLazyLoading').value = lazyLoadingTime;
-        return lazyLoadingTime;
-      }, reportError);
-    }
-
     getOpenPaths();
     getRules();
     getStorageLazyLoading();
@@ -89,6 +67,28 @@ function popupMain() {
       });
     }, reportError);
   }
+
+  /* Get Lazy Loading time value at the storage.
+  :param: no param.
+  :return: no value, value saved at global variable lazyLoadingTime.
+  */
+  function getStorageLazyLoading(){
+    var gettingItem = browser.storage.local.get('idLazyLoadingTime');
+    // Object result: empty object if the searched value is not stored.
+    gettingItem.then((result) => {
+      // Undefined -> Lazy Loading time value option has never been set.
+      if ( (typeof result.idLazyLoadingTime != 'undefined') ){
+        lazyLoadingTime = result.idLazyLoadingTime;
+        console.log('Stored lazy loading time (type ' + typeof(lazyLoadingTime) + '): \'' + lazyLoadingTime + '\'');
+      } else{
+        lazyLoadingTime = 0;
+        console.log('Not previous stored lazy loading time value. Return (type ' + typeof(lazyLoadingTime) + '): \'' + lazyLoadingTime + '\'');
+      }
+    // Set value at the popup.
+    document.getElementById('inputLazyLoading').value = lazyLoadingTime;
+    }, reportError);
+  }
+
 
   // Error.
   function reportError(error) {
@@ -364,9 +364,9 @@ function popupMain() {
         var url = urls[i];
         console.log('Init url ' + (i + 1) + '/' + urlsLength + ': \'' + url + '\'');
         url = getUrlWithProtocol(url);
-        console.log('Init. Wait some seconds.');
-        await sleep(2000);
-        console.log('Done. Wait some seconds.');
+        console.log('Init. Wait miliseconds: ' + lazyLoadingTime);
+        await sleep(lazyLoadingTime);
+        console.log('Done. Wait miliseconds: ' + lazyLoadingTime);
         console.log(url);
         openUrl(url);
       }
@@ -544,6 +544,8 @@ function popupMain() {
       enableElements(['pInputOld','pInputNew','inputValueOld','inputValueNew','inputRules','buttonAdd','buttonClearAll']);
     } else if (e.target.classList.contains('addLazyLoading')){
       saveLazyLoading();
+      // The following line is important to apply the new value without close and open the addons' pop-up.
+      getStorageLazyLoading();
     } else if (e.target.classList.contains('addRule')){
       saveRules();
     } else if (e.target.classList.contains('clearAllInfo')){
