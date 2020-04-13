@@ -364,13 +364,15 @@ function popupMain() {
         var url = urls[i];
         console.log('Init url ' + (i + 1) + '/' + urlsLength + ': \'' + url + '\'');
         url = getUrlWithProtocol(url);
-        console.log('Init. Wait miliseconds: ' + lazyLoadingTime);
-        await sleep(lazyLoadingTime);
-        console.log('Done. Wait miliseconds: ' + lazyLoadingTime);
+        // Only wait between URLs.
+        if (i != 0){
+          console.log('Init. Wait miliseconds: ' + lazyLoadingTime);
+          await sleep(lazyLoadingTime);
+          console.log('Done. Wait miliseconds: ' + lazyLoadingTime);
+        }
         console.log(url);
         openUrl(url);
       }
-
     }
 
     /*Get and save Lazy Loading wait time.
