@@ -1,3 +1,8 @@
+/* References.
+- Local storage.
+https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/storage/local
+*/
+
 // Global variables.
 var infoContainer = document.querySelector('.info-container');
 var openPaths = 0;
@@ -342,7 +347,33 @@ function popupMain() {
 
     }
 
-    // save input boxes info
+    /*Get and save Lazy Loading wait time.
+    :param: not required.
+    :return false: bool, function not done correctly.
+            true: bool, function done correctly.
+    */
+    function saveLazyLoading(){
+      var lazyLoadingTime = document.getElementById('inputLazyLoading').value;
+      console.log('Lazy loading time: \'' + lazyLoadingTime + '\'');
+      // Convert input to integer.
+      // Example: 1a -> 1, 1.1 -> 1, a1 -> Nan
+      lazyLoadingTime = parseInt(lazyLoadingTime);
+      // Update input box value with the modified value.
+      document.querySelector('#inputLazyLoading').value = lazyLoadingTime;
+      // Check value is a number.
+      if (isNaN(lazyLoadingTime)) {
+        console.log('Error. Lazy loading time is not a number');
+        document.querySelector('#inputLazyLoading').style.boxShadow = "0 0 2px #FF0000";
+        return false;
+      }
+      else {
+        // Quit possible previous red error border.
+        document.querySelector('#inputLazyLoading').style.removeProperty("box-shadow");
+      }
+      return true;
+    }
+
+    // Save input boxes info.
     function saveRules(){
 
       function saveRule(values2save){
@@ -477,6 +508,8 @@ function popupMain() {
       notShowRules();
       showStoredRulesType();
       enableElements(['pInputOld','pInputNew','inputValueOld','inputValueNew','inputRules','buttonAdd','buttonClearAll']);
+    } else if (e.target.classList.contains('addLazyLoading')){
+      saveLazyLoading();
     } else if (e.target.classList.contains('addRule')){
       saveRules();
     } else if (e.target.classList.contains('clearAllInfo')){
@@ -488,8 +521,8 @@ function popupMain() {
 
 }
 
-// there was an error executing the script.
-// display the pop-up's error message, and hide the normal UI.
+// There was an error executing the script.
+// Display the pop-up's error message, and hide the normal UI.
 function reportExecuteScriptError(error) {
   document.querySelector('#popup-content').classList.add('hidden');
   document.querySelector('#error-content').classList.remove('hidden');
