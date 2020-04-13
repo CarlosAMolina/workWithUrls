@@ -47,16 +47,25 @@ function popupMain() {
       }, reportError);
     }
    
-    // Get Lazy Loading time value at the storage.
+    /* Get Lazy Loading time value at the storage and set value at the popup.
+    :param: no param.
+    :return lazyLoadingTime: number, stored value or 0 if no stored value.
+    */
     function getStorageLazyLoading(){
       var gettingItem = browser.storage.local.get('idLazyLoadingTime');
+      var lazyLoadingTime = 0
       // Object result: empty object if the searched value is not stored.
       gettingItem.then((result) => {
+        lazyLoadingTime = result.idLazyLoadingTime;
         // Undefined -> Lazy Loading time value option has never been set.
-        if ( (typeof result.idLazyLoadingTime != 'undefined') ){
-          // on/off openPaths switch
-          document.getElementById('inputLazyLoading').value = result.idLazyLoadingTime;
+        if ( (typeof lazyLoadingTime != 'undefined') ){
+          console.log('Stored lazy loading time (type ' + typeof(lazyLoadingTime) + '): \'' + lazyLoadingTime + '\'');
+        } else{
+          lazyLoadingTime = 0
+          console.log('Not previous stored lazy loading time value. Return (type ' + typeof(lazyLoadingTime) + '): \'' + lazyLoadingTime + '\'');
         }
+        document.getElementById('inputLazyLoading').value = lazyLoadingTime;
+        return lazyLoadingTime;
       }, reportError);
     }
 
@@ -249,7 +258,7 @@ function popupMain() {
           });
           urlsFinal = urlsFinal.replace(/\n$/, ""); // remove the last \ns
         }
-        return urlsFinal
+        return urlsFinal;
       }
 
       function workWithCodification(){
@@ -314,7 +323,7 @@ function popupMain() {
           }
         });
         console.log('URLs with all paths: ' + urls_paths)
-        return urls_paths
+        return urls_paths;
       }
   
       /* If the URL has not got protocol, add one.
