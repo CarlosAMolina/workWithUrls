@@ -40,6 +40,7 @@ The (de)obfuscation rules use regular expressions. Example:
 http ---> hXXp  
 : ---> [:]  
 \\. ---> [.]
+
 Note. You can activate the 'Save more than one rule' option to save all these rules at once:  
 http  
 hXXp  
@@ -54,6 +55,7 @@ https://github.com/CarlosAMolina --> hXXps[:]//github[.]com/CarlosAMolina
 hXXp ---> http  
 \\[\\:\\] ---> :  
 \\[\\.\\] ---> .
+
 Note. You can activate the 'Save more than one rule' option to save all these rules at once:  
 hXXp  
 http  
