@@ -6,7 +6,7 @@ Firefox add-on to work with URLs:
 - Deobfuscate and decode.
 - Copy.
 - Lazy loading.
-<br/>
+<br>
 
 ## Requirements
 
@@ -32,7 +32,7 @@ https://github.com
 http://www.example.com/a/b  
 http://www.example.com/a  
 http://www.example.com/  
-<br/>
+<br>
 
 **(De)obfuscation and decoding**
 
@@ -40,7 +40,7 @@ The (de)obfuscation rules use regular expressions. Example:
 - Obfuscation rules:  
 http ---> hXXp  
 : ---> [:]  
-\\. ---> [.]<br/><br/>
+\\. ---> [.]<br><br>
 Note. You can activate the 'Save more than one rule' option to save all these rules at once:  
 http  
 hXXp  
@@ -54,7 +54,7 @@ https://github.com/CarlosAMolina --> hXXps[:]//github[.]com/CarlosAMolina
 - Deobfuscation rules:  
 hXXp ---> http  
 \\[\\:\\] ---> :  
-\\[\\.\\] ---> .<br/><br/>
+\\[\\.\\] ---> .<br><br>
 Note. You can activate the 'Save more than one rule' option to save all these rules at once:  
 hXXp  
 http  
@@ -73,7 +73,7 @@ This options uses the JavaScript's decodeURIComponent() function.
 
 - Decoding result:  
 http%3A%2F%2Fexample.com%2Fabcd%3Flanguage%3DEN --> http://example.com/abcd?language=EN 
-<br/>
+<br>
 
 **Copy**  
 
@@ -86,21 +86,23 @@ new value 1
 value to change 2  
 new value 2  
 ...  
-<br/>
+<br>
 
 **Lazy loading**
 
 You can configure a time to wait between each URL oppened by the addon.
 
 To set this time, click on the 'Configuration' button at the addon's popup, select the 'Lazy loading configuration' button and specify the desired miliseconds, save this value clicking on the 'Update' button.
+<br>
 
 **Download link**  
 <p>https://addons.mozilla.org/addon/workwithurls/
-<br/>
-<br/>
+<br>
+<br>
 
 **Project's code**  
 https://github.com/CarlosAMolina/workWithUrls
+<br>
 
 **Resources**
 - Code  
