@@ -7,6 +7,8 @@ https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/stora
 var infoContainer = document.querySelector('.info-container');
 var lazyLoadingTime = 0;
 var openPaths = 0;
+// Protocol to add if no one provided.
+var protocolAdded = 'http://'
 function rule(type, valueOld, valueNew) {
   this.type = type;
   this.valuesOld = valueOld;
@@ -301,7 +303,7 @@ function popupMain() {
       Example. For 'http://github.com/CarlosAMolina' two URLs will be 
       created: 'http://github.com/CarlosAMolina' and 'http://github.com'.
       :param urls: list of strings, URLs to work with.
-      :return urls_paths: list of strings, all possible URLs ommitting
+      :return urls_paths: list of strings, all possible URLs omitting
         parts of the paths.
       */
       function getUrlsWithPaths(urls){
@@ -336,7 +338,7 @@ function popupMain() {
       */
       function getUrlWithProtocol(url){
         if (url.substring(0, 4).toLowerCase() != 'http'){
-          return 'http://'+url;
+          return protocolAdded+url;
         }
         return url;
       }
@@ -366,15 +368,22 @@ function popupMain() {
       for (var i = 0; i < urlsLength; i++) { 
         var url = urls[i];
         console.log('Init url ' + (i + 1) + '/' + urlsLength + ': \'' + url + '\'');
-        url = getUrlWithProtocol(url);
-        // Only wait between URLs.
-        if (i != 0){
-          console.log('Init. Wait miliseconds: ' + lazyLoadingTime);
-          await sleep(lazyLoadingTime);
-          console.log('Done. Wait miliseconds: ' + lazyLoadingTime);
+        // Check if an empty string was provided.
+        // It can have the protocol, example added by the 
+        // getUrlsWithPaths function.
+        if (url == '' || url == protocolAdded){
+          console.log('Not URL provided. Omitting');
+        } else {
+          url = getUrlWithProtocol(url);
+          // Only wait between URLs.
+          if (i != 0){
+            console.log('Init. Wait miliseconds: ' + lazyLoadingTime);
+            await sleep(lazyLoadingTime);
+            console.log('Done. Wait miliseconds: ' + lazyLoadingTime);
+          }
+          console.log(url);
+          openUrl(url);
         }
-        console.log(url);
-        openUrl(url);
       }
     }
 
