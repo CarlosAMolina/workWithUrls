@@ -35,6 +35,7 @@ function popupMain() {
 
     // Get value of the open paths option at the storage.
     function getOpenPaths(){
+      console.log('Init getOpenPaths()')
       var gettingItem = browser.storage.local.get('idOpenPaths');
       // Object result: empty object if the searched value is not stored.
       gettingItem.then((result) => {
@@ -54,6 +55,7 @@ function popupMain() {
   }
 
   function getRules(){
+    console.log('Init getRules()')
     var gettingAllStoredItems = browser.storage.local.get(null);
     gettingAllStoredItems.then((storedItems) => { // storedItems: object of keys and values
       rules = []; // initialize
@@ -73,6 +75,7 @@ function popupMain() {
   :return: no value, value saved at global variable lazyLoadingTime.
   */
   function getStorageLazyLoading(){
+    console.log('Init getStorageLazyLoading()')
     var gettingItem = browser.storage.local.get('idLazyLoadingTime');
     // Object result: empty object if the searched value is not stored.
     gettingItem.then((result) => {
@@ -300,7 +303,7 @@ function popupMain() {
       :param urls: list of strings, URLs to work with.
       :return urls_paths: list of strings, all possible URLs ommitting
         parts of the paths.
-       */
+      */
       function getUrlsWithPaths(urls){
         // Variable with results.
         var urls_paths = []
@@ -507,7 +510,9 @@ function popupMain() {
       copy2clipboard ('inputRules');
     }
 
+    // Detect popup's clicked buttons.
     if (e.target.classList.contains('showConfig')){
+      console.log('Clicked button: showConfig')
       showOrHideInfo(['menuConfig']);
       if (document.getElementById('menuRules').classList.contains('hidden') == false){
         hideInfo('menuRules');
@@ -519,18 +524,22 @@ function popupMain() {
     } else if (e.target.classList.contains('openRules')){
       showOrHideInfo(['divInputRule','divInputRules']);
     } else if (e.target.classList.contains('copy')){
+      console.log('Clicked button: copy')
       if (document.getElementById('inputUrls').value !== ''){
         copy2clipboard ('inputUrls');
       } else if (ruleType !== ''){
         copyRules();
       }
     } else if (e.target.classList.contains('cleanUrl')){
+    console.log('Clicked button: cleanUrl')
       ruleType = ruleDeobfuscate;
       modifyText();
     } else if (e.target.classList.contains('obfuscate')){
+      console.log('Clicked button: obfuscate')
       ruleType = ruleObfuscate;
       modifyText();
     } else if (e.target.classList.contains('openUrls')) {
+      console.log('Clicked button: openUrls')
       openUrls();
     } else if (e.target.classList.contains('openPaths')){
       saveOpenPaths();
