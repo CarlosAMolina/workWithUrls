@@ -67,6 +67,8 @@ function popupMain() {
         var keysRuleNew = Object.keys(storedItems).filter(key => key.includes(ruleType+'_new_')); //array
         var rules2SaveNew = keysRuleNew.map(keysRuleNew => storedItems[keysRuleNew]); // array
         var result = new rule(ruleType, rules2SaveOld, rules2SaveNew); 
+        console.log('Rules:')
+        console.log(result)
         rules.push(result);
       });
     }, reportError);
@@ -238,13 +240,26 @@ function popupMain() {
     }
 
     function showStoredRulesType(){
+      console.log('Init showStoredRulesType()')
       var gettingAllStoredItems = browser.storage.local.get(null);
       gettingAllStoredItems.then((storedItems) => {
-        var keysRuleType = Object.keys(storedItems).filter(key => key.includes(ruleType+'_')); //array
-        var rulesType2Save = keysRuleType.map(keysRuleType => storedItems[keysRuleType]); // array
-        for (var i = 0; i < Object.keys(keysRuleType).length; i+=2) {
-          var values2show = [rulesType2Save[i], rulesType2Save[i+1]];
-          var keysRuleType2show = [keysRuleType[i], keysRuleType[i+1]];
+        console.log('storedItems:')
+        console.log(storedItems)
+        // Get keys of the dictionary for the current rule type
+        // (ofuscation or deofuscation) with the terms 
+        // (last part of each key) that must be replaced.
+        var keysRuleTypeOld = Object.keys(storedItems).filter(key => key.includes(ruleType+'_old')); //array
+        console.log('keysRuleTypeOld:')
+        console.log(keysRuleTypeOld)
+        // Get values of the dictionary to replace last term 
+        // of the previous keys.
+        var valuesRuleTypeOld = keysRuleTypeOld.map(keysRuleTypeOld => storedItems[keysRuleTypeOld]); // array
+        console.log('valuesRuleTypeOld:')
+        console.log(valuesRuleTypeOld)
+        for (var i = 0; i < valuesRuleTypeOld.length; i+=1) {
+          var values2show = [valuesRuleTypeOld[i], storedItems[ruleType+'_new_'+valuesRuleTypeOld[i]]];
+          console.log('values2show:')
+          console.log(values2show)
           showStoredInfo(values2show);
         }
       }, reportError);
@@ -427,6 +442,7 @@ function popupMain() {
       function saveRule(values2save){
 
         function saveInfo(ids2save,values2save) {
+          console.log('Init saveInfo(). ids2save \'' + ids2save + '\', values2save \'' + values2save +'\'')
           for (var i = 0; i < ids2save.length; i++) {
             var storingInfo = browser.storage.local.set({[ids2save[i]]:values2save[i]});
             storingInfo.then(() => {
