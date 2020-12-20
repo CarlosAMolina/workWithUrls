@@ -37,9 +37,9 @@ function storageMock() {
       browser.storage[key] = value || '';
     },
     get: function(key) {
-	return new Promise(function(resolve, reject) {
-	    resolve('start of new Promise');
-	});
+      return new Promise(function(resolve, reject) {
+        resolve('start of new Promise');
+      });
     },
     removeItem: function(key) {
       delete browser.storage[key];
@@ -55,10 +55,66 @@ function storageMock() {
 }
 
 
-describe("Popup tests using ASSERT interface from CHAI module: ", function() {
-  describe("Check reportError Function: ", function() {
-    it("Check the returned value using: assert.equal(value,'value'): ", function() {
-      result = popup.popupMain.reportError('Testing error');
+describe("Check script popup.js: ", function() {
+  describe("Check function sleep: ", function() {
+    it("Check function runs without exceptions: ", function() {
+      result = popup.sleep(2);
+      assert.typeOf(result, "Promise");
+    });
+  });
+  describe("Check function popupMain: ", function() {
+    describe("Check function initializePopup: ", function() {
+      it("Check function runs without exceptions: ", function() {
+        result = popup.popupMain.initializePopup();
+        assert.equal(result, undefined);
+      });
+      describe("Check function getOpenPaths: ", function() {
+        it("Check function runs without exceptions: ", function() {
+          console.log("Not checked") // TODO
+        });
+      });
+    });
+    describe("Check function getRules: ", function() {
+      it("Check function runs without exceptions: ", function() {
+        result = popup.popupMain.getRules();
+        assert.equal(result, undefined);
+      });
+    });
+    describe("Check function getStorageLazyLoading: ", function() {
+      it("Check function runs without exceptions: ", function() {
+        result = popup.popupMain.getStorageLazyLoading();
+        assert.equal(result, undefined);
+      });
+    });
+    describe("Check function reportError: ", function() {
+      it("Check function runs without exceptions: ", function() {
+        result = popup.popupMain.reportError('Testing error');
+        assert.equal(result, undefined);
+      });
+    });
+    describe("Check function showStoredInfo: ", function() {
+      it("Check function runs without exceptions: ", function() {
+        var values2save = ['value 1', 'value 2']
+        result = popup.popupMain.showStoredInfo(values2save);
+        assert.equal(result, undefined);
+      });
+      describe("Check function updateValue: ", function() {
+        it("Check function runs without exceptions: ", function() {
+          console.log("Not checked") // TODO
+        });
+      });
+    });
+    describe("Check functions that modify document: ", function() {
+      describe("Check function updateValue: ", function() {
+        it("Check function runs without exceptions: ", function() {
+          console.log("Not checked") // TODO: hideInfo, showOrHideInfo...
+        });
+      });
+    });
+  });
+  describe("Check function reportExecuteScriptError: ", function() {
+    it("Check function runs without exceptions: ", function() {
+      result = popup.reportExecuteScriptError("Error message")
       assert.equal(result, undefined);
     });
   });
