@@ -1,0 +1,15 @@
+{
+  "name": "tests_workWithUrls",
+  "version": "1.0.0",
+  "description": "Tests for the project",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --reporter spec"
+  },
+  "author": "Carlos A Molina",
+  "license": "Mozilla Public License, version 2.0",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "jsdom": "^16.4.0",
+    "mocha": "^8.2.1"
+  }
+}

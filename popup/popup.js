@@ -591,6 +591,9 @@ function popupMain() {
     }
   });
 
+  //TODO: created only for testing.
+  popupMain.reportError = reportError; 
+
 }
 
 // There was an error executing the script.
@@ -607,3 +610,6 @@ try {
 catch (error){
   reportExecuteScriptError(error);
 }
+
+//TODO: created only for testing.
+module.exports = { popupMain }
