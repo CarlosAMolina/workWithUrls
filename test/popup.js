@@ -56,12 +56,6 @@ function storageMock() {
 
 
 describe("Check script popup.js: ", function() {
-  describe("Check function sleep: ", function() {
-    it("Check function runs without exceptions: ", function() {
-      result = popup.sleep(2);
-      assert.typeOf(result, "Promise");
-    });
-  });
   describe("Check function popupMain: ", function() {
     describe("Check function initializePopup: ", function() {
       it("Check function runs without exceptions: ", function() {

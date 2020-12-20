@@ -3,6 +3,9 @@
 https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/storage/local
 */
 
+// Global constants.
+const sleep = require('./modules/sleep.js');
+
 // Global variables.
 var infoContainer = document.querySelector('.info-container');
 var lazyLoadingTime = 0;
@@ -23,11 +26,6 @@ var urls = [];
 // Variable to save the result of window.open()
 // https://developer.mozilla.org/en-US/docs/Web/API/Window/open
 var windowObjectReference = null;
-
-// https://stackoverflow.com/questions/951021/what-is-the-javascript-version-of-sleep
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 function popupMain() {
 
@@ -393,7 +391,7 @@ function popupMain() {
           // Only wait between URLs.
           if (i != 0){
             console.log('Init. Wait miliseconds: ' + lazyLoadingTime);
-            await sleep(lazyLoadingTime);
+            await sleep.sleepMs(lazyLoadingTime);
             console.log('Done. Wait miliseconds: ' + lazyLoadingTime);
           }
           console.log(url);
@@ -615,4 +613,4 @@ catch (error){
 }
 
 //TODO: created only for testing.
-module.exports = { popupMain, sleep, reportExecuteScriptError }
+module.exports = { popupMain, reportExecuteScriptError }
