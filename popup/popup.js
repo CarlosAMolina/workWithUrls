@@ -559,7 +559,7 @@ function popupMain() {
     } else if (e.target.classList.contains('obfuscate')){
       console.log('Clicked button: obfuscate')
       ruleType = ruleObfuscate;
-      modifyText(rules[ruleTypes.indexOf(ruleType)]);
+      modifyText(getRuleValuesForRuleType())
     } else if (e.target.classList.contains('openUrls')) {
       console.log('Clicked button: openUrls')
       openUrls();
@@ -585,6 +585,10 @@ function popupMain() {
       browser.tabs.query({active: true, currentWindow: true})
         .then(clearStorageInfo)
         .catch(reportError)
+    }
+
+      function getRuleValuesForRuleType(){
+        return rules[ruleTypes.indexOf(ruleType)];
     }
   });
 
