@@ -112,5 +112,12 @@ describe("Check script popup.js: ", function() {
       assert.equal(result, undefined);
     });
   });
+  describe("Check function modifyText: ", function() {
+    it("Check function runs without exceptions: ", function() {
+      const ruleValuesMocked = {valuesOld: {}}
+      result = popup.modifyText(ruleValuesMocked)
+      assert.equal(result, undefined);
+    });
+  });
 });
 

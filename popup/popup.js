@@ -27,6 +27,48 @@ var urls = [];
 // https://developer.mozilla.org/en-US/docs/Web/API/Window/open
 var windowObjectReference = null;
 
+function modifyText(ruleValues){
+
+  function workWithObfuscation(){
+    if (ruleValues.valuesOld.length != 0){
+      urls.forEach( function(url2Change) {
+        for (var i = 0; i < ruleValues.valuesOld.length; i++) {
+          var regex = new RegExp(ruleValues.valuesOld[i], "g");
+          url2Change = url2Change.replace(regex, ruleValues.valuesNew[i]);
+        }
+        urlsFinal += url2Change + '\n';
+      });
+      urlsFinal = urlsFinal.replace(/\n$/, ""); // remove the last \ns
+    }
+    return urlsFinal;
+  }
+
+  function workWithCodification(){
+    urls.forEach( function(url2Change) {
+      try{
+        url2Change = decodeURIComponent(url2Change);
+      } catch(e) { // URIError: malformed URI sequence
+        url2Change = e;
+      }
+      urlsFinal += url2Change + '\n';
+    });
+    urlsFinal = urlsFinal.replace(/\n$/, ""); // remove the last \n
+    return urlsFinal;
+  }
+
+  var urlsFinal = '';
+  urls = document.getElementById('inputUrls').value.split('\n');
+  if ((document.getElementById('boxDecode').checked == true) && (ruleType == ruleDeobfuscate)){
+    urlsFinal = workWithCodification();
+  } else {
+    urlsFinal = workWithObfuscation();
+  }
+  if (urlsFinal == ''){
+    urlsFinal = document.getElementById('inputUrls').value;
+  }
+  document.getElementById('inputUrls').value = urlsFinal;
+}
+
 function popupMain() {
 
   initializePopup();
@@ -261,49 +303,6 @@ function popupMain() {
           showStoredInfo(values2show);
         }
       }, reportError);
-    }
-
-    function modifyText(){
-
-      function workWithObfuscation(){
-        var ruleValues = rules[ruleTypes.indexOf(ruleType)];
-        if (ruleValues.valuesOld.length != 0){
-          urls.forEach( function(url2Change) {
-            for (var i = 0; i < ruleValues.valuesOld.length; i++) {
-              var regex = new RegExp(ruleValues.valuesOld[i], "g");
-              url2Change = url2Change.replace(regex, ruleValues.valuesNew[i]);
-            }
-            urlsFinal += url2Change + '\n';
-          });
-          urlsFinal = urlsFinal.replace(/\n$/, ""); // remove the last \ns
-        }
-        return urlsFinal;
-      }
-
-      function workWithCodification(){
-        urls.forEach( function(url2Change) {
-          try{
-            url2Change = decodeURIComponent(url2Change);
-          } catch(e) { // URIError: malformed URI sequence
-            url2Change = e;
-          }
-          urlsFinal += url2Change + '\n';
-        });
-        urlsFinal = urlsFinal.replace(/\n$/, ""); // remove the last \n
-        return urlsFinal;
-      }
-
-      var urlsFinal = '';
-      urls = document.getElementById('inputUrls').value.split('\n');
-      if ((document.getElementById('boxDecode').checked == true) && (ruleType == ruleDeobfuscate)){
-        urlsFinal = workWithCodification();
-      } else {
-        urlsFinal = workWithObfuscation();
-      }
-      if (urlsFinal == ''){
-        urlsFinal = document.getElementById('inputUrls').value;
-      }
-      document.getElementById('inputUrls').value = urlsFinal;
     }
 
     /* Open URLs and its paths if option checked.
@@ -560,7 +559,7 @@ function popupMain() {
     } else if (e.target.classList.contains('obfuscate')){
       console.log('Clicked button: obfuscate')
       ruleType = ruleObfuscate;
-      modifyText();
+      modifyText(rules[ruleTypes.indexOf(ruleType)]);
     } else if (e.target.classList.contains('openUrls')) {
       console.log('Clicked button: openUrls')
       openUrls();
@@ -613,4 +612,4 @@ catch (error){
 }
 
 //TODO: created only for testing.
-module.exports = { popupMain, reportExecuteScriptError }
+module.exports = { popupMain, reportExecuteScriptError, modifyText }
