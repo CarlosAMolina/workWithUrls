@@ -48,7 +48,7 @@ function modifyText(ruleValues){
           const regex = new RegExp(ruleValues.valuesOld[i], "g");
           url2Change = url2Change.replace(regex, ruleValues.valuesNew[i]);
         }
-        urlsFinal += addNewLineAtTheEnd(url2Change);
+        urlsFinal += addTrailingNewLine(url2Change);
       });
       urlsFinal = removeTrailingNewLine(urlsFinal)
     }
@@ -62,14 +62,13 @@ function modifyText(ruleValues){
       } catch(e) { // URIError: malformed URI sequence
         url2Change = e;
       }
-      urlsFinal += addNewLineAtTheEnd(url2Change);
-      });
+      urlsFinal += addTrailingNewLine(url2Change);
     });
     urlsFinal = removeTrailingNewLine(urlsFinal)
     return urlsFinal;
   }
 
-  function addNewLineAtTheEnd(string){
+  function addTrailingNewLine(string){
     return string + '\n';
   }
   
