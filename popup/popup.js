@@ -29,16 +29,28 @@ var windowObjectReference = null;
 
 function modifyText(ruleValues){
 
+  let urlsFinal = '';
+  urls = document.getElementById('inputUrls').value.split('\n');
+  if ((document.getElementById('boxDecode').checked == true) && (ruleType == ruleDeobfuscate)){
+    urlsFinal = workWithCodification();
+  } else {
+    urlsFinal = workWithObfuscation();
+  }
+  if (urlsFinal == ''){
+    urlsFinal = document.getElementById('inputUrls').value;
+  }
+  document.getElementById('inputUrls').value = urlsFinal;
+
   function workWithObfuscation(){
     if (ruleValues.valuesOld.length != 0){
       urls.forEach( function(url2Change) {
-        for (var i = 0; i < ruleValues.valuesOld.length; i++) {
-          var regex = new RegExp(ruleValues.valuesOld[i], "g");
+        for (let i = 0; i < ruleValues.valuesOld.length; i++) {
+          const regex = new RegExp(ruleValues.valuesOld[i], "g");
           url2Change = url2Change.replace(regex, ruleValues.valuesNew[i]);
         }
-        urlsFinal += url2Change + '\n';
+        urlsFinal += addNewLineAtTheEnd(url2Change);
       });
-      urlsFinal = urlsFinal.replace(/\n$/, ""); // remove the last \ns
+      urlsFinal = removeTrailingNewLine(urlsFinal)
     }
     return urlsFinal;
   }
@@ -50,23 +62,21 @@ function modifyText(ruleValues){
       } catch(e) { // URIError: malformed URI sequence
         url2Change = e;
       }
-      urlsFinal += url2Change + '\n';
+      urlsFinal += addNewLineAtTheEnd(url2Change);
+      });
     });
-    urlsFinal = urlsFinal.replace(/\n$/, ""); // remove the last \n
+    urlsFinal = removeTrailingNewLine(urlsFinal)
     return urlsFinal;
   }
 
-  var urlsFinal = '';
-  urls = document.getElementById('inputUrls').value.split('\n');
-  if ((document.getElementById('boxDecode').checked == true) && (ruleType == ruleDeobfuscate)){
-    urlsFinal = workWithCodification();
-  } else {
-    urlsFinal = workWithObfuscation();
+  function addNewLineAtTheEnd(string){
+    return string + '\n';
   }
-  if (urlsFinal == ''){
-    urlsFinal = document.getElementById('inputUrls').value;
+  
+  function removeTrailingNewLine(string){
+    return string.replace(/\n$/, "");
   }
-  document.getElementById('inputUrls').value = urlsFinal;
+
 }
 
 function popupMain() {
