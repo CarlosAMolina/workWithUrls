@@ -30,32 +30,46 @@ var windowObjectReference = null;
 function modifyText(ruleValues){
 
   let urlsFinal = '';
+  const urlsModifier = new UrlsModifier(ruleValues)
   urls = document.getElementById('inputUrls').value.split('\n');
   if ((document.getElementById('boxDecode').checked == true) && (ruleType == ruleDeobfuscate)){
-    urlsFinal = workWithCodification();
+    urlsFinal = urlsModifier.deofuscateUrls();
   } else {
-    urlsFinal = workWithObfuscation();
+    urlsFinal = urlsModifier.obfuscateUrls(urls);
   }
   if (urlsFinal == ''){
     urlsFinal = document.getElementById('inputUrls').value;
   }
   document.getElementById('inputUrls').value = urlsFinal;
+}
 
-  function workWithObfuscation(){
-    if (ruleValues.valuesOld.length != 0){
-      urls.forEach( function(url2Change) {
-        for (let i = 0; i < ruleValues.valuesOld.length; i++) {
-          const regex = new RegExp(ruleValues.valuesOld[i], "g");
-          url2Change = url2Change.replace(regex, ruleValues.valuesNew[i]);
+class UrlsModifier {
+
+  constructor (ruleValues) {
+    this.ruleValues = ruleValues;
+  }
+
+  obfuscateUrls(urlsOld){
+    let urlsFinal = '';
+    if (this.ruleValues.valuesOld.length != 0){
+      //urlsOld.forEach( function(url2Change) {
+      for (let j = 0; j < urlsOld.length; j++) {
+        const url2Change = urlsOld[j]
+        let urlFinal = ''
+        for (let i = 0; i < this.ruleValues.valuesOld.length; i++) {
+          const regex = new RegExp(this.ruleValues.valuesOld[i], "g");
+          urlFinal = url2Change.replace(regex, this.ruleValues.valuesNew[i]);
         }
-        urlsFinal += addTrailingNewLine(url2Change);
-      });
-      urlsFinal = removeTrailingNewLine(urlsFinal)
+        urlsFinal += this.addTrailingNewLine(urlFinal);
+      }
+      urlsFinal = this.removeTrailingNewLine(urlsFinal)
     }
+    console.log(urlsFinal)
     return urlsFinal;
   }
 
-  function workWithCodification(){
+  deofuscateUrls(){
+    let urlsFinal = '';
     urls.forEach( function(url2Change) {
       try{
         url2Change = decodeURIComponent(url2Change);
@@ -68,11 +82,11 @@ function modifyText(ruleValues){
     return urlsFinal;
   }
 
-  function addTrailingNewLine(string){
+  addTrailingNewLine(string){
     return string + '\n';
   }
   
-  function removeTrailingNewLine(string){
+  removeTrailingNewLine(string){
     return string.replace(/\n$/, "");
   }
 

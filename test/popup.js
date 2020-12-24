@@ -13,6 +13,10 @@ function mockDomDocument(html){
   global.document = new JSDOM(html).window.document;
 }
 
+function mockDomInputUrls(){
+  document.getElementById('inputUrls').value = ['test1.com', 'test2.com']
+}
+
 function readFile(path) {
   try {
     const data = fs.readFileSync(path, 'utf8')
@@ -114,10 +118,19 @@ describe("Check script popup.js: ", function() {
   });
   describe("Check function modifyText: ", function() {
     it("Check function runs without exceptions: ", function() {
-      const ruleValuesMocked = {valuesOld: {}}
-      result = popup.modifyText(ruleValuesMocked)
+      mockDomInputUrls()
+      const ruleValuesMockedGeneral = {valuesOld: ['test'], valuesNew: ['changed1']}
+      result = popup.modifyText(ruleValuesMockedGeneral)
       assert.equal(result, undefined);
     });
+    //it("Check function obfuscateUrls: ", function() {
+    //  mockDomInputUrls()
+    //  const ruleValuesMockedObfuscate = {valuesOld: ['test'], valuesNew: ['obfuscated']}
+    //  const urls = ['test1.com', 'test2.com']
+    //  result = popup.modifyText.obfuscateUrls(urls)
+    //  console.log(result + '<---')
+    //  assert.equal(result, undefined);
+    //});
   });
 });
 
