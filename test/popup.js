@@ -2,9 +2,11 @@ const assert = require("chai").assert;
 const fs = require('fs');
 const jsdom = require("jsdom");
 const path = require("path");
-mockDomDocument(readFile(path.resolve(__dirname, '../popup/popup.html')))
-mockBrowserStorageLocal()
+mockDomDocument(readFile(path.resolve(__dirname, '../popup/popup.html')));
+mockBrowserStorageLocal();
 const popup = require('../popup/popup.js');
+const inputUrlsTest = 'test1.com\ntest2.com';
+const ruleValuesMockedGeneral = {valuesOld: ['test'], valuesNew: ['changed1']}
 
 
 function mockDomDocument(html){
@@ -14,7 +16,7 @@ function mockDomDocument(html){
 }
 
 function mockDomInputUrls(){
-  document.getElementById('inputUrls').value = ['test1.com', 'test2.com']
+  document.getElementById('inputUrls').value = inputUrlsTest
 }
 
 function readFile(path) {
@@ -119,18 +121,37 @@ describe("Check script popup.js: ", function() {
   describe("Check function modifyText: ", function() {
     it("Check function runs without exceptions: ", function() {
       mockDomInputUrls()
-      const ruleValuesMockedGeneral = {valuesOld: ['test'], valuesNew: ['changed1']}
       result = popup.modifyText(ruleValuesMockedGeneral)
       assert.equal(result, undefined);
     });
-    //it("Check function obfuscateUrls: ", function() {
+  });
+  describe("Check class Dom: ", function() {
+    const dom = new popup.Dom();
+    it("Check function getUrls: ", function() {
+      mockDomInputUrls();
+      assert.equal(dom.getUrls(), inputUrlsTest);
+    });
+    it("Check function setUrls: ", function() {
+      const inputUrlsNew = 'new1.com\nnew2.com'
+      dom.setUrls(inputUrlsNew)
+      assert.equal(dom.getUrls(), inputUrlsNew);
+    });
+  });
+  describe("Check class UrlsModifier: ", function() {
+    const ruleValuesMocked = {valuesOld: ['test'], valuesNew: ['changed']}
+    const urlsModifier = new popup.UrlsModifier();
+    it("Check function applyRulesToUrls: ", function() {
+      const urls = ['test1.com', 'test2.com'];
+      const urls_result = 'changed1.com\nchanged2.com'
+      result = urlsModifier.applyRulesToUrls(ruleValuesMocked, urls)
+      assert.equal(result, urls_result)
     //  mockDomInputUrls()
     //  const ruleValuesMockedObfuscate = {valuesOld: ['test'], valuesNew: ['obfuscated']}
     //  const urls = ['test1.com', 'test2.com']
-    //  result = popup.modifyText.obfuscateUrls(urls)
+    //  result = popup.modifyText.applyRulesToUrls(urls)
     //  console.log(result + '<---')
     //  assert.equal(result, undefined);
-    //});
+    });
   });
 });
 

@@ -27,48 +27,58 @@ var urls = [];
 // https://developer.mozilla.org/en-US/docs/Web/API/Window/open
 var windowObjectReference = null;
 
+class Dom {
+  
+  // return: object, strings.
+  getUrls(){
+    return document.getElementById('inputUrls').value;
+  }
+
+  setUrls(urls){
+    document.getElementById('inputUrls').value = urls;
+  }
+
+}
+
+const dom = new Dom();
+
 function modifyText(ruleValues){
 
   let urlsFinal = '';
-  const urlsModifier = new UrlsModifier(ruleValues)
-  urls = document.getElementById('inputUrls').value.split('\n');
+  const urlsModifier = new UrlsModifier()
+  const urls = dom.getUrls().split('\n');
   if ((document.getElementById('boxDecode').checked == true) && (ruleType == ruleDeobfuscate)){
-    urlsFinal = urlsModifier.deofuscateUrls();
+    urlsFinal = urlsModifier.decodeUrls();
   } else {
-    urlsFinal = urlsModifier.obfuscateUrls(urls);
+    urlsFinal = urlsModifier.applyRulesToUrls(ruleValues, urls);
   }
   if (urlsFinal == ''){
-    urlsFinal = document.getElementById('inputUrls').value;
+    urlsFinal = dom.getUrls();
   }
-  document.getElementById('inputUrls').value = urlsFinal;
+  dom.setUrls(urlsFinal);
 }
 
 class UrlsModifier {
 
-  constructor (ruleValues) {
-    this.ruleValues = ruleValues;
-  }
-
-  obfuscateUrls(urlsOld){
+  applyRulesToUrls(ruleValues, urlsOld){
     let urlsFinal = '';
-    if (this.ruleValues.valuesOld.length != 0){
+    if (ruleValues.valuesOld.length != 0){
       //urlsOld.forEach( function(url2Change) {
       for (let j = 0; j < urlsOld.length; j++) {
         const url2Change = urlsOld[j]
         let urlFinal = ''
-        for (let i = 0; i < this.ruleValues.valuesOld.length; i++) {
-          const regex = new RegExp(this.ruleValues.valuesOld[i], "g");
-          urlFinal = url2Change.replace(regex, this.ruleValues.valuesNew[i]);
+        for (let i = 0; i < ruleValues.valuesOld.length; i++) {
+          const regex = new RegExp(ruleValues.valuesOld[i], "g");
+          urlFinal = url2Change.replace(regex, ruleValues.valuesNew[i]);
         }
         urlsFinal += this.addTrailingNewLine(urlFinal);
       }
       urlsFinal = this.removeTrailingNewLine(urlsFinal)
     }
-    console.log(urlsFinal)
     return urlsFinal;
   }
 
-  deofuscateUrls(){
+  decodeUrls(){
     let urlsFinal = '';
     urls.forEach( function(url2Change) {
       try{
@@ -393,7 +403,8 @@ function popupMain() {
       }
 
       // Get URLs at the input box.
-      urls = document.getElementById('inputUrls').value.split('\n');
+      urls = dom.getUrls().split('\n');
+
       console.log('URLs at the input box: ' + urls)
       if (document.getElementById('boxPaths').checked == true){
         urls = getUrlsWithPaths(urls);
@@ -570,8 +581,8 @@ function popupMain() {
       showOrHideInfo(['divInputRule','divInputRules']);
     } else if (e.target.classList.contains('copy')){
       console.log('Clicked button: copy')
-      if (document.getElementById('inputUrls').value !== ''){
-        copy2clipboard ('inputUrls');
+      if (dom.getUrls() !== ''){
+        copy2clipboard('inputUrls');
       } else if (ruleType !== ''){
         copyRules();
       }
@@ -639,4 +650,4 @@ catch (error){
 }
 
 //TODO: created only for testing.
-module.exports = { popupMain, reportExecuteScriptError, modifyText }
+module.exports = { Dom, UrlsModifier, popupMain, reportExecuteScriptError, modifyText }
