@@ -42,7 +42,34 @@ class Dom {
 
 const dom = new Dom();
 
-function modifyText(ruleValues){
+class UrlRule {
+
+  constructor(ruleValues) {
+    this.ruleValues = ruleValues;
+  }
+
+  getRuleValuesOld(){
+    return this.ruleValues.valuesOld
+  }
+
+  getRuleValuesNew(){
+    return this.ruleValues.valuesNew
+  }
+
+  getRuleValueOld(index){
+    return this.ruleValues.valuesOld[index]
+  }
+
+  getRuleValueNew(index){
+    return this.ruleValues.valuesNew[index]
+  }
+
+}
+
+/*
+/param: urlRule: UrlRule instance.
+*/
+function modifyText(urlRule){
 
   let urlsFinal = '';
   const urlsModifier = new UrlsModifier()
@@ -50,7 +77,7 @@ function modifyText(ruleValues){
   if ((document.getElementById('boxDecode').checked == true) && (ruleType == ruleDeobfuscate)){
     urlsFinal = urlsModifier.decodeUrls();
   } else {
-    urlsFinal = urlsModifier.applyRulesToUrls(ruleValues, urls);
+    urlsFinal = urlsModifier.applyRulesToUrls(urls, urlRule);
   }
   if (urlsFinal == ''){
     urlsFinal = dom.getUrls();
@@ -60,16 +87,19 @@ function modifyText(ruleValues){
 
 class UrlsModifier {
 
-  applyRulesToUrls(ruleValues, urlsOld){
+  /*
+  /param: urlRule: UrlRule instance.
+  */
+  applyRulesToUrls(urlsOld, urlRule){
     let urlsFinal = '';
-    if (ruleValues.valuesOld.length != 0){
+    if (urlRule.getRuleValuesOld().length != 0){
       //urlsOld.forEach( function(url2Change) {
       for (let j = 0; j < urlsOld.length; j++) {
         const url2Change = urlsOld[j]
         let urlFinal = ''
-        for (let i = 0; i < ruleValues.valuesOld.length; i++) {
-          const regex = new RegExp(ruleValues.valuesOld[i], "g");
-          urlFinal = url2Change.replace(regex, ruleValues.valuesNew[i]);
+        for (let i = 0; i < urlRule.getRuleValuesOld().length; i++) {
+          const regex = new RegExp(urlRule.getRuleValueOld(i), "g");
+          urlFinal = url2Change.replace(regex, urlRule.getRuleValueNew(i));
         }
         urlsFinal += this.addTrailingNewLine(urlFinal);
       }
@@ -593,7 +623,8 @@ function popupMain() {
     } else if (e.target.classList.contains('obfuscate')){
       console.log('Clicked button: obfuscate')
       ruleType = ruleObfuscate;
-      modifyText(getRuleValuesForRuleType())
+      const urlRule = new UrlRule(getRuleValuesForRuleType(ruleType))
+      modifyText(urlRule)
     } else if (e.target.classList.contains('openUrls')) {
       console.log('Clicked button: openUrls')
       openUrls();
@@ -621,7 +652,7 @@ function popupMain() {
         .catch(reportError)
     }
 
-      function getRuleValuesForRuleType(){
+      function getRuleValuesForRuleType(ruleType){
         return rules[ruleTypes.indexOf(ruleType)];
     }
   });
@@ -650,4 +681,4 @@ catch (error){
 }
 
 //TODO: created only for testing.
-module.exports = { Dom, UrlsModifier, popupMain, reportExecuteScriptError, modifyText }
+module.exports = { Dom, UrlsModifier, UrlRule, popupMain, reportExecuteScriptError, modifyText }

@@ -120,8 +120,10 @@ describe("Check script popup.js: ", function() {
   });
   describe("Check function modifyText: ", function() {
     it("Check function runs without exceptions: ", function() {
-      mockDomInputUrls()
-      result = popup.modifyText(ruleValuesMockedGeneral)
+      mockDomInputUrls();
+      const ruleValuesMocked = {valuesOld: ['test'], valuesNew: ['changed']};
+      const urlRule = new popup.UrlRule(ruleValuesMocked);
+      result = popup.modifyText(urlRule)
       assert.equal(result, undefined);
     });
   });
@@ -137,14 +139,30 @@ describe("Check script popup.js: ", function() {
       assert.equal(dom.getUrls(), inputUrlsNew);
     });
   });
+  describe("Check class UrlRule: ", function() {
+    const urlRule = new popup.UrlRule(ruleValuesMockedGeneral);
+    it("Check function getRuleValuesOld: ", function() {
+      assert.equal(urlRule.getRuleValuesOld(), ruleValuesMockedGeneral.valuesOld);
+    });
+    it("Check function getRuleValuesNew: ", function() {
+      assert.equal(urlRule.getRuleValuesNew(), ruleValuesMockedGeneral.valuesNew);
+    });
+    it("Check function getRuleValueOld: ", function() {
+      assert.equal(urlRule.getRuleValueOld(0), ruleValuesMockedGeneral.valuesOld[0]);
+    });
+    it("Check function getRuleValueNew: ", function() {
+      assert.equal(urlRule.getRuleValueNew(0), ruleValuesMockedGeneral.valuesNew[0]);
+    });
+  });
   describe("Check class UrlsModifier: ", function() {
     const ruleValuesMocked = {valuesOld: ['test'], valuesNew: ['changed']}
     const urlsModifier = new popup.UrlsModifier();
+    const urlRule = new popup.UrlRule(ruleValuesMocked);
     it("Check function applyRulesToUrls: ", function() {
       const urls = ['test1.com', 'test2.com'];
-      const urls_result = 'changed1.com\nchanged2.com'
-      result = urlsModifier.applyRulesToUrls(ruleValuesMocked, urls)
-      assert.equal(result, urls_result)
+      const urls_result = 'changed1.com\nchanged2.com';
+      result = urlsModifier.applyRulesToUrls(urls, urlRule);
+      assert.equal(result, urls_result);
     //  mockDomInputUrls()
     //  const ruleValuesMockedObfuscate = {valuesOld: ['test'], valuesNew: ['obfuscated']}
     //  const urls = ['test1.com', 'test2.com']
