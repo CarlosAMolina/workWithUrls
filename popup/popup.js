@@ -22,6 +22,7 @@ var urls = [];
 // https://developer.mozilla.org/en-US/docs/Web/API/Window/open
 var windowObjectReference = null;
 
+
 class Dom {
   
   // return: object, strings.
@@ -80,67 +81,62 @@ class UrlRule {
 
 
 /*
-/param: urlRule: UrlRule instance.
+param: urlRule: UrlRule instance.
+return: string.
 */
 function modifyText(urlRule){
 
-  let urlsFinal = '';
+  let urlsNew = '';
   const urlsModifier = new UrlsModifier();
   const urls = dom.getUrls().split('\n');
   if ((document.getElementById('boxDecode').checked == true) && (ruleType == ruleDeobfuscate)){
-    urlsFinal = urlsModifier.decodeUrls();
+    urlsNew = urlsModifier.decodeUrls(urls);
   } else {
-    urlsFinal = urlsModifier.applyRulesToUrls(urls, urlRule);
+    urlsNew = urlsModifier.applyRulesToUrls(urls, urlRule);
   }
-  if (urlsFinal == ''){
-    urlsFinal = dom.getUrls();
+  if (urlsNew.length == 0){
+    urlsNew = dom.getUrls();
+  } else {
+    urlsNew = urlsNew.join('\n');
   }
-  dom.setUrls(urlsFinal);
+  dom.setUrls(urlsNew);
 }
+
 
 class UrlsModifier {
 
   /*
-  /param urlRule: list UrlRule instance.
+  param urlRule: list UrlRule instance.
+  return: list of strings.
   */
-  applyRulesToUrls(urlsOld, urlRule){
-    let urlsFinal = '';
+  applyRulesToUrls(urls, urlRule){
+    let urlsNew = [];
     if (urlRule.ruleValues.length != 0){
-      //urlsOld.forEach( function(url2Change) {
-      for (let j = 0; j < urlsOld.length; j++) {
-        const url2Change = urlsOld[j]
-        let urlFinal = ''
-        for (let i = 0; i < urlRule.ruleValues.length; i++) {
-          const regex = new RegExp(urlRule.ruleValues[i].valueOld, "g");
-          urlFinal = url2Change.replace(regex, urlRule.ruleValues[i].valueNew);
-        }
-        urlsFinal += this.addTrailingNewLine(urlFinal);
-      }
-      urlsFinal = this.removeTrailingNewLine(urlsFinal)
+      urls.forEach( function(url) {
+        urlRule.ruleValues.forEach( function(ruleValue) {
+          const regex = new RegExp(ruleValue.valueOld, "g");
+          urlsNew.push(url.replace(regex, ruleValue.valueNew));
+        });
+      });
     }
-    return urlsFinal;
+    return urlsNew;
   }
 
-  decodeUrls(){
-    let urlsFinal = '';
+
+  /*
+  return: list of strings.
+  */
+  decodeUrls(urls){
+    let urlsNew = [];
     urls.forEach( function(url2Change) {
       try{
         url2Change = decodeURIComponent(url2Change);
       } catch(e) { // URIError: malformed URI sequence
         url2Change = e;
       }
-      urlsFinal += addTrailingNewLine(url2Change);
+      urlsNew.push(url2Change);
     });
-    urlsFinal = removeTrailingNewLine(urlsFinal)
-    return urlsFinal;
-  }
-
-  addTrailingNewLine(string){
-    return string + '\n';
-  }
-  
-  removeTrailingNewLine(string){
-    return string.replace(/\n$/, "");
+    return urlsNew;
   }
 
 }
@@ -602,9 +598,14 @@ function popupMain() {
       for (var i = 0; i<rules[ruleType].ruleValues.length; i++) {
         rulesTypeStr += rules[ruleType].ruleValues[i].valueOld + '\n' + rulesType[ruleType].ruleValues[i].valueNew + '\n';
       }
-      rulesTypeStr = rulesTypeStr.replace(/\n$/, ""); // remove the last \n
+      rulesTypeStr = removeTrailingNewLine(rulesTypeStr)
       document.getElementById('inputRules').value = rulesTypeStr;
       copy2clipboard ('inputRules');
+
+      function removeTrailingNewLine(string){
+        return string.replace(/\n$/, "");
+      }
+
     }
 
     // Detect popup's clicked buttons.

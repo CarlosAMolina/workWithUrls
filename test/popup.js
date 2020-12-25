@@ -160,15 +160,16 @@ describe("Check script popup.js: ", function() {
   describe("Check class UrlsModifier: ", function() {
     it("Check function applyRulesToUrls: ", function() {
       const urls = ['test1.com', 'test2.com'];
-      const urls_result = 'changed1.com\nchanged2.com';
+      const urls_result = ['changed1.com', 'changed2.com'];
       result = urlsModifier.applyRulesToUrls(urls, urlRule);
-      assert.equal(result, urls_result);
-    //  mockDomInputUrls()
-    //  const ruleValuesMockedObfuscate = {valuesOld: ['test'], valuesNew: ['obfuscated']}
-    //  const urls = ['test1.com', 'test2.com']
-    //  result = popup.modifyText.applyRulesToUrls(urls)
-    //  console.log(result + '<---')
-    //  assert.equal(result, undefined);
+      assert.equal(String(result), String(urls_result));
+    });
+
+    it("Check function decodeUrls: ", function() {
+      const urls = ['%3Fx%3Dtest1.com', '%3Fx%3Dtest2.com'];
+      const urls_result = [ '?x=test1.com', '?x=test2.com' ];
+      result = urlsModifier.decodeUrls(urls, urlRule);
+      assert.equal(String(result), String(urls_result));
     });
   });
 });
