@@ -12,16 +12,11 @@ var lazyLoadingTime = 0;
 var openPaths = 0;
 // Protocol to add if no one provided.
 var protocolAdded = 'http://'
-function rule(type, valueOld, valueNew) {
-  this.type = type;
-  this.valuesOld = valueOld;
-  this.valuesNew = valueNew;
-}
 var ruleDeobfuscate = 'rd';
 var ruleObfuscate = 'ro';
 var ruleType = '';
 var ruleTypes = [ruleObfuscate,ruleDeobfuscate];
-var rules = [];
+var rules = {};
 var urls = [];
 // Variable to save the result of window.open()
 // https://developer.mozilla.org/en-US/docs/Web/API/Window/open
@@ -42,29 +37,47 @@ class Dom {
 
 const dom = new Dom();
 
+
+class RuleValue {
+
+  constructor(valueOld, valueNew){
+    this._data = {valueOld: valueOld, valueNew: valueNew};
+  }
+
+  get valueOld() {return this._data.valueOld;}
+  get valueNew() {return this._data.valueNew;}
+
+}
+
+
 class UrlRule {
 
-  constructor(ruleValues) {
-    this.ruleValues = ruleValues;
+  /*
+  param ruleValuesOld: list of strings.
+  param ruleValuesNew: list of strings.
+  */
+  constructor(ruleValuesOld, ruleValuesNew) {
+    this.ruleValues = this.#getRuleValues(ruleValuesOld, ruleValuesNew);
   }
 
-  getRuleValuesOld(){
-    return this.ruleValues.valuesOld
-  }
-
-  getRuleValuesNew(){
-    return this.ruleValues.valuesNew
-  }
-
-  getRuleValueOld(index){
-    return this.ruleValues.valuesOld[index]
-  }
-
-  getRuleValueNew(index){
-    return this.ruleValues.valuesNew[index]
+  /*
+  param valuesOld: list of strings.
+  param valuesNew: list of strings.
+  return: list of RuleValue instances.
+  */
+  #getRuleValues(valuesOld, valuesNew) {
+    let ruleValues = []
+    if (valuesOld.length != valuesNew.length) {
+      throw "Rule's values old length != values new length";
+    }
+    for (let i = 0; i < valuesOld.length; i++) {
+      ruleValues.push(new RuleValue(valuesOld[i], valuesNew[i]));
+    }
+    return ruleValues;
   }
 
 }
+
 
 /*
 /param: urlRule: UrlRule instance.
@@ -72,7 +85,7 @@ class UrlRule {
 function modifyText(urlRule){
 
   let urlsFinal = '';
-  const urlsModifier = new UrlsModifier()
+  const urlsModifier = new UrlsModifier();
   const urls = dom.getUrls().split('\n');
   if ((document.getElementById('boxDecode').checked == true) && (ruleType == ruleDeobfuscate)){
     urlsFinal = urlsModifier.decodeUrls();
@@ -88,18 +101,18 @@ function modifyText(urlRule){
 class UrlsModifier {
 
   /*
-  /param: urlRule: UrlRule instance.
+  /param urlRule: list UrlRule instance.
   */
   applyRulesToUrls(urlsOld, urlRule){
     let urlsFinal = '';
-    if (urlRule.getRuleValuesOld().length != 0){
+    if (urlRule.ruleValues.length != 0){
       //urlsOld.forEach( function(url2Change) {
       for (let j = 0; j < urlsOld.length; j++) {
         const url2Change = urlsOld[j]
         let urlFinal = ''
-        for (let i = 0; i < urlRule.getRuleValuesOld().length; i++) {
-          const regex = new RegExp(urlRule.getRuleValueOld(i), "g");
-          urlFinal = url2Change.replace(regex, urlRule.getRuleValueNew(i));
+        for (let i = 0; i < urlRule.ruleValues.length; i++) {
+          const regex = new RegExp(urlRule.ruleValues[i].valueOld, "g");
+          urlFinal = url2Change.replace(regex, urlRule.ruleValues[i].valueNew);
         }
         urlsFinal += this.addTrailingNewLine(urlFinal);
       }
@@ -163,16 +176,15 @@ function popupMain() {
     console.log('Init getRules()')
     var gettingAllStoredItems = browser.storage.local.get(null);
     gettingAllStoredItems.then((storedItems) => { // storedItems: object of keys and values
-      rules = []; // initialize
+      rules = {};
       ruleTypes.forEach(function(ruleType){
         var keysRuleOld = Object.keys(storedItems).filter(key => key.includes(ruleType+'_old_')); //array
         var rules2SaveOld = keysRuleOld.map(keysRuleOld => storedItems[keysRuleOld]); // array
         var keysRuleNew = Object.keys(storedItems).filter(key => key.includes(ruleType+'_new_')); //array
         var rules2SaveNew = keysRuleNew.map(keysRuleNew => storedItems[keysRuleNew]); // array
-        var result = new rule(ruleType, rules2SaveOld, rules2SaveNew); 
+        rules[ruleType] = new UrlRule(rules2SaveOld, rules2SaveNew); 
         console.log('Rules:')
         console.log(result)
-        rules.push(result);
       });
     }, reportError);
   }
@@ -586,10 +598,9 @@ function popupMain() {
       document.getElementById('boxRules').checked = true;
       document.querySelector('#divInputRule').classList.add('hidden');
       document.querySelector('#divInputRules').classList.remove('hidden');
-      var rulesType = rules.find( result => result.type === ruleType );
       var rulesTypeStr = '';
-      for (var i = 0; i<rulesType['valuesOld'].length; i++) {
-        rulesTypeStr += rulesType['valuesOld'][i] + '\n' + rulesType['valuesNew'][i] + '\n';
+      for (var i = 0; i<rules[ruleType].ruleValues.length; i++) {
+        rulesTypeStr += rules[ruleType].ruleValues[i].valueOld + '\n' + rulesType[ruleType].ruleValues[i].valueNew + '\n';
       }
       rulesTypeStr = rulesTypeStr.replace(/\n$/, ""); // remove the last \n
       document.getElementById('inputRules').value = rulesTypeStr;
@@ -623,8 +634,7 @@ function popupMain() {
     } else if (e.target.classList.contains('obfuscate')){
       console.log('Clicked button: obfuscate')
       ruleType = ruleObfuscate;
-      const urlRule = new UrlRule(getRuleValuesForRuleType(ruleType))
-      modifyText(urlRule)
+      modifyText(rules[ruleType])
     } else if (e.target.classList.contains('openUrls')) {
       console.log('Clicked button: openUrls')
       openUrls();
@@ -652,9 +662,6 @@ function popupMain() {
         .catch(reportError)
     }
 
-      function getRuleValuesForRuleType(ruleType){
-        return rules[ruleTypes.indexOf(ruleType)];
-    }
   });
 
   //TODO: created only for testing.
@@ -681,4 +688,12 @@ catch (error){
 }
 
 //TODO: created only for testing.
-module.exports = { Dom, UrlsModifier, UrlRule, popupMain, reportExecuteScriptError, modifyText }
+module.exports = {
+  Dom,
+  modifyText,
+  popupMain,
+  reportExecuteScriptError,
+  RuleValue,
+  UrlRule,
+  UrlsModifier
+}

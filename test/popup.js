@@ -6,7 +6,11 @@ mockDomDocument(readFile(path.resolve(__dirname, '../popup/popup.html')));
 mockBrowserStorageLocal();
 const popup = require('../popup/popup.js');
 const inputUrlsTest = 'test1.com\ntest2.com';
-const ruleValuesMockedGeneral = {valuesOld: ['test'], valuesNew: ['changed1']}
+const mockRuleValueOld = 'test'
+const mockRuleValueNew = 'changed'
+const mockRuleValuesGeneral = [new popup.RuleValue(mockRuleValueOld, mockRuleValueNew)]
+const urlRule = new popup.UrlRule([mockRuleValueOld], [mockRuleValueNew]);
+const urlsModifier = new popup.UrlsModifier();
 
 
 function mockDomDocument(html){
@@ -112,6 +116,15 @@ describe("Check script popup.js: ", function() {
       });
     });
   });
+  describe("Check class RuleValue: ", function() {
+    ruleValue = new popup.RuleValue('old', 'new');
+    it("Check function get valueOld: ", function() {
+      assert.equal(ruleValue.valueOld, 'old');
+    });
+    it("Check function get valueNew: ", function() {
+      assert.equal(ruleValue.valueNew, 'new');
+    });
+  });
   describe("Check function reportExecuteScriptError: ", function() {
     it("Check function runs without exceptions: ", function() {
       result = popup.reportExecuteScriptError("Error message")
@@ -121,8 +134,6 @@ describe("Check script popup.js: ", function() {
   describe("Check function modifyText: ", function() {
     it("Check function runs without exceptions: ", function() {
       mockDomInputUrls();
-      const ruleValuesMocked = {valuesOld: ['test'], valuesNew: ['changed']};
-      const urlRule = new popup.UrlRule(ruleValuesMocked);
       result = popup.modifyText(urlRule)
       assert.equal(result, undefined);
     });
@@ -140,24 +151,13 @@ describe("Check script popup.js: ", function() {
     });
   });
   describe("Check class UrlRule: ", function() {
-    const urlRule = new popup.UrlRule(ruleValuesMockedGeneral);
-    it("Check function getRuleValuesOld: ", function() {
-      assert.equal(urlRule.getRuleValuesOld(), ruleValuesMockedGeneral.valuesOld);
-    });
-    it("Check function getRuleValuesNew: ", function() {
-      assert.equal(urlRule.getRuleValuesNew(), ruleValuesMockedGeneral.valuesNew);
-    });
-    it("Check function getRuleValueOld: ", function() {
-      assert.equal(urlRule.getRuleValueOld(0), ruleValuesMockedGeneral.valuesOld[0]);
-    });
-    it("Check function getRuleValueNew: ", function() {
-      assert.equal(urlRule.getRuleValueNew(0), ruleValuesMockedGeneral.valuesNew[0]);
+    it("Check class: ", function() {
+      assert.equal(urlRule.ruleValues.length, 1);
+      assert.equal(urlRule.ruleValues[0].valueNew, mockRuleValuesGeneral[0].valueNew);
+      assert.equal(urlRule.ruleValues[0].valueOld, mockRuleValuesGeneral[0].valueOld);
     });
   });
   describe("Check class UrlsModifier: ", function() {
-    const ruleValuesMocked = {valuesOld: ['test'], valuesNew: ['changed']}
-    const urlsModifier = new popup.UrlsModifier();
-    const urlRule = new popup.UrlRule(ruleValuesMocked);
     it("Check function applyRulesToUrls: ", function() {
       const urls = ['test1.com', 'test2.com'];
       const urls_result = 'changed1.com\nchanged2.com';
