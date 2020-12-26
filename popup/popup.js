@@ -5,6 +5,7 @@ https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/stora
 
 // Global constants.
 const sleep = require('./modules/sleep.js');
+const m_urlsModifier = require('../popup/modules/urlsModifier.js');
 
 // Global variables.
 var infoContainer = document.querySelector('.info-container');
@@ -34,50 +35,13 @@ class Dom {
     document.getElementById('inputUrls').value = urls;
   }
 
+  isCheckedBoxDecode(){
+    return document.getElementById('boxDecode').checked == true
+  }
+
 }
 
 const dom = new Dom();
-
-
-class RuleValue {
-
-  constructor(valueOld, valueNew){
-    this._data = {valueOld: valueOld, valueNew: valueNew};
-  }
-
-  get valueOld() {return this._data.valueOld;}
-  get valueNew() {return this._data.valueNew;}
-
-}
-
-
-class UrlRule {
-
-  /*
-  param ruleValuesOld: list of strings.
-  param ruleValuesNew: list of strings.
-  */
-  constructor(ruleValuesOld, ruleValuesNew) {
-    this.ruleValues = this.#getRuleValues(ruleValuesOld, ruleValuesNew);
-  }
-
-  /*
-  param valuesOld: list of strings.
-  param valuesNew: list of strings.
-  return: list of RuleValue instances.
-  */
-  #getRuleValues(valuesOld, valuesNew) {
-    let ruleValues = []
-    if (valuesOld.length != valuesNew.length) {
-      throw "Rule's values old length != values new length";
-    }
-    for (let i = 0; i < valuesOld.length; i++) {
-      ruleValues.push(new RuleValue(valuesOld[i], valuesNew[i]));
-    }
-    return ruleValues;
-  }
-
-}
 
 
 /*
@@ -87,12 +51,11 @@ return: string.
 function modifyText(urlRule){
 
   let urlsNew = '';
-  const urlsModifier = new UrlsModifier();
   const urls = dom.getUrls().split('\n');
-  if ((document.getElementById('boxDecode').checked == true) && (ruleType == ruleDeobfuscate)){
-    urlsNew = urlsModifier.decodeUrls(urls);
+  if ((dom.isCheckedBoxDecode()) && (ruleType == ruleDeobfuscate)){
+    urlsNew = new m_urlsModifier.UrlsModifier().decodeUrls(urls);
   } else {
-    urlsNew = urlsModifier.applyRulesToUrls(urls, urlRule);
+    urlsNew = new m_urlsModifier.UrlsModifier().applyRulesToUrls(urls, urlRule);
   }
   if (urlsNew.length == 0){
     urlsNew = dom.getUrls();
@@ -102,44 +65,6 @@ function modifyText(urlRule){
   dom.setUrls(urlsNew);
 }
 
-
-class UrlsModifier {
-
-  /*
-  param urlRule: list UrlRule instance.
-  return: list of strings.
-  */
-  applyRulesToUrls(urls, urlRule){
-    let urlsNew = [];
-    if (urlRule.ruleValues.length != 0){
-      urls.forEach( function(url) {
-        urlRule.ruleValues.forEach( function(ruleValue) {
-          const regex = new RegExp(ruleValue.valueOld, "g");
-          urlsNew.push(url.replace(regex, ruleValue.valueNew));
-        });
-      });
-    }
-    return urlsNew;
-  }
-
-
-  /*
-  return: list of strings.
-  */
-  decodeUrls(urls){
-    let urlsNew = [];
-    urls.forEach( function(url2Change) {
-      try{
-        url2Change = decodeURIComponent(url2Change);
-      } catch(e) { // URIError: malformed URI sequence
-        url2Change = e;
-      }
-      urlsNew.push(url2Change);
-    });
-    return urlsNew;
-  }
-
-}
 
 function popupMain() {
 
@@ -178,7 +103,7 @@ function popupMain() {
         var rules2SaveOld = keysRuleOld.map(keysRuleOld => storedItems[keysRuleOld]); // array
         var keysRuleNew = Object.keys(storedItems).filter(key => key.includes(ruleType+'_new_')); //array
         var rules2SaveNew = keysRuleNew.map(keysRuleNew => storedItems[keysRuleNew]); // array
-        rules[ruleType] = new UrlRule(rules2SaveOld, rules2SaveNew); 
+        rules[ruleType] = new m_urlsModifier.UrlRule(rules2SaveOld, rules2SaveNew); 
         console.log('Rules:')
         console.log(result)
       });
@@ -694,7 +619,4 @@ module.exports = {
   modifyText,
   popupMain,
   reportExecuteScriptError,
-  RuleValue,
-  UrlRule,
-  UrlsModifier
 }

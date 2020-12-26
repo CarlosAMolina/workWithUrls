@@ -8,9 +8,6 @@ const popup = require('../popup/popup.js');
 const inputUrlsTest = 'test1.com\ntest2.com';
 const mockRuleValueOld = 'test'
 const mockRuleValueNew = 'changed'
-const mockRuleValuesGeneral = [new popup.RuleValue(mockRuleValueOld, mockRuleValueNew)]
-const urlRule = new popup.UrlRule([mockRuleValueOld], [mockRuleValueNew]);
-const urlsModifier = new popup.UrlsModifier();
 
 
 function mockDomDocument(html){
@@ -116,15 +113,6 @@ describe("Check script popup.js: ", function() {
       });
     });
   });
-  describe("Check class RuleValue: ", function() {
-    ruleValue = new popup.RuleValue('old', 'new');
-    it("Check function get valueOld: ", function() {
-      assert.equal(ruleValue.valueOld, 'old');
-    });
-    it("Check function get valueNew: ", function() {
-      assert.equal(ruleValue.valueNew, 'new');
-    });
-  });
   describe("Check function reportExecuteScriptError: ", function() {
     it("Check function runs without exceptions: ", function() {
       result = popup.reportExecuteScriptError("Error message")
@@ -134,6 +122,8 @@ describe("Check script popup.js: ", function() {
   describe("Check function modifyText: ", function() {
     it("Check function runs without exceptions: ", function() {
       mockDomInputUrls();
+      const m_urlsModifier = require('../popup/modules/urlsModifier.js');
+      const urlRule = new m_urlsModifier.UrlRule([mockRuleValueOld], [mockRuleValueNew]);
       result = popup.modifyText(urlRule)
       assert.equal(result, undefined);
     });
@@ -149,27 +139,11 @@ describe("Check script popup.js: ", function() {
       dom.setUrls(inputUrlsNew)
       assert.equal(dom.getUrls(), inputUrlsNew);
     });
-  });
-  describe("Check class UrlRule: ", function() {
-    it("Check class: ", function() {
-      assert.equal(urlRule.ruleValues.length, 1);
-      assert.equal(urlRule.ruleValues[0].valueNew, mockRuleValuesGeneral[0].valueNew);
-      assert.equal(urlRule.ruleValues[0].valueOld, mockRuleValuesGeneral[0].valueOld);
-    });
-  });
-  describe("Check class UrlsModifier: ", function() {
-    it("Check function applyRulesToUrls: ", function() {
-      const urls = ['test1.com', 'test2.com'];
-      const urls_result = ['changed1.com', 'changed2.com'];
-      result = urlsModifier.applyRulesToUrls(urls, urlRule);
-      assert.equal(String(result), String(urls_result));
-    });
-
-    it("Check function decodeUrls: ", function() {
-      const urls = ['%3Fx%3Dtest1.com', '%3Fx%3Dtest2.com'];
-      const urls_result = [ '?x=test1.com', '?x=test2.com' ];
-      result = urlsModifier.decodeUrls(urls, urlRule);
-      assert.equal(String(result), String(urls_result));
+    it("Check function isCheckedBoxDecode: ", function() {
+      document.getElementById('boxDecode').checked = true;
+      assert.isTrue(dom.isCheckedBoxDecode());
+      document.getElementById('boxDecode').checked = false;
+      assert.isFalse(dom.isCheckedBoxDecode());
     });
   });
 });
