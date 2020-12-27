@@ -124,7 +124,8 @@ describe("Check script popup.js: ", function() {
       mockDomInputUrls();
       const m_urlsModifier = require('../popup/modules/urlsModifier.js');
       const urlRule = new m_urlsModifier.UrlRule([mockRuleValueOld], [mockRuleValueNew]);
-      result = popup.modifyText(urlRule)
+      const functionModifyUrls = function mock(){ return ['url1.com', 'url2.com'] };
+      result = popup.modifyText(functionModifyUrls)
       assert.equal(result, undefined);
     });
   });

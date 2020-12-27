@@ -38,47 +38,75 @@ class UrlRule {
 
 }
 
-
-class UrlsModifier {
+class RulesApplicator {
 
   /*
-  param urlRule: list UrlRule instance.
+  param rule: UrlRule instance.
+  */
+  constructor(rule) {
+    this.rule = rule; 
+  }
+
+  /*
+  param urls: list of strings.
   return: list of strings.
   */
-  applyRulesToUrls(urls, urlRule){
+  applyRulesToUrls(urls){
     let urlsNew = [];
-    if (urlRule.ruleValues.length != 0){
-      urls.forEach( function(url) {
-        urlRule.ruleValues.forEach( function(ruleValue) {
+    if (this.rule.ruleValues.length != 0){
+      for (const url of urls) {
+        for (const ruleValue of this.rule.ruleValues) {
           const regex = new RegExp(ruleValue.valueOld, "g");
           urlsNew.push(url.replace(regex, ruleValue.valueNew));
-        });
-      });
+        }
+      }
     }
     return urlsNew;
   }
 
-  /*
-  return: list of strings.
-  */
-  decodeUrls(urls){
-    let urlsNew = [];
-    urls.forEach( function(url2Change) {
-      try{
-        url2Change = decodeURIComponent(url2Change);
-      } catch(e) { // URIError: malformed URI sequence
-        url2Change = e;
-      }
-      urlsNew.push(url2Change);
-    });
-    return urlsNew;
-  }
+}
 
+
+/*
+param rule: UrlRule instance.
+return: list of strings.
+*/
+function decodeUrls(urls) {
+  let urlsNew = [];
+  for (let url2Change of urls) {
+    try{
+      url2Change = decodeURIComponent(url2Change);
+    } catch(e) { // URIError: malformed URI sequence
+      url2Change = e;
+    }
+    urlsNew.push(url2Change);
+  }
+  return urlsNew;
+}
+
+
+/*
+return: function reference.
+*/
+function urlsRuleApplicator(rule) {
+  return new RulesApplicator(rule).applyRulesToUrls;
+}
+
+
+/*
+return: function reference.
+*/
+function urlsDecoder() {
+  return decodeUrls;
 }
 
 
 module.exports = {
+  decodeUrls,
+  RulesApplicator,
   RuleValue,
   UrlRule,
-  UrlsModifier
+  urlsDecoder,
+  urlsRuleApplicator
 }
+

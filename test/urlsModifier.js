@@ -3,7 +3,6 @@ const m_urlsModifier = require('../popup/modules/urlsModifier.js');
 const mockRuleValueOld = 'test'
 const mockRuleValueNew = 'changed'
 const urlRule = new m_urlsModifier.UrlRule([mockRuleValueOld], [mockRuleValueNew]);
-const urlsModifier = new m_urlsModifier.UrlsModifier();
 
 
 describe("Check script urlsModifier.js: ", function() {
@@ -24,18 +23,33 @@ describe("Check script urlsModifier.js: ", function() {
       assert.equal(urlRule.ruleValues[0].valueOld, mockRuleValuesGeneral[0].valueOld);
     });
   });
-  describe("Check class UrlsModifier: ", function() {
+  describe("Check class RulesApplicator: ", function() {
+    const rulesApplicator = new m_urlsModifier.RulesApplicator(urlRule);
     it("Check function applyRulesToUrls: ", function() {
       const urls = ['test1.com', 'test2.com'];
       const urls_result = ['changed1.com', 'changed2.com'];
-      result = urlsModifier.applyRulesToUrls(urls, urlRule);
+      result = rulesApplicator.applyRulesToUrls(urls);
       assert.equal(String(result), String(urls_result));
     });
+  });
+  describe("Check function decodeUrls: ", function() {
     it("Check function decodeUrls: ", function() {
       const urls = ['%3Fx%3Dtest1.com', '%3Fx%3Dtest2.com'];
       const urls_result = [ '?x=test1.com', '?x=test2.com' ];
-      result = urlsModifier.decodeUrls(urls, urlRule);
+      result = m_urlsModifier.decodeUrls(urls);
       assert.equal(String(result), String(urls_result));
+    });
+  });
+  describe("Check function urlsDecoder: ", function() {
+    it("Check function runs without exceptions: ", function() {
+      result = m_urlsModifier.urlsDecoder();
+      assert.isFunction(result)
+    });
+  });
+  describe("Check function urlsRuleApplicator: ", function() {
+    it("Check function runs without exceptions: ", function() {
+      result = m_urlsModifier.urlsRuleApplicator({});
+      assert.isFunction(result)
     });
   });
 });

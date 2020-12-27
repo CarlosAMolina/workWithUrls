@@ -45,18 +45,14 @@ const dom = new Dom();
 
 
 /*
-param: urlRule: UrlRule instance.
+param urlRule: UrlRule instance.
+param functionModifyUrls: function reference.
 return: string.
 */
-function modifyText(urlRule){
-
+function modifyText(functionModifyUrls){
   let urlsNew = '';
   const urls = dom.getUrls().split('\n');
-  if ((dom.isCheckedBoxDecode()) && (ruleType == ruleDeobfuscate)){
-    urlsNew = new m_urlsModifier.UrlsModifier().decodeUrls(urls);
-  } else {
-    urlsNew = new m_urlsModifier.UrlsModifier().applyRulesToUrls(urls, urlRule);
-  }
+  urlsNew = functionModifyUrls(urls);
   if (urlsNew.length == 0){
     urlsNew = dom.getUrls();
   } else {
@@ -98,7 +94,7 @@ function popupMain() {
     var gettingAllStoredItems = browser.storage.local.get(null);
     gettingAllStoredItems.then((storedItems) => { // storedItems: object of keys and values
       rules = {};
-      ruleTypes.forEach(function(ruleType){
+      for (ruleType of ruleTypes) {
         var keysRuleOld = Object.keys(storedItems).filter(key => key.includes(ruleType+'_old_')); //array
         var rules2SaveOld = keysRuleOld.map(keysRuleOld => storedItems[keysRuleOld]); // array
         var keysRuleNew = Object.keys(storedItems).filter(key => key.includes(ruleType+'_new_')); //array
@@ -106,7 +102,7 @@ function popupMain() {
         rules[ruleType] = new m_urlsModifier.UrlRule(rules2SaveOld, rules2SaveNew); 
         console.log('Rules:')
         console.log(result)
-      });
+      }
     }, reportError);
   }
 
@@ -260,19 +256,19 @@ function popupMain() {
       function showTagsInfo(idElement2Change){
         document.querySelector('#'+idElement2Change).classList.remove('hidden');
       }
-      idElements2Change.forEach(function(idElement2Change){
+      for (const idElement2Change of idElements2Change){
         if (document.getElementById(idElement2Change).classList.contains('hidden')){
           showTagsInfo(idElement2Change);
         } else {
           hideInfo(idElement2Change);
         }
-      });
+      }
     }
 
     function enableElements(idElements2Change){
-      idElements2Change.forEach(function(arrayValue){
+      for (const arrayValue of idElements2Change){
         document.getElementById(arrayValue).disabled = false;
-      });
+      }
     }
 
     function showStoredRulesType(){
@@ -317,7 +313,7 @@ function popupMain() {
       function getUrlsWithPaths(urls){
         // Variable with results.
         var urls_paths = []
-        urls.forEach( function(url) {
+        for (let url of urls) {
           // Quit last slash.
           if (url.slice(-1) == '/'){
             url = url.substring(0, url.length -1);
@@ -335,7 +331,7 @@ function popupMain() {
               url = '/';
             }
           }
-        });
+        }
         console.log('URLs with all paths: ' + urls_paths)
         return urls_paths;
       }
@@ -479,9 +475,9 @@ function popupMain() {
   
       function deleteAllRulesType(storedItems){
         var keysUrl = Object.keys(storedItems).filter(key => key.includes(ruleType+'_')); //array
-        keysUrl.forEach(function(keyUrl){
+        for (keyUrl of keysUrl) {
           browser.storage.local.remove(keyUrl);
-        });
+        }
         getRules();
         notShowRules();
       }
@@ -554,13 +550,21 @@ function popupMain() {
         copyRules();
       }
     } else if (e.target.classList.contains('cleanUrl')){
-    console.log('Clicked button: cleanUrl')
+      console.log('Clicked button: cleanUrl')
       ruleType = ruleDeobfuscate;
-      modifyText();
+      if (dom.isCheckedBoxDecode()){
+        console.log('Choosen option: decode')
+        const functionModifyUrls = m_urlsModifier.urlsDecoder();
+      } else {
+        console.log('Choosen option: deofuscation')
+        const functionModifyUrls = m_urlsModifier.urlsRuleApplicator(rules[ruletype]);
+      }
+      modifyText(functionModifyUrls);
     } else if (e.target.classList.contains('obfuscate')){
       console.log('Clicked button: obfuscate')
       ruleType = ruleObfuscate;
-      modifyText(rules[ruleType])
+      const functionModifyUrls = m_urlsModifier.urlsRuleApplicator(rules[ruletype]);
+      modifyText(functionModifyUrls);
     } else if (e.target.classList.contains('openUrls')) {
       console.log('Clicked button: openUrls')
       openUrls();
