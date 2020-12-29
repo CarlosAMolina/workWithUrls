@@ -6,19 +6,15 @@ https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/stora
 // Global constants.
 const sleep = require('./modules/sleep.js');
 const m_urlsModifier = require('../popup/modules/urlsModifier.js');
+const ruleTypes = new m_urlsModifier.RuleTypes();
 
 // Global variables.
 var infoContainer = document.querySelector('.info-container');
 var lazyLoadingTime = 0;
 var openPaths = 0;
-// Protocol to add if no one provided.
-var protocolAdded = 'http://'
-var ruleDeobfuscate = 'rd';
-var ruleObfuscate = 'ro';
-var ruleType = '';
-var ruleTypes = [ruleObfuscate,ruleDeobfuscate];
-var rules = {};
+var PROTOCOL_DEFAULT = 'http://'
 var urls = [];
+var rules = new m_urlsModifier.Rules();
 // Variable to save the result of window.open()
 // https://developer.mozilla.org/en-US/docs/Web/API/Window/open
 var windowObjectReference = null;
@@ -93,13 +89,15 @@ function popupMain() {
     console.log('Init getRules()')
     var gettingAllStoredItems = browser.storage.local.get(null);
     gettingAllStoredItems.then((storedItems) => { // storedItems: object of keys and values
-      rules = {};
-      for (ruleType of ruleTypes) {
+      var rules = new m_urlsModifier.Rules();
+      for (ruleType of ruleTypes.ruleTypes) {
         var keysRuleOld = Object.keys(storedItems).filter(key => key.includes(ruleType+'_old_')); //array
         var rules2SaveOld = keysRuleOld.map(keysRuleOld => storedItems[keysRuleOld]); // array
         var keysRuleNew = Object.keys(storedItems).filter(key => key.includes(ruleType+'_new_')); //array
         var rules2SaveNew = keysRuleNew.map(keysRuleNew => storedItems[keysRuleNew]); // array
-        rules[ruleType] = new m_urlsModifier.UrlRule(rules2SaveOld, rules2SaveNew); 
+        let urlRule = new m_urlsModifier.UrlRule(rules2SaveOld, rules2SaveNew); 
+        rules[ruleTypes.ruleType] = urlRule;
+        // TODO continue here.
         console.log('Rules:')
         console.log(result)
       }
@@ -195,7 +193,7 @@ function popupMain() {
     deleteBtn.addEventListener('click',(e) => {
       const evtTgt = e.target;
       evtTgt.parentNode.parentNode.parentNode.removeChild(evtTgt.parentNode.parentNode);
-      browser.storage.local.remove([ruleType+'_old_'+eValues[0], ruleType+'_new_'+eValues[0]]);
+      browser.storage.local.remove([ruleTypes.ruleType+'_old_'+eValues[0], ruleTypes.ruleType+'_new_'+eValues[0]]);
       getRules();
     })
 
@@ -227,9 +225,9 @@ function popupMain() {
         }
       }
 
-      var eKeys2change = [ruleType + '_old_' + eValues[0], ruleType + '_new_' + eValues[0]];
+      var eKeys2change = [ruleTypes.ruleType + '_old_' + eValues[0], ruleTypes.ruleType + '_new_' + eValues[0]];
       var values2save = [entryEditInputOldValue.value, entryEditInputNewValue.value];
-      var ids2save = [ruleType + '_old_' + values2save[0], ruleType + '_new_' + values2save[0]];
+      var ids2save = [ruleTypes.ruleType + '_old_' + values2save[0], ruleTypes.ruleType + '_new_' + values2save[0]];
       var gettingItem = browser.storage.local.get(ids2save[0]);
       gettingItem.then((storedItem) => { // result: empty object if the searched value is not stored
         var searchInStorage = Object.keys(storedItem); // array with the searched value if it is stored
@@ -280,7 +278,7 @@ function popupMain() {
         // Get keys of the dictionary for the current rule type
         // (ofuscation or deofuscation) with the terms 
         // (last part of each key) that must be replaced.
-        var keysRuleTypeOld = Object.keys(storedItems).filter(key => key.includes(ruleType+'_old')); //array
+        var keysRuleTypeOld = Object.keys(storedItems).filter(key => key.includes(ruleTypes.ruleType+'_old')); //array
         console.log('keysRuleTypeOld:')
         console.log(keysRuleTypeOld)
         // Get values of the dictionary to replace last term 
@@ -289,7 +287,7 @@ function popupMain() {
         console.log('valuesRuleTypeOld:')
         console.log(valuesRuleTypeOld)
         for (var i = 0; i < valuesRuleTypeOld.length; i+=1) {
-          var values2show = [valuesRuleTypeOld[i], storedItems[ruleType+'_new_'+valuesRuleTypeOld[i]]];
+          var values2show = [valuesRuleTypeOld[i], storedItems[ruleTypes.ruleType+'_new_'+valuesRuleTypeOld[i]]];
           console.log('values2show:')
           console.log(values2show)
           showStoredInfo(values2show);
@@ -342,7 +340,7 @@ function popupMain() {
       */
       function getUrlWithProtocol(url){
         if (url.substring(0, 4).toLowerCase() != 'http'){
-          return protocolAdded+url;
+          return PROTOCOL_DEFAULT + url;
         }
         return url;
       }
@@ -376,7 +374,7 @@ function popupMain() {
         // Check if an empty string was provided.
         // It can have the protocol, example added by the 
         // getUrlsWithPaths function.
-        if (url == '' || url == protocolAdded){
+        if (url == '' || url == PROTOCOL_DEFAULT){
           console.log('Not URL provided. Omitting');
         } else {
           url = getUrlWithProtocol(url);
@@ -440,7 +438,7 @@ function popupMain() {
           }
         }
 
-        var ids2save = [ruleType + '_old_' + values2save[0], ruleType + '_new_' + values2save[0]];
+        var ids2save = [ruleTypes.ruleType + '_old_' + values2save[0], ruleTypes.ruleType + '_new_' + values2save[0]];
         var gettingItem = browser.storage.local.get(ids2save[0]);
         gettingItem.then((result) => { // result: empty object if the searched value is not stored
           var searchInStorage = Object.keys(result); // array with the searched value if it is stored
@@ -474,7 +472,7 @@ function popupMain() {
     function clearStorageInfo() {
   
       function deleteAllRulesType(storedItems){
-        var keysUrl = Object.keys(storedItems).filter(key => key.includes(ruleType+'_')); //array
+        var keysUrl = Object.keys(storedItems).filter(key => key.includes(ruleTypes.ruleType+'_')); //array
         for (keyUrl of keysUrl) {
           browser.storage.local.remove(keyUrl);
         }
@@ -515,17 +513,10 @@ function popupMain() {
       document.getElementById('boxRules').checked = true;
       document.querySelector('#divInputRule').classList.add('hidden');
       document.querySelector('#divInputRules').classList.remove('hidden');
-      var rulesTypeStr = '';
-      for (var i = 0; i<rules[ruleType].ruleValues.length; i++) {
-        rulesTypeStr += rules[ruleType].ruleValues[i].valueOld + '\n' + rulesType[ruleType].ruleValues[i].valueNew + '\n';
-      }
-      rulesTypeStr = removeTrailingNewLine(rulesTypeStr)
+      const rulesTypeStr = rules[ruleTypes.ruleType].getStringRepresentation();
       document.getElementById('inputRules').value = rulesTypeStr;
       copy2clipboard ('inputRules');
 
-      function removeTrailingNewLine(string){
-        return string.replace(/\n$/, "");
-      }
 
     }
 
@@ -546,24 +537,24 @@ function popupMain() {
       console.log('Clicked button: copy')
       if (dom.getUrls() !== ''){
         copy2clipboard('inputUrls');
-      } else if (ruleType !== ''){
+      } else if (ruleTypes.isRuleTypeConfigured()){
         copyRules();
       }
     } else if (e.target.classList.contains('cleanUrl')){
       console.log('Clicked button: cleanUrl')
-      ruleType = ruleDeobfuscate;
+      ruleTypes.setRuleTypeDeobfuscate();
       if (dom.isCheckedBoxDecode()){
         console.log('Choosen option: decode')
         const functionModifyUrls = m_urlsModifier.urlsDecoder();
       } else {
         console.log('Choosen option: deofuscation')
-        const functionModifyUrls = m_urlsModifier.urlsRuleApplicator(rules[ruletype]);
+        const functionModifyUrls = m_urlsModifier.urlsRuleApplicator(rules[ruleTypes.ruleType]);
       }
       modifyText(functionModifyUrls);
     } else if (e.target.classList.contains('obfuscate')){
       console.log('Clicked button: obfuscate')
-      ruleType = ruleObfuscate;
-      const functionModifyUrls = m_urlsModifier.urlsRuleApplicator(rules[ruletype]);
+      ruleTypes.setRuleTypeObfuscate();
+      const functionModifyUrls = m_urlsModifier.urlsRuleApplicator(rules[ruleTypes.ruletype]);
       modifyText(functionModifyUrls);
     } else if (e.target.classList.contains('openUrls')) {
       console.log('Clicked button: openUrls')
@@ -571,12 +562,12 @@ function popupMain() {
     } else if (e.target.classList.contains('openPaths')){
       saveOpenPaths();
     } else if (e.target.classList.contains('inputObfuscation')){
-      ruleType = ruleObfuscate;
+      ruleTypes.setRuleTypeObfuscate();
       notShowRules();
       showStoredRulesType();
       enableElements(['pInputOld','pInputNew','inputValueOld','inputValueNew','inputRules','buttonAdd','buttonClearAll']);
     } else if (e.target.classList.contains('inputDeobfuscation')){
-      ruleType = ruleDeobfuscate;
+      ruleTypes.setRuleTypeDeobfuscate();
       notShowRules();
       showStoredRulesType();
       enableElements(['pInputOld','pInputNew','inputValueOld','inputValueNew','inputRules','buttonAdd','buttonClearAll']);

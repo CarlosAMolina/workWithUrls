@@ -1,7 +1,28 @@
+class RuleTypes {
+
+  constructor(){
+    this._ruleDeobfuscate = 'rd';
+    this._ruleObfuscate = 'ro';
+    this._ruleType = null;
+    this._ruleTypes = [this._ruleDeobfuscate, this._ruleObfuscate];
+  }
+
+  get ruleDeobfuscate() {return this._ruleDeobfuscate;}
+  get ruleObfuscate() {return this._ruleObfuscate;}
+  get ruleType() {return this._ruleType;}
+  get ruleTypes() {return this._ruleTypes;}
+
+  setRuleTypeDeobfuscate() {this._ruleType = this._ruleDeobfuscate;}
+  setRuleTypeObfuscate() {this._ruleType = this._ruleObfuscate;}
+  isRuleTypeConfigured() {return this._ruleType !== null;}
+
+}
+
+
 class RuleValue {
 
   constructor(valueOld, valueNew){
-    this._data = {valueOld: valueOld, valueNew: valueNew};
+    this._data = {'valueOld': valueOld, 'valueNew': valueNew};
   }
 
   get valueOld() {return this._data.valueOld;}
@@ -17,8 +38,10 @@ class UrlRule {
   param ruleValuesNew: list of strings.
   */
   constructor(ruleValuesOld, ruleValuesNew) {
-    this.ruleValues = this.#getRuleValues(ruleValuesOld, ruleValuesNew);
+    this._ruleValues = this.#getRuleValues(ruleValuesOld, ruleValuesNew);
   }
+
+  get ruleValues() {return this._ruleValues;}
 
   /*
   param valuesOld: list of strings.
@@ -36,7 +59,41 @@ class UrlRule {
     return ruleValues;
   }
 
+  getStringRepresentation() {
+    let result = '';
+    for (const ruleValue of this.ruleValues) {
+      result += ruleValue.valueOld + '\n' + ruleValue.valueNew + '\n';
+    }
+    result = this.#removeTrailingNewLine(result)
+    return result
+  }
+
+  #removeTrailingNewLine(string){
+    return string.replace(/\n$/, "");
+  }
+
 }
+
+
+class Rules {
+
+  constructor() {
+    this._rules = {}; 
+  }
+
+  get rules() {return this._rules;}
+
+  /*
+  param ruleType: str, RuleTypes._ruleType.
+  param urlRule: UrlRule instance.
+  */
+  addTypeAndRule(ruleType, urlRule) {
+    this._rules[ruleType] = urlRule;
+  }
+  //TODO continue here
+
+}
+
 
 class RulesApplicator {
 
@@ -104,6 +161,8 @@ function urlsDecoder() {
 module.exports = {
   decodeUrls,
   RulesApplicator,
+  Rules,
+  RuleTypes,
   RuleValue,
   UrlRule,
   urlsDecoder,
