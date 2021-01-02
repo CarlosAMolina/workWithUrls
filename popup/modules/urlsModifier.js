@@ -1,25 +1,72 @@
+const RuleTypeInvalidExceptionName = "RuleTypeInvalidException"
+
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/throw#Throw_an_object
+function RuleTypeInvalidException(message) {
+  this.message = message;
+  this.name = RuleTypeInvalidExceptionName;
+}
+
+
 class RuleTypes {
 
   constructor(){
     this._ruleDeobfuscate = 'rd';
     this._ruleObfuscate = 'ro';
-    this._ruleType = null;
     this._ruleTypes = [this._ruleDeobfuscate, this._ruleObfuscate];
   }
 
   get ruleDeobfuscate() {return this._ruleDeobfuscate;}
   get ruleObfuscate() {return this._ruleObfuscate;}
-  get ruleType() {return this._ruleType;}
   get ruleTypes() {return this._ruleTypes;}
-
-  setRuleTypeDeobfuscate() {this._ruleType = this._ruleDeobfuscate;}
-  setRuleTypeObfuscate() {this._ruleType = this._ruleObfuscate;}
-  isRuleTypeConfigured() {return this._ruleType !== null;}
 
 }
 
 
-class RuleValue {
+class RuleConfigurator extends RuleTypes{
+
+  constructor(){
+    super();
+    this._ruleType = null;
+  }
+
+  get ruleType() {
+    this.#assertRuleTypeConfigured();
+    return this._ruleType;
+  }
+
+  set ruleType(ruleType) {
+    this.assertRuleTypeAllowed(ruleType);
+    switch(ruleType) {
+      case this._ruleDeobfuscate:
+        this.setRuleTypeDeobfuscate();
+        break;
+      case this._ruleObfuscate:
+        this.setRuleTypeObfuscate();
+        break;
+    }
+  }
+
+  setRuleTypeObfuscate() {this._ruleType = this._ruleObfuscate;}
+  setRuleTypeDeobfuscate() {this._ruleType = this._ruleDeobfuscate;}
+
+  isRuleTypeConfigured() {return this._ruleType !== null;}
+
+  #assertRuleTypeConfigured() {
+    if (!this.isRuleTypeConfigured()) {
+      throw ReferenceError("Rule type not configured");
+    }
+  }
+
+  assertRuleTypeAllowed(ruleType) {
+    if (!this._ruleTypes.includes(ruleType)) {
+      throw new RuleTypeInvalidException("Incorrect rule type: " + ruleType + ". Allowed values: " + this._ruleTypes);
+    }
+  }
+
+}
+
+
+class RuleTransformation {
 
   constructor(valueOld, valueNew){
     this._data = {'valueOld': valueOld, 'valueNew': valueNew};
@@ -31,38 +78,44 @@ class RuleValue {
 }
 
 
-class UrlRule {
-
-  /*
-  param ruleValuesOld: list of strings.
-  param ruleValuesNew: list of strings.
-  */
-  constructor(ruleValuesOld, ruleValuesNew) {
-    this._ruleValues = this.#getRuleValues(ruleValuesOld, ruleValuesNew);
-  }
-
-  get ruleValues() {return this._ruleValues;}
+class RuleTransformationsCreator {
 
   /*
   param valuesOld: list of strings.
   param valuesNew: list of strings.
-  return: list of RuleValue instances.
+  return: list of RuleTransformation instances.
   */
-  #getRuleValues(valuesOld, valuesNew) {
-    let ruleValues = []
+  getRuleTransformations(valuesOld, valuesNew) {
+    let ruleTransformations = []
     if (valuesOld.length != valuesNew.length) {
-      throw "Rule's values old length != values new length";
+      throw RangeError("Rule's values old length != values new length");
     }
     for (let i = 0; i < valuesOld.length; i++) {
-      ruleValues.push(new RuleValue(valuesOld[i], valuesNew[i]));
+      ruleTransformations.push(new RuleTransformation(valuesOld[i], valuesNew[i]));
     }
-    return ruleValues;
+    return ruleTransformations;
   }
 
-  getStringRepresentation() {
+}
+
+
+class RuleTransformations extends RuleTransformationsCreator {
+
+  /*
+  param ruleTransformationValuesOld: list of strings.
+  param ruleTransformationValuesNew: list of strings.
+  */
+  constructor(ruleTransformationValuesOld, ruleTransformationValuesNew) {
+    super();
+    this._ruleTransformations = this.getRuleTransformations(ruleTransformationValuesOld, ruleTransformationValuesNew);
+  }
+
+  get ruleTransformations() {return this._ruleTransformations;}
+
+  get stringRepresentation() {
     let result = '';
-    for (const ruleValue of this.ruleValues) {
-      result += ruleValue.valueOld + '\n' + ruleValue.valueNew + '\n';
+    for (const ruleTransformation of this.ruleTransformations) {
+      result += ruleTransformation.valueOld + '\n' + ruleTransformation.valueNew + '\n';
     }
     result = this.#removeTrailingNewLine(result)
     return result
@@ -75,22 +128,39 @@ class UrlRule {
 }
 
 
-class Rules {
+class Rules extends RuleConfigurator{
 
   constructor() {
+    super();
     this._rules = {}; 
   }
 
   get rules() {return this._rules;}
 
+  get #ruleTransformationsInstanceToUse() {
+    return this._rules[this.ruleType];
+  }
+
+  get ruleTransformationsToUse() {
+    return this.#ruleTransformationsInstanceToUse.ruleTransformations;
+  }
+
+  get ruleTransformationsToUseStringRepresentation() {
+    return this.#ruleTransformationsInstanceToUse.stringRepresentation;
+  }
+
   /*
   param ruleType: str, RuleTypes._ruleType.
-  param urlRule: UrlRule instance.
+  param ruleTransformations: RuleTransformations instance.
   */
-  addTypeAndRule(ruleType, urlRule) {
-    this._rules[ruleType] = urlRule;
+  addTypeAndRule(ruleType, ruleTransformations) {
+    this.assertRuleTypeAllowed(ruleType);
+    this._rules[ruleType] = ruleTransformations;
   }
-  //TODO continue here
+
+  initializeRules() {
+    this._rules = {};
+  }
 
 }
 
@@ -98,7 +168,7 @@ class Rules {
 class RulesApplicator {
 
   /*
-  param rule: UrlRule instance.
+  param rule: RuleTransformations instance.
   */
   constructor(rule) {
     this.rule = rule; 
@@ -110,11 +180,11 @@ class RulesApplicator {
   */
   applyRulesToUrls(urls){
     let urlsNew = [];
-    if (this.rule.ruleValues.length != 0){
+    if (this.rule.ruleTransformations.length != 0){
       for (const url of urls) {
-        for (const ruleValue of this.rule.ruleValues) {
-          const regex = new RegExp(ruleValue.valueOld, "g");
-          urlsNew.push(url.replace(regex, ruleValue.valueNew));
+        for (const ruleTransformation of this.rule.ruleTransformations) {
+          const regex = new RegExp(ruleTransformation.valueOld, "g");
+          urlsNew.push(url.replace(regex, ruleTransformation.valueNew));
         }
       }
     }
@@ -125,7 +195,7 @@ class RulesApplicator {
 
 
 /*
-param rule: UrlRule instance.
+param rule: RuleTransformations instance.
 return: list of strings.
 */
 function decodeUrls(urls) {
@@ -162,9 +232,11 @@ module.exports = {
   decodeUrls,
   RulesApplicator,
   Rules,
+  RuleConfigurator,
+  RuleTransformation,
+  RuleTransformations,
   RuleTypes,
-  RuleValue,
-  UrlRule,
+  RuleTypeInvalidExceptionName,
   urlsDecoder,
   urlsRuleApplicator
 }

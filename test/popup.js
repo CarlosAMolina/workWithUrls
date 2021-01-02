@@ -6,8 +6,8 @@ mockDomDocument(readFile(path.resolve(__dirname, '../popup/popup.html')));
 mockBrowserStorageLocal();
 const popup = require('../popup/popup.js');
 const inputUrlsTest = 'test1.com\ntest2.com';
-const mockRuleValueOld = 'test'
-const mockRuleValueNew = 'changed'
+const mockRuleTransformationValueOld = 'test'
+const mockRuleTransformationValueNew = 'changed'
 
 
 function mockDomDocument(html){
@@ -123,7 +123,7 @@ describe("Check script popup.js: ", function() {
     it("Check function runs without exceptions: ", function() {
       mockDomInputUrls();
       const m_urlsModifier = require('../popup/modules/urlsModifier.js');
-      const urlRule = new m_urlsModifier.UrlRule([mockRuleValueOld], [mockRuleValueNew]);
+      const ruleTransformations = new m_urlsModifier.RuleTransformations([mockRuleTransformationValueOld], [mockRuleTransformationValueNew]);
       const functionModifyUrls = function mock(){ return ['url1.com', 'url2.com'] };
       result = popup.modifyText(functionModifyUrls)
       assert.equal(result, undefined);
