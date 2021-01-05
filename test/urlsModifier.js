@@ -1,19 +1,27 @@
-const assert = require("chai").assert;
-const m_urlsModifier = require('../popup/modules/urlsModifier.js');
+import * as ModuleUrlsModifier from '../popup/modules/urlsModifier.js';
+import pkgChai from 'chai';
+
+const {assert: assert} = pkgChai;
 const mockRuleTransformationValueOld = 'test'
 const mockRuleTransformationValueNew = 'changed'
-const ruleTransformations = new m_urlsModifier.RuleTransformations([mockRuleTransformationValueOld], [mockRuleTransformationValueNew]);
+const ruleTransformations = new ModuleUrlsModifier.RuleTransformations([mockRuleTransformationValueOld], [mockRuleTransformationValueNew]);
 
 
 describe("Check script urlsModifier.js: ", function() {
   describe("Check class RuleTypes: ", function() {
-    const ruleTypes = new m_urlsModifier.RuleTypes();
+    const ruleTypes = new ModuleUrlsModifier.RuleTypes();
     it("Check function get ruleDeobfuscate: ", function() {
       assert.equal(ruleTypes.ruleDeobfuscate, 'rd');
     });
     it("Check function set ruleDeobfuscate does not exist: ", function() {
-      ruleTypes.ruleDeobfuscate = 'x'
-      assert.equal(ruleTypes.ruleDeobfuscate, 'rd');
+      try {
+        ruleTypes.ruleDeobfuscate = 'x'
+        throw ('An exception should be raised');
+      } catch(exception) {
+        if (!exception instanceof TypeError) {
+          throw exception;
+        }
+      }
     });
     it("Check function get ruleObfuscate: ", function() {
       assert.equal(ruleTypes.ruleObfuscate, 'ro');
@@ -23,14 +31,14 @@ describe("Check script urlsModifier.js: ", function() {
     });
   });
   describe("Check class RuleConfigurator: ", function() {
-    const ruleConfigurator = new m_urlsModifier.RuleConfigurator();
-    const ruleTypes = new m_urlsModifier.RuleTypes();
+    const ruleConfigurator = new ModuleUrlsModifier.RuleConfigurator();
+    const ruleTypes = new ModuleUrlsModifier.RuleTypes();
     function isAllowedRuleTypeDetected(ruleConfiguratorInstance, ruleType) {
       try {
         ruleConfiguratorInstance.ruleType = ruleType
         return true;
       } catch(exception) {
-        if (exception.name === m_urlsModifier.RuleTypeInvalidExceptionName) {
+        if (exception.name === ModuleUrlsModifier.RuleTypeInvalidExceptionName) {
           return false
         } else {
           throw exception
@@ -65,14 +73,14 @@ describe("Check script urlsModifier.js: ", function() {
       assert.equal(ruleConfigurator.ruleType, ruleTypes.ruleObfuscate);
     });
     it("Check function isRuleTypeConfigured: ", function() {
-      const ruleConfigurator = new m_urlsModifier.RuleConfigurator();
+      const ruleConfigurator = new ModuleUrlsModifier.RuleConfigurator();
       assert.isFalse(ruleConfigurator.isRuleTypeConfigured());
       ruleConfigurator.setRuleTypeObfuscate();
       assert.isTrue(ruleConfigurator.isRuleTypeConfigured());
     });
   });
   describe("Check class RuleTransformation: ", function() {
-    const ruleTransformation = new m_urlsModifier.RuleTransformation('old', 'new');
+    const ruleTransformation = new ModuleUrlsModifier.RuleTransformation('old', 'new');
     it("Check function get valueOld: ", function() {
       assert.equal(ruleTransformation.valueOld, 'old');
     });
@@ -81,23 +89,23 @@ describe("Check script urlsModifier.js: ", function() {
     });
   });
   describe("Check class RuleTransformations: ", function() {
-    const mockRuleTransformationValuesGeneral = [new m_urlsModifier.RuleTransformation(mockRuleTransformationValueOld, mockRuleTransformationValueNew)]
+    const mockRuleTransformationValuesGeneral = [new ModuleUrlsModifier.RuleTransformation(mockRuleTransformationValueOld, mockRuleTransformationValueNew)]
     it("Check class: ", function() {
       assert.equal(ruleTransformations.ruleTransformations.length, 1);
       assert.equal(ruleTransformations.ruleTransformations[0].valueNew, mockRuleTransformationValuesGeneral[0].valueNew);
       assert.equal(ruleTransformations.ruleTransformations[0].valueOld, mockRuleTransformationValuesGeneral[0].valueOld);
     });
     it("Check function getStringRepresentation: ", function() {
-      stringRepresentation = ruleTransformations.stringRepresentation;
+      const stringRepresentation = ruleTransformations.stringRepresentation;
       assert.equal(stringRepresentation, 'test\nchanged');
     });
   });
   describe("Check class RulesApplicator: ", function() {
-    const rulesApplicator = new m_urlsModifier.RulesApplicator(ruleTransformations);
+    const rulesApplicator = new ModuleUrlsModifier.RulesApplicator(ruleTransformations);
     it("Check function applyRulesToUrls: ", function() {
       const urls = ['test1.com', 'test2.com'];
       const urls_result = ['changed1.com', 'changed2.com'];
-      result = rulesApplicator.applyRulesToUrls(urls);
+      const result = rulesApplicator.applyRulesToUrls(urls);
       assert.equal(String(result), String(urls_result));
     });
   });
@@ -105,24 +113,24 @@ describe("Check script urlsModifier.js: ", function() {
     it("Check function decodeUrls: ", function() {
       const urls = ['%3Fx%3Dtest1.com', '%3Fx%3Dtest2.com'];
       const urls_result = [ '?x=test1.com', '?x=test2.com' ];
-      result = m_urlsModifier.decodeUrls(urls);
+      const result = ModuleUrlsModifier.decodeUrls(urls);
       assert.equal(String(result), String(urls_result));
     });
   });
   describe("Check function urlsDecoder: ", function() {
     it("Check function runs without exceptions: ", function() {
-      result = m_urlsModifier.urlsDecoder();
+      const result = ModuleUrlsModifier.urlsDecoder();
       assert.isFunction(result)
     });
   });
   describe("Check function urlsRuleApplicator: ", function() {
     it("Check function runs without exceptions: ", function() {
-      result = m_urlsModifier.urlsRuleApplicator({});
+      const result = ModuleUrlsModifier.urlsRuleApplicator({});
       assert.isFunction(result)
     });
   });
   describe("Check class Rules: ", function() {
-    const rules = new m_urlsModifier.Rules();
+    const rules = new ModuleUrlsModifier.Rules();
     const ruleType = 'rd'
     it("Check function addTypeAndRule: ", function() {
       rules.ruleType = ruleType;
@@ -130,7 +138,7 @@ describe("Check script urlsModifier.js: ", function() {
       assert.equal(rules.ruleTransformationsToUse, ruleTransformations.ruleTransformations);
     });
     it("Check Rules._ruleConfigurator._ruleTypes: ", function() {
-      assert.equal(String(rules.ruleTypes), String(new m_urlsModifier.RuleTypes().ruleTypes));
+      assert.equal(String(rules.ruleTypes), String(new ModuleUrlsModifier.RuleTypes().ruleTypes));
     });
     it("Check function initializeRules: ", function() {
       rules.ruleType = ruleType;

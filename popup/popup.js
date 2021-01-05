@@ -1,15 +1,16 @@
+
 /* References.
 - Local storage.
 https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/storage/local
 */
 
+import * as ModuleSleep from '../popup/modules/sleep.js';
+import * as ModuleUrlsModifier from './modules/urlsModifier.js';
+
 // Global constants.
-const sleep = require('./modules/sleep.js');
-const m_urlsModifier = require('../popup/modules/urlsModifier.js');
-const rules = new m_urlsModifier.Rules();
+const rules = new ModuleUrlsModifier.Rules();
 
 // Global variables.
-var infoContainer = document.querySelector('.info-container');
 var lazyLoadingTime = 0;
 var openPaths = 0;
 var PROTOCOL_DEFAULT = 'http://'
@@ -32,6 +33,10 @@ class Dom {
 
   isCheckedBoxDecode(){
     return document.getElementById('boxDecode').checked == true
+  }
+  
+  getInfoContainer(){
+    return document.querySelector('.info-container');
   }
 
 }
@@ -94,7 +99,7 @@ function popupMain() {
         var rules2SaveOld = keysRuleOld.map(keysRuleOld => storedItems[keysRuleOld]); // array
         var keysRuleNew = Object.keys(storedItems).filter(key => key.includes(ruleType+'_new_')); //array
         var rules2SaveNew = keysRuleNew.map(keysRuleNew => storedItems[keysRuleNew]); // array
-        let ruleTransformations = new m_urlsModifier.RuleTransformations(rules2SaveOld, rules2SaveNew); 
+        let ruleTransformations = new ModuleUrlsModifier.RuleTransformations(rules2SaveOld, rules2SaveNew); 
         rules.addTypeAndRule(ruleType, ruleTransformations);
         console.log('Rules:')
         console.log(result)
@@ -156,7 +161,7 @@ function popupMain() {
     entryDisplay.appendChild(clearFix);
 
     entryValue.textContent = eValues[0] + ' ---> ' + eValues[1];
-    infoContainer.appendChild(entry);
+    dom.getInfoContainer().appendChild(entry);
 
     // edit box
     var cancelBtn = document.createElement('button');
@@ -379,7 +384,7 @@ function popupMain() {
           // Only wait between URLs.
           if (i != 0){
             console.log('Init. Wait miliseconds: ' + lazyLoadingTime);
-            await sleep.sleepMs(lazyLoadingTime);
+            await ModuleSleep.sleepMs(lazyLoadingTime);
             console.log('Done. Wait miliseconds: ' + lazyLoadingTime);
           }
           console.log(url);
@@ -485,8 +490,8 @@ function popupMain() {
     }
 
     function notShowRules(){
-      while (infoContainer.firstChild) {
-        infoContainer.removeChild(infoContainer.firstChild);
+      while (dom.getInfoContainer().firstChild) {
+        dom.getInfoContainer().removeChild(dom.getInfoContainer().firstChild);
       }   
     }
 
@@ -542,16 +547,16 @@ function popupMain() {
       rules.setRuleTypeDeobfuscate();
       if (dom.isCheckedBoxDecode()){
         console.log('Choosen option: decode')
-        const functionModifyUrls = m_urlsModifier.urlsDecoder();
+        const functionModifyUrls = ModuleUrlsModifier.urlsDecoder();
       } else {
         console.log('Choosen option: deofuscation')
-        const functionModifyUrls = m_urlsModifier.urlsRuleApplicator(rules.ruleTransformationsToUse);
+        const functionModifyUrls = ModuleUrlsModifier.urlsRuleApplicator(rules.ruleTransformationsToUse);
       }
       modifyText(functionModifyUrls);
     } else if (e.target.classList.contains('obfuscate')){
       console.log('Clicked button: obfuscate')
       rules.setRuleTypeObfuscate();
-      const functionModifyUrls = m_urlsModifier.urlsRuleApplicator(rules.ruleTransformationsToUse);
+      const functionModifyUrls = ModuleUrlsModifier.urlsRuleApplicator(rules.ruleTransformationsToUse);
       modifyText(functionModifyUrls);
     } else if (e.target.classList.contains('openUrls')) {
       console.log('Clicked button: openUrls')
@@ -593,8 +598,8 @@ function popupMain() {
 // There was an error executing the script.
 // Display the pop-up's error message, and hide the normal UI.
 function reportExecuteScriptError(error) {
-  document.querySelector('#popup-content').classList.add('hidden');
-  document.querySelector('#error-content').classList.remove('hidden');
+  //TODO document.querySelector('#popup-content').classList.add('hidden');
+  //TODO document.querySelector('#error-content').classList.remove('hidden');
   console.error(`Error: ${error.message}`);
 }
 
@@ -606,9 +611,9 @@ catch (error){
 }
 
 //TODO: created only for testing.
-module.exports = {
+export {
   Dom,
   modifyText,
   popupMain,
-  reportExecuteScriptError,
-}
+  reportExecuteScriptError
+};

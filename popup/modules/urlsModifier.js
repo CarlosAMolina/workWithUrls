@@ -30,7 +30,7 @@ class RuleConfigurator extends RuleTypes{
   }
 
   get ruleType() {
-    this.#assertRuleTypeConfigured();
+    this.assertRuleTypeConfigured();
     return this._ruleType;
   }
 
@@ -51,7 +51,7 @@ class RuleConfigurator extends RuleTypes{
 
   isRuleTypeConfigured() {return this._ruleType !== null;}
 
-  #assertRuleTypeConfigured() {
+  assertRuleTypeConfigured() {
     if (!this.isRuleTypeConfigured()) {
       throw ReferenceError("Rule type not configured");
     }
@@ -117,11 +117,11 @@ class RuleTransformations extends RuleTransformationsCreator {
     for (const ruleTransformation of this.ruleTransformations) {
       result += ruleTransformation.valueOld + '\n' + ruleTransformation.valueNew + '\n';
     }
-    result = this.#removeTrailingNewLine(result)
+    result = this.removeTrailingNewLine(result)
     return result
   }
 
-  #removeTrailingNewLine(string){
+  removeTrailingNewLine(string){
     return string.replace(/\n$/, "");
   }
 
@@ -137,16 +137,16 @@ class Rules extends RuleConfigurator{
 
   get rules() {return this._rules;}
 
-  get #ruleTransformationsInstanceToUse() {
+  get ruleTransformationsInstanceToUse() {
     return this._rules[this.ruleType];
   }
 
   get ruleTransformationsToUse() {
-    return this.#ruleTransformationsInstanceToUse.ruleTransformations;
+    return this.ruleTransformationsInstanceToUse.ruleTransformations;
   }
 
   get ruleTransformationsToUseStringRepresentation() {
-    return this.#ruleTransformationsInstanceToUse.stringRepresentation;
+    return this.ruleTransformationsInstanceToUse.stringRepresentation;
   }
 
   /*
@@ -228,7 +228,7 @@ function urlsDecoder() {
 }
 
 
-module.exports = {
+export {
   decodeUrls,
   RulesApplicator,
   Rules,
@@ -239,5 +239,4 @@ module.exports = {
   RuleTypeInvalidExceptionName,
   urlsDecoder,
   urlsRuleApplicator
-}
-
+};

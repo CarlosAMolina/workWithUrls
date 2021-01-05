@@ -2,6 +2,7 @@
   "name": "tests_workWithUrls",
   "version": "1.0.0",
   "description": "Tests for the project",
+  "type": "module",
   "scripts": {
     "test": "./node_modules/.bin/mocha --reporter spec"
   },
