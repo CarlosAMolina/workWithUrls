@@ -102,31 +102,32 @@ describe("Check script urlsModifier.js: ", function() {
   });
   describe("Check class RulesApplicator: ", function() {
     const rulesApplicator = new ModuleUrlsModifier.RulesApplicator(ruleTransformations);
-    it("Check function applyRulesToUrls: ", function() {
+    it("Check function modifyUrls: ", function() {
       const urls = ['test1.com', 'test2.com'];
       const urls_result = ['changed1.com', 'changed2.com'];
-      const result = rulesApplicator.applyRulesToUrls(urls);
+      const result = rulesApplicator.modifyUrls(urls);
       assert.equal(String(result), String(urls_result));
     });
   });
-  describe("Check function decodeUrls: ", function() {
-    it("Check function decodeUrls: ", function() {
+  describe("Check class UrlsDecoder: ", function() {
+    const urlsDecoder = new ModuleUrlsModifier.UrlsDecoder();
+    it("Check function modifyUrls: ", function() {
       const urls = ['%3Fx%3Dtest1.com', '%3Fx%3Dtest2.com'];
       const urls_result = [ '?x=test1.com', '?x=test2.com' ];
-      const result = ModuleUrlsModifier.decodeUrls(urls);
+      const result = urlsDecoder.modifyUrls(urls);
       assert.equal(String(result), String(urls_result));
     });
   });
-  describe("Check function urlsDecoder: ", function() {
-    it("Check function runs without exceptions: ", function() {
-      const result = ModuleUrlsModifier.urlsDecoder();
-      assert.isFunction(result)
+  describe("Check function urlsModifier: ", function() {
+    it("Check function runs without exceptions for UrlsDecoder: ", function() {
+      const urlsModifier = ModuleUrlsModifier.urlsModifier();
+      assert.equal(typeof urlsModifier, 'object');
     });
-  });
-  describe("Check function urlsRuleApplicator: ", function() {
-    it("Check function runs without exceptions: ", function() {
-      const result = ModuleUrlsModifier.urlsRuleApplicator({});
-      assert.isFunction(result)
+    it("Check function runs without exceptions for RulesApplicator: ", function() {
+      const urlsModifier = ModuleUrlsModifier.urlsModifier(ruleTransformations);
+      assert.isFunction(urlsModifier.modifyUrls);
+      const result = urlsModifier.modifyUrls(['test']);
+      assert.equal(String(result), String([mockRuleTransformationValueNew]));
     });
   });
   describe("Check class Rules: ", function() {

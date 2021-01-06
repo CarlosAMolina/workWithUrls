@@ -178,7 +178,7 @@ class RulesApplicator {
   param urls: list of strings.
   return: list of strings.
   */
-  applyRulesToUrls(urls){
+  modifyUrls(urls){
     let urlsNew = [];
     if (this.rule.ruleTransformations.length != 0){
       for (const url of urls) {
@@ -194,42 +194,38 @@ class RulesApplicator {
 }
 
 
-/*
-param rule: RuleTransformations instance.
-return: list of strings.
-*/
-function decodeUrls(urls) {
-  let urlsNew = [];
-  for (let url2Change of urls) {
-    try{
-      url2Change = decodeURIComponent(url2Change);
-    } catch(e) { // URIError: malformed URI sequence
-      url2Change = e;
+class UrlsDecoder {
+
+  /*
+  param urls: list of strings.
+  return: list of strings.
+  */
+  modifyUrls(urls) {
+    let urlsNew = [];
+    for (let url2Change of urls) {
+      try{
+        url2Change = decodeURIComponent(url2Change);
+      } catch(e) { // URIError: malformed URI sequence
+        url2Change = e;
+      }
+      urlsNew.push(url2Change);
     }
-    urlsNew.push(url2Change);
+    return urlsNew;
   }
-  return urlsNew;
+
 }
 
 
-/*
-return: function reference.
-*/
-function urlsRuleApplicator(rule) {
-  return new RulesApplicator(rule).applyRulesToUrls;
-}
-
-
-/*
-return: function reference.
-*/
-function urlsDecoder() {
-  return decodeUrls;
+function urlsModifier(rule) {
+  if (typeof rule !== 'undefined') {
+    return new RulesApplicator(rule);
+  } else {
+    return new UrlsDecoder();
+  }
 }
 
 
 export {
-  decodeUrls,
   RulesApplicator,
   Rules,
   RuleConfigurator,
@@ -237,6 +233,6 @@ export {
   RuleTransformations,
   RuleTypes,
   RuleTypeInvalidExceptionName,
-  urlsDecoder,
-  urlsRuleApplicator
+  UrlsDecoder,
+  urlsModifier
 };

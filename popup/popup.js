@@ -21,14 +21,12 @@ var windowObjectReference = null;
 
 
 /*
-param ruleTransformations: RuleTransformations instance.
-param functionModifyUrls: function reference.
-return: string.
+param urlsModifier: module urlsModifier class urlsModifier instance.
 */
-function modifyText(functionModifyUrls){
+function modifyText(urlsModifier){
   let urlsNew = '';
   const urls = ModuleDom.getDomManager().getValueElementById('inputUrls').split('\n');
-  urlsNew = functionModifyUrls(urls);
+  urlsNew = urlsModifier.modifyUrls(urls);
   if (urlsNew.length == 0){
     urlsNew = ModuleDom.getDomManager().getValueElementById('inputUrls');
   } else {
@@ -70,16 +68,16 @@ function popupMain() {
     var gettingAllStoredItems = browser.storage.local.get(null);
     gettingAllStoredItems.then((storedItems) => { // storedItems: object of keys and values
       rules.initializeRules();
-      for (ruleType of rules.ruleTypes) {
+      for (const ruleType of rules.ruleTypes) {
         var keysRuleOld = Object.keys(storedItems).filter(key => key.includes(ruleType+'_old_')); //array
         var rules2SaveOld = keysRuleOld.map(keysRuleOld => storedItems[keysRuleOld]); // array
         var keysRuleNew = Object.keys(storedItems).filter(key => key.includes(ruleType+'_new_')); //array
         var rules2SaveNew = keysRuleNew.map(keysRuleNew => storedItems[keysRuleNew]); // array
         let ruleTransformations = new ModuleUrlsModifier.RuleTransformations(rules2SaveOld, rules2SaveNew); 
         rules.addTypeAndRule(ruleType, ruleTransformations);
-        console.log('Rules:')
-        console.log(result)
       }
+      console.log('Rules:')
+      console.log(rules.rules)
     }, reportError);
   }
 
@@ -425,7 +423,7 @@ function popupMain() {
 
       function getValues(){
         if (!ModuleDom.getDomManager().isCheckedElementById('boxRules')){
-          return [ModuleDom.getDomManager().getValueElementById('inputValueOld'), ModuleDom.getDom().getValueElementById('inputValueNew')];
+          return [ModuleDom.getDomManager().getValueElementById('inputValueOld'), ModuleDom.getDomManager().getValueElementById('inputValueNew')];
         } else {
           return ModuleDom.getDomManager().getValueElementById('inputRules').split('\n');
         }
@@ -461,7 +459,7 @@ function popupMain() {
 
     function notShowRules(){
       while (ModuleDom.getDomManager().getInfoContainer().firstChild) {
-        ModuleDom.getDomManager().getInfoContainer().removeChild(ModuleDom.getDom().getInfoContainer().firstChild);
+        ModuleDom.getDomManager().getInfoContainer().removeChild(ModuleDom.getDomManager().getInfoContainer().firstChild);
       }   
     }
 
@@ -513,20 +511,21 @@ function popupMain() {
       }
     } else if (e.target.classList.contains('cleanUrl')){
       console.log('Clicked button: cleanUrl')
+      let urlsModifier = null;
       rules.setRuleTypeDeobfuscate();
       if (ModuleDom.getDomManager().isCheckedElementById('boxDecode')){
         console.log('Choosen option: decode')
-        const functionModifyUrls = ModuleUrlsModifier.urlsDecoder();
+        urlsModifier = ModuleUrlsModifier.urlsModifier();
       } else {
         console.log('Choosen option: deofuscation')
-        const functionModifyUrls = ModuleUrlsModifier.urlsRuleApplicator(rules.ruleTransformationsToUse);
+        urlsModifier = ModuleUrlsModifier.urlsModifier(rules.ruleTransformationsToUse);
       }
-      modifyText(functionModifyUrls);
+      modifyText(urlsModifier);
     } else if (e.target.classList.contains('obfuscate')){
       console.log('Clicked button: obfuscate')
       rules.setRuleTypeObfuscate();
-      const functionModifyUrls = ModuleUrlsModifier.urlsRuleApplicator(rules.ruleTransformationsToUse);
-      modifyText(functionModifyUrls);
+      const urlsModifier = ModuleUrlsModifier.urlsModifier(rules.ruleTransformationsToUse);
+      modifyText(urlsModifier);
     } else if (e.target.classList.contains('openUrls')) {
       console.log('Clicked button: openUrls')
       openUrls();

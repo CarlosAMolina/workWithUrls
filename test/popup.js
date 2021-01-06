@@ -1,6 +1,5 @@
-import * as ModuleMockDom from './mockDom.js';
+import * as ModuleMockDom from './mockDom.js'; // Global mocks.
 import * as ModulePopup from '../popup/popup.js';
-import * as ModuleUrlsModifier from '../popup/modules/urlsModifier.js';
 import pkgChai from 'chai';
 
 
@@ -106,9 +105,9 @@ describe("Check script popup.js: ", function() {
   describe("Check function modifyText: ", function() {
     it("Check function runs without exceptions: ", function() {
       mockDomInputUrls(inputUrlsTest);
-      const ruleTransformations = new ModuleUrlsModifier.RuleTransformations([mockRuleTransformationValueOld], [mockRuleTransformationValueNew]);
-      const functionModifyUrls = function mock(){ return ['url1.com', 'url2.com'] };
-      const result = ModulePopup.modifyText(functionModifyUrls)
+      class MockUrlsRuleApplicator { modifyUrls(){ return ['url1.com', 'url2.com'] } };
+      const mockUrlsRuleApplicator = new MockUrlsRuleApplicator();
+      const result = ModulePopup.modifyText(mockUrlsRuleApplicator);
       assert.equal(result, undefined);
     });
   });
