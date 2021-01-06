@@ -1,29 +1,11 @@
+import * as ModuleMockDocument from './mockDocument.js'; // Mock document globally.
 import * as ModulePopup from '../popup/popup.js';
 import * as ModuleUrlsModifier from '../popup/modules/urlsModifier.js';
-import fs from "fs";
-import jsdom from 'jsdom';
-import path from "path";
 import pkgChai from 'chai';
 
 
-//https://stackoverflow.com/questions/32126003/node-js-document-is-not-defined
-function mockDomDocument(html){
-  const { JSDOM } = jsdom;
-  global.document = new JSDOM(html).window.document;
-}
-
 function mockDomInputUrls(valueToMock){
   document.getElementById('inputUrls').value = valueToMock;
-}
-
-function readFile(path) {
-  try {
-    const data = fs.readFileSync(path, 'utf8')
-    return data
-  } catch (exception) {
-    console.error(exception)
-    return exception
-  }
 }
 
 function mockBrowserStorageLocal(){
@@ -60,13 +42,9 @@ function storageMock() {
 
 describe("Check script popup.js: ", function() {
   const {assert: assert} = pkgChai;
-  const __dirname = path.resolve();
   const inputUrlsTest = 'test1.com\ntest2.com';
   const mockRuleTransformationValueOld = 'test'
   const mockRuleTransformationValueNew = 'changed'
-  const popupHtmlPath = path.resolve(__dirname, 'popup/popup.html');
-  const popupHtml = readFile(popupHtmlPath);
-  mockDomDocument(popupHtml);
   mockBrowserStorageLocal();
   describe("Check function popupMain: ", function() {
     ModulePopup.popupMain(); // Functon instance, required to access inner functions.
@@ -132,28 +110,6 @@ describe("Check script popup.js: ", function() {
       const functionModifyUrls = function mock(){ return ['url1.com', 'url2.com'] };
       const result = ModulePopup.modifyText(functionModifyUrls)
       assert.equal(result, undefined);
-    });
-  });
-  describe("Check class Dom: ", function() {
-    const dom = new ModulePopup.Dom();
-    it("Check function getUrls: ", function() {
-      mockDomInputUrls(inputUrlsTest);
-      assert.equal(dom.getUrls(), inputUrlsTest);
-    });
-    it("Check function setUrls: ", function() {
-      const inputUrlsNew = 'new1.com\nnew2.com'
-      dom.setUrls(inputUrlsNew)
-      assert.equal(dom.getUrls(), inputUrlsNew);
-    });
-    it("Check function isCheckedBoxDecode: ", function() {
-      document.getElementById('boxDecode').checked = true;
-      assert.isTrue(dom.isCheckedBoxDecode());
-      document.getElementById('boxDecode').checked = false;
-      assert.isFalse(dom.isCheckedBoxDecode());
-    });
-    it("Check function getInfoContainer: ", function() {
-      const result = dom.getInfoContainer();
-      assert.typeOf(result, "HTMLDivElement");
     });
   });
 });

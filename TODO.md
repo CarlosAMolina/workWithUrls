@@ -8,3 +8,4 @@ Try use private methods at:
   - ruleTransformationsInstanceToUse()
   - formationsInstanceToUse()
 
+## Use document.querySelector instead document.getElementById
