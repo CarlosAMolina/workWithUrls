@@ -1,15 +1,25 @@
-class Dom {
+class DomManager {
+
+  constructor(){
+    this._styleBoxShadowError = "0 0 2px #FF0000";
+  }
+
+  get styleBoxShadowError() {return this._styleBoxShadowError;};
 
   getHashPlusString(string){
     return '#'+string
   }
+
+  getElementById(elementId){
+    return document.querySelector(this.getHashPlusString(elementId));
+  }
   
   getValueElementById(elementId){
-    return document.querySelector(this.getHashPlusString(elementId)).value;
+    return this.getElementById(elementId).value;
   }
 
   setValueToElementById(value, elementId){
-    document.querySelector(this.getHashPlusString(elementId)).value = value;
+    this.getElementById(elementId).value = value;
   }
  
   getInfoContainer(){
@@ -17,43 +27,55 @@ class Dom {
   }
 
   setHiddenElementById(elementId){
-    document.querySelector(this.getHashPlusString(elementId)).classList.add('hidden');
+    this.getElementById(elementId).classList.add('hidden');
   }
 
   setUnhiddenElementById(elementId){
-    document.querySelector(this.getHashPlusString(elementId)).classList.remove('hidden');
+    this.getElementById(elementId).classList.remove('hidden');
   }
 
   setCheckedElementById(elementId){
-    document.querySelector(this.getHashPlusString(elementId)).checked = true;
+    this.getElementById(elementId).checked = true;
   }
 
   setUncheckedElementById(elementId){
-    document.querySelector(this.getHashPlusString(elementId)).checked = false;
+    this.getElementById(elementId).checked = false;
   }
 
   /*
   return: bool.
   */
   isCheckedElementById(elementId){
-    return document.querySelector(this.getHashPlusString(elementId)).checked;
+    return this.getElementById(elementId).checked;
   }
 
   /*
   return: bool.
   */
   isHiddenElementById(elementId){
-    return document.querySelector(this.getHashPlusString(elementId)).classList.contains('hidden');
+    return this.getElementById(elementId).classList.contains('hidden');
+  }
+
+  setEnabledElementById(elementId){
+    this.getElementById(elementId).disabled = false;
+  }
+
+  setStyleBoxErrorToElementById(elementId){
+    this.getElementById(elementId).style.boxShadow = this.styleBoxShadowError;
+  }
+
+  unsetStyleBoxErrorToElementById(elementId){
+    this.getElementById(elementId).style.removeProperty("box-shadow");
   }
 
 }
 
 
-function getDom(){
-  return new Dom();
+function getDomManager(){
+  return new DomManager();
 }
 
 
 export {
-  getDom
+  getDomManager
 };

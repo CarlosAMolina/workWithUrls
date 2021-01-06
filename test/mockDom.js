@@ -4,11 +4,14 @@ import path from "path";
 
 
 //https://stackoverflow.com/questions/32126003/node-js-document-is-not-defined
-function mockDomDocument(html){
-  const { JSDOM } = jsdom;
-  global.document = new JSDOM(html).window.document;
+function mockDomDocument(){
+  global.document = window.document;
 }
 
+function mockDomWindow(html){
+  const { JSDOM } = jsdom;
+  global.window = new JSDOM(html).window;
+}
 
 function readFile(path) {
   try {
@@ -24,4 +27,5 @@ function readFile(path) {
 const __dirname = path.resolve();
 const popupHtmlPath = path.resolve(__dirname, 'popup/popup.html');
 const popupHtml = readFile(popupHtmlPath);
-mockDomDocument(popupHtml);
+mockDomWindow(popupHtml);
+mockDomDocument();

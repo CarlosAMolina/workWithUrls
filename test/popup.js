@@ -1,4 +1,4 @@
-import * as ModuleMockDocument from './mockDocument.js'; // Mock document globally.
+import * as ModuleMockDom from './mockDom.js';
 import * as ModulePopup from '../popup/popup.js';
 import * as ModuleUrlsModifier from '../popup/modules/urlsModifier.js';
 import pkgChai from 'chai';

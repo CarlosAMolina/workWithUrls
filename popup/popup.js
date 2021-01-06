@@ -27,14 +27,14 @@ return: string.
 */
 function modifyText(functionModifyUrls){
   let urlsNew = '';
-  const urls = ModuleDom.getDom().getValueElementById('inputUrls').split('\n');
+  const urls = ModuleDom.getDomManager().getValueElementById('inputUrls').split('\n');
   urlsNew = functionModifyUrls(urls);
   if (urlsNew.length == 0){
-    urlsNew = ModuleDom.getDom().getValueElementById('inputUrls');
+    urlsNew = ModuleDom.getDomManager().getValueElementById('inputUrls');
   } else {
     urlsNew = urlsNew.join('\n');
   }
-  ModuleDom.getDom().setValueToElementById(urlsNew, 'inputUrls');
+  ModuleDom.getDomManager().setValueToElementById(urlsNew, 'inputUrls');
 }
 
 
@@ -53,9 +53,9 @@ function popupMain() {
         // Undefined -> open paths option has never been used.
         if ( (typeof result.idOpenPaths != 'undefined') && (result.idOpenPaths == 1) ){
           // On/off openPaths switch.
-          ModuleDom.getDom().setCheckedElementById('boxPaths');
+          ModuleDom.getDomManager().setCheckedElementById('boxPaths');
         } else {
-          ModuleDom.getDom().setUncheckedElementById('boxPaths');
+          ModuleDom.getDomManager().setUncheckedElementById('boxPaths');
         }
       }, reportError);
     }
@@ -100,7 +100,7 @@ function popupMain() {
         lazyLoadingTime = 0;
         console.log('Not previous stored lazy loading time value. Return (type ' + typeof(lazyLoadingTime) + '): \'' + lazyLoadingTime + '\'');
       }
-    ModuleDom.getDom().setValueToElementById(lazyLoadingTime, 'inputLazyLoading');
+    ModuleDom.getDomManager().setValueToElementById(lazyLoadingTime, 'inputLazyLoading');
     }, reportError);
   }
 
@@ -136,7 +136,7 @@ function popupMain() {
     entryDisplay.appendChild(clearFix);
 
     entryValue.textContent = eValues[0] + ' ---> ' + eValues[1];
-    ModuleDom.getDom().getInfoContainer().appendChild(entry);
+    ModuleDom.getDomManager().getInfoContainer().appendChild(entry);
 
     // edit box
     var cancelBtn = document.createElement('button');
@@ -226,20 +226,20 @@ function popupMain() {
     function showOrHideInfo(idElements2Change){ // idElements2Change: array
 
       function showTagsInfo(idElement2Change){
-        ModuleDom.getDom().setUnhiddenElementById(idElement2Change);
+        ModuleDom.getDomManager().setUnhiddenElementById(idElement2Change);
       }
       for (const idElement2Change of idElements2Change){
-        if (ModuleDom.getDom().isHiddenElementById(idElement2Change)){
+        if (ModuleDom.getDomManager().isHiddenElementById(idElement2Change)){
           showTagsInfo(idElement2Change);
         } else {
-          ModuleDom.getDom().setHiddenElementById(idElement2Change);
+          ModuleDom.getDomManager().setHiddenElementById(idElement2Change);
         }
       }
     }
 
     function enableElements(idElements2Change){
       for (const arrayValue of idElements2Change){
-        document.getElementById(arrayValue).disabled = false;
+        ModuleDom.getDomManager().setEnabledElementById(arrayValue);
       }
     }
 
@@ -334,10 +334,10 @@ function popupMain() {
       }
 
       // Get URLs at the input box.
-      urls = ModuleDom.getDom().getValueElementById('inputUrls').split('\n');
+      urls = ModuleDom.getDomManager().getValueElementById('inputUrls').split('\n');
 
       console.log('URLs at the input box: ' + urls)
-      if (ModuleDom.getDom().isCheckedElementById('boxPaths')){
+      if (ModuleDom.getDomManager().isCheckedElementById('boxPaths')){
         urls = getUrlsWithPaths(urls);
       }
       // Open URLs.
@@ -370,22 +370,21 @@ function popupMain() {
             true: bool, function done correctly.
     */
     function saveLazyLoading(){
-      var lazyLoadingTime = ModuleDom.getDom().getValueElementById('inputLazyLoading');
+      var lazyLoadingTime = ModuleDom.getDomManager().getValueElementById('inputLazyLoading');
       console.log('Lazy loading time: \'' + lazyLoadingTime + '\'');
       // Convert input to type number.
       // Example: 1a -> 1, 1.1 -> 1, a1 -> Nan
       lazyLoadingTime = parseInt(lazyLoadingTime);
-      // Update input box value with the modified value.
-      document.querySelector(ModuleDom.getDom().getHashPlusString('inputLazyLoading')).value = lazyLoadingTime;
+      ModuleDom.getDomManager().setValueToElementById(lazyLoadingTime, 'inputLazyLoading');
       // Check value is a number.
       if (isNaN(lazyLoadingTime)) {
         console.log('Error. Lazy loading time is not a number');
-        document.querySelector(ModuleDom.getDom().getHashPlusString('inputLazyLoading')).style.boxShadow = "0 0 2px #FF0000";
+        ModuleDom.getDomManager().setStyleBoxErrorToElementById('inputLazyLoading');
         return false;
       }
       else {
         // Quit possible previous red error border.
-        document.querySelector(ModuleDom.getDom().getHashPlusString('inputLazyLoading')).style.removeProperty("box-shadow");
+        ModuleDom.getDomManager().unsetStyleBoxErrorToElementById('inputLazyLoading');
       }
       // Set value >= 0. Type number.
       lazyLoadingTime = Math.abs(lazyLoadingTime)
@@ -394,7 +393,7 @@ function popupMain() {
       storingInfo.then(() => {
       }, reportError);
       // Set value at the popup.
-      ModuleDom.getDom().setValueToElementById(lazyLoadingTime, 'inputLazyLoading');
+      ModuleDom.getDomManager().setValueToElementById(lazyLoadingTime, 'inputLazyLoading');
       return true;
     }
 
@@ -425,10 +424,10 @@ function popupMain() {
       }
 
       function getValues(){
-        if (!ModuleDom.getDom().isCheckedElementById('boxRules')){
-          return [ModuleDom.getDom().getValueElementById('inputValueOld'), ModuleDom.getDom().getValueElementById('inputValueNew')];
+        if (!ModuleDom.getDomManager().isCheckedElementById('boxRules')){
+          return [ModuleDom.getDomManager().getValueElementById('inputValueOld'), ModuleDom.getDom().getValueElementById('inputValueNew')];
         } else {
-          return ModuleDom.getDom().getValueElementById('inputRules').split('\n');
+          return ModuleDom.getDomManager().getValueElementById('inputRules').split('\n');
         }
       }
 
@@ -461,14 +460,14 @@ function popupMain() {
     }
 
     function notShowRules(){
-      while (ModuleDom.getDom().getInfoContainer().firstChild) {
-        ModuleDom.getDom().getInfoContainer().removeChild(ModuleDom.getDom().getInfoContainer().firstChild);
+      while (ModuleDom.getDomManager().getInfoContainer().firstChild) {
+        ModuleDom.getDomManager().getInfoContainer().removeChild(ModuleDom.getDom().getInfoContainer().firstChild);
       }   
     }
 
     // open paths option
     function saveOpenPaths(){
-      if (ModuleDom.getDom().isCheckedElementById('boxPaths')){
+      if (ModuleDom.getDomManager().isCheckedElementById('boxPaths')){
         openPaths = 1;
       } else {
         openPaths = 0;
@@ -484,12 +483,11 @@ function popupMain() {
     }
 
     function copyRules(){
-      ModuleDom.getDom().setCheckedElementById('boxRules');
-      ModuleDom.getDom().setHiddenElementById('divInputRule');
-      ModuleDom.getDom().setUnhiddenElementById('divInputRules');
-      ModuleDom.getDom().setValueToElementById(rules.ruleTransformationsToUseStringRepresentation, 'inputRules');
+      ModuleDom.getDomManager().setCheckedElementById('boxRules');
+      ModuleDom.getDomManager().setHiddenElementById('divInputRule');
+      ModuleDom.getDomManager().setUnhiddenElementById('divInputRules');
+      ModuleDom.getDomManager().setValueToElementById(rules.ruleTransformationsToUseStringRepresentation, 'inputRules');
       copy2clipboard ('inputRules');
-
 
     }
 
@@ -497,8 +495,8 @@ function popupMain() {
     if (e.target.classList.contains('showConfig')){
       console.log('Clicked button: showConfig')
       showOrHideInfo(['menuConfig']);
-      if (!ModuleDom.getDom().isHiddenElementById('menuRules')){
-        ModuleDom.getDom().setHiddenElementById('menuRules');
+      if (!ModuleDom.getDomManager().isHiddenElementById('menuRules')){
+        ModuleDom.getDomManager().setHiddenElementById('menuRules');
       }
     } else if (e.target.classList.contains('configLazyLoading')){
       showOrHideInfo(['menuLazyLoading']);
@@ -508,7 +506,7 @@ function popupMain() {
       showOrHideInfo(['divInputRule','divInputRules']);
     } else if (e.target.classList.contains('copy')){
       console.log('Clicked button: copy')
-      if (ModuleDom.getDom().getValueElementById('inputUrls') !== ''){
+      if (ModuleDom.getDomManager().getValueElementById('inputUrls') !== ''){
         copy2clipboard('inputUrls');
       } else if (rules.isRuleTypeConfigured()){
         copyRules();
@@ -516,7 +514,7 @@ function popupMain() {
     } else if (e.target.classList.contains('cleanUrl')){
       console.log('Clicked button: cleanUrl')
       rules.setRuleTypeDeobfuscate();
-      if (ModuleDom.getDom().isCheckedElementById('boxDecode')){
+      if (ModuleDom.getDomManager().isCheckedElementById('boxDecode')){
         console.log('Choosen option: decode')
         const functionModifyUrls = ModuleUrlsModifier.urlsDecoder();
       } else {
@@ -569,8 +567,8 @@ function popupMain() {
 // There was an error executing the script.
 // Display the pop-up's error message, and hide the normal UI.
 function reportExecuteScriptError(error) {
-  ModuleDom.getDom().setHiddenElementById('popup-content');
-  ModuleDom.getDom().setUnhiddenElementById('error-content');
+  ModuleDom.getDomManager().setHiddenElementById('popup-content');
+  ModuleDom.getDomManager().setUnhiddenElementById('error-content');
   console.error(`Error: ${error.message}`);
 }
 
