@@ -518,13 +518,13 @@ function popupMain() {
         urlsModifier = ModuleUrlsModifier.urlsModifier();
       } else {
         console.log('Choosen option: deofuscation')
-        urlsModifier = ModuleUrlsModifier.urlsModifier(rules.ruleTransformationsToUse);
+        urlsModifier = ModuleUrlsModifier.urlsModifier(rules.ruleTransformationsInstanceToUse);
       }
       modifyText(urlsModifier);
     } else if (e.target.classList.contains('obfuscate')){
       console.log('Clicked button: obfuscate')
       rules.setRuleTypeObfuscate();
-      const urlsModifier = ModuleUrlsModifier.urlsModifier(rules.ruleTransformationsToUse);
+      const urlsModifier = ModuleUrlsModifier.urlsModifier(rules.ruleTransformationsInstanceToUse);
       modifyText(urlsModifier);
     } else if (e.target.classList.contains('openUrls')) {
       console.log('Clicked button: openUrls')
