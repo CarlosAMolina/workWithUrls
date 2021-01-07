@@ -121,6 +121,10 @@ class RuleTransformations extends RuleTransformationsCreator {
     return result
   }
 
+  isThereAnyRule(){
+    return this.ruleTransformations.length != 0
+  }
+
   removeTrailingNewLine(string){
     return string.replace(/\n$/, "");
   }
@@ -180,7 +184,7 @@ class RulesApplicator {
   */
   modifyUrls(urls){
     let urlsNew = [];
-    if (this.rule.ruleTransformations.length != 0){
+    if (this.rule.isThereAnyRule()){
       for (const url of urls) {
         for (const ruleTransformation of this.rule.ruleTransformations) {
           const regex = new RegExp(ruleTransformation.valueOld, "g");

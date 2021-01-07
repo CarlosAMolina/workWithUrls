@@ -99,6 +99,13 @@ describe("Check script urlsModifier.js: ", function() {
       const stringRepresentation = ruleTransformations.stringRepresentation;
       assert.equal(stringRepresentation, 'test\nchanged');
     });
+    it("Check function isThereAnyRule: ", function() {
+      let result = ruleTransformations.isThereAnyRule();
+      assert.isTrue(result);
+      const ruleTransformationsNoRule = new ModuleUrlsModifier.RuleTransformations([], []);
+      result = ruleTransformationsNoRule.isThereAnyRule();
+      assert.isFalse(result);
+    });
   });
   describe("Check class RulesApplicator: ", function() {
     const rulesApplicator = new ModuleUrlsModifier.RulesApplicator(ruleTransformations);
