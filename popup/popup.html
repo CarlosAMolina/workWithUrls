@@ -13,44 +13,45 @@
   <div id="popup-content">
     <div>
       <p>URLs</p>
+      <button id="buttonTestOnOff" class="buttonOnOff"><div>off</div></button>
       <textarea id="inputUrls" class="input" type="text" style="width:500px;min-width:305px" rows="4"></textarea>
     </div>
-    <button title="Configuration" class="button menuButton showConfig" style="width:18.7%"><img src="/icons/configuration.png"/></button>
-    <button title="Copy to clipboard" class="button menuButton copy" style="width:18.7%"><img src="/icons/copy.png"/></button>
-    <button title="Clean URLs" class="button menuButton cleanUrl" style="width:18.7%"><img src="/icons/cleanUrl.png"/></button>
-    <button title="Obfuscate" class="button menuButton obfuscate" style="width:18.7%"><img src="/icons/obfuscate.png"/></button>
-    <button title="Open Urls" class="button menuButton openUrls" style="width:18.7%"><img src="/icons/globe.png"/></button>
+    <button id="buttonShowConfig" title="Configuration" class="button menuButton showConfig" style="width:18.7%"><img src="/icons/configuration.png"/></button>
+    <button id="buttonCopy" title="Copy to clipboard" class="button menuButton copy" style="width:18.7%"><img src="/icons/copy.png"/></button>
+    <button id="buttonCleanUrl" title="Clean URLs" class="button menuButton cleanUrl" style="width:18.7%"><img src="/icons/cleanUrl.png"/></button>
+    <button id="buttonObfuscate" title="Obfuscate" class="button menuButton obfuscate" style="width:18.7%"><img src="/icons/obfuscate.png"/></button>
+    <button id="buttonOpenUrls" title="Open Urls" class="button menuButton openUrls" style="width:18.7%"><img src="/icons/globe.png"/></button>
     <div id="menuConfig" class="backGroundGrey hidden">
       <p><u>Open all paths</u></p>
-      <label class="switch">
-        <input id="boxPaths" class="openPaths" type="checkbox"> 
+      <label id="buttonOpenPaths" class="switch openPaths">
+        <input type="checkbox"> 
         <span class="slider round"></span> 
       </label>
       <p><u>Decode URLs</u></p>
       <label class="switch">
-        <input id="boxDecode" type="checkbox"> 
+        <input id="buttonBoxDecode" type="checkbox"> 
         <span class="slider round"></span> 
       </label>
-      <button id="lazyLoadingConfig" class="button menuButton configLazyLoading" style="width:99%">Lazy loading configuration</button>
+      <button id="buttonConfigLazyLoading" class="button menuButton configLazyLoading" style="width:99%">Lazy loading configuration</button>
       <div id="menuLazyLoading" class="backGroundGrey hidden">
         <p>Wait time between opening each tab (milliseconds, integer)</p>
         <div id="divInputLazyLoading">
           <input id="inputLazyLoading" class="input" type="text" style="width:82%" rows="1"></input>
-          <button title="Update" class="button addLazyLoading" style="width:10%"><img src="/icons/ok.png"/></button>
+          <button id="buttonAddLazyLoading" title="Update" class="button addLazyLoading" style="width:10%"><img src="/icons/ok.png"/></button>
         </div>
       </div>
-      <button id="rulesConfig" class="button menuButton configRules" style="width:99%">Rules configuration</button>
+      <button id="buttonConfigRules" class="button menuButton configRules" style="width:99%">Rules configuration</button>
     </div>
     <div id="menuRules" class="backGroundGrey hidden">
       <p><u>Rules (regular expressions)</u></p>
       <div>
-        <input id="inputDeobfuscation" type="radio" name="ruleType" class="inputDeobfuscation"><label style="font-size:15px;">Deobfuscation</label>
+        <input id="buttonInputDeobfuscation" type="radio" name="ruleType" class="inputDeobfuscation"><label style="font-size:15px;">Deobfuscation</label>
       </div>
-      <input id="inputObfuscation" type="radio" name="ruleType" class="inputObfuscation"><label style="font-size:15px;">Obfuscation</label>
+      <input id="buttonInputObfuscation" type="radio" name="ruleType" class="inputObfuscation"><label style="font-size:15px;">Obfuscation</label>
       <div>
         <p>Save more than one rule</p>
-        <label class="switch">
-          <input id="boxRules" class="openRules" type="checkbox"> 
+        <label id="buttonOpenRules"  class="switch openRules">
+          <input type="checkbox"> 
           <span class="slider round"></span> 
         </label>
       </div>
@@ -64,8 +65,8 @@
         <p id="pInputRules">Value to change (line i). New value (line i+1)</p>
         <textarea id="inputRules" class="input" type="text" style="width:99%" rows="5" disabled></textarea>
       </div>
-      <button id="buttonAdd" class="button menuButton addRule" style="width:49%" disabled>Add</button>
-      <button id="buttonClearAll" class="button menuButton clearAllInfo" style="width:49%" disabled>Clear all</button>
+      <button id="buttonAddRule" class="button menuButton addRule" style="width:49%" disabled>Add</button>
+      <button id="buttonClearAllRules" class="button menuButton clearAllRules" style="width:49%" disabled>Clear all</button>
       <div class="clearfix">
       </div>
       <div class="info-container">

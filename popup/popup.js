@@ -10,6 +10,60 @@ import * as ModuleUrlsModifier from './modules/urlsModifier.js';
 // Global constants.
 const rules = new ModuleUrlsModifier.Rules();
 
+// https://www.scriptol.com/html5/button-on-off.php
+class ButtonTest {
+
+  constructor() {
+    this._buttonIdHtml = "buttonTestOnOff";
+    this._buttonIdStorage = "buttonTestOnOffIsOn";
+  }
+
+  get buttonIdHtml() { return this._buttonIdHtml; }
+  get buttonIdStorage() { return this._buttonIdStorage; }
+  
+  setStylePrevious() {
+    browser.storage.local.get(this.buttonIdStorage).then((result) => {
+      if (result[this.buttonIdStorage]){
+        this.setStyleOn();
+      } else {
+        this.setStyleOff();
+      }
+    }, console.error);
+  }
+
+  switchStyleAndStorageOnOff() {
+    let buttonOn = false;
+    if(ModuleDom.isCheckedElementById(this.buttonIdHtml)) {
+      this.setStyleOff();
+      buttonOn = false;
+    } else {
+      this.setStyleOn();
+      buttonOn = true;
+    }
+    let storingInfo = browser.storage.local.set({[this.buttonIdStorage]:buttonOn});
+    storingInfo.then(() => {
+      console.log('Stored ' + this.buttonIdStorage + ': ' + buttonOn);
+    }, console.error);
+  }
+
+  setStyleOff(){
+    this.setStyleColorLabelChecked('gray', 'lightgray', 'off', false);
+  }
+
+  setStyleOn(){
+    this.setStyleColorLabelChecked('green', 'lightgreen', 'on', true);
+  }
+
+  setStyleColorLabelChecked(style, color, label, checked) {
+    ModuleDom.getElementById(this.buttonIdHtml).style.background = style;
+    ModuleDom.getElementById(this.buttonIdHtml).style.color = color;
+    ModuleDom.getElementById(this.buttonIdHtml).innerHTML = label;
+    ModuleDom.getElementById(this.buttonIdHtml).checked = checked;
+  }
+
+}
+
+
 // Global variables.
 var lazyLoadingTime = 0;
 var openPaths = 0;
@@ -35,12 +89,65 @@ function modifyText(urlsModifier){
   ModuleDom.setValueToElementById(urlsNew, 'inputUrls');
 }
 
+ModuleDom.getElementById('buttonTestOnOff').addEventListener("click", function() {
+  new ButtonTest().switchStyleAndStorageOnOff();
+});
+
+var clickedButtonName = null;
+document.getElementById('buttonShowConfig').addEventListener("click", function() {
+clickedButtonName = 'showConfig';
+});
+document.getElementById('buttonCopy').addEventListener("click", function() {
+clickedButtonName = 'copy';
+});
+document.getElementById('buttonCleanUrl').addEventListener("click", function() {
+clickedButtonName = 'cleanUrl';
+});
+document.getElementById('buttonObfuscate').addEventListener("click", function() {
+clickedButtonName = 'obfuscate';
+});
+document.getElementById('buttonOpenUrls').addEventListener("click", function() {
+clickedButtonName = 'openUrls';
+});
+document.getElementById('buttonOpenRules').addEventListener("click", function() {
+clickedButtonName = 'openRules';
+});
+document.getElementById('buttonConfigLazyLoading').addEventListener("click", function() {
+clickedButtonName = 'configLazyLoading';
+});
+document.getElementById('buttonAddLazyLoading').addEventListener("click", function() {
+clickedButtonName = 'addLazyLoading';
+});
+document.getElementById('buttonConfigRules').addEventListener("click", function() {
+clickedButtonName = 'configRules';
+});
+document.getElementById('buttonInputDeobfuscation').addEventListener("click", function() {
+clickedButtonName = 'inputDeobfuscation';
+});
+document.getElementById('buttonInputObfuscation').addEventListener("click", function() {
+clickedButtonName = 'inputObfuscation';
+});
+document.getElementById('buttonAddRule').addEventListener("click", function() {
+clickedButtonName = 'addRule';
+});
+document.getElementById('buttonClearAllRules').addEventListener("click", function() {
+clickedButtonName = 'clearAllRules';
+});
+document.getElementById('buttonOpenPaths').addEventListener("click", function() {
+clickedButtonName = 'openPaths';
+});
+
 
 function popupMain() {
 
   initializePopup();
-  
+
   function initializePopup() {
+
+    getOpenPaths();
+    getRules();
+    getStorageLazyLoading();
+    new ButtonTest().setStylePrevious();
 
     // Get value of the open paths option at the storage.
     function getOpenPaths(){
@@ -51,16 +158,12 @@ function popupMain() {
         // Undefined -> open paths option has never been used.
         if ( (typeof result.idOpenPaths != 'undefined') && (result.idOpenPaths == 1) ){
           // On/off openPaths switch.
-          ModuleDom.setCheckedElementById('boxPaths');
+          ModuleDom.setCheckedElementById('buttonOpenPaths');
         } else {
-          ModuleDom.setUncheckedElementById('boxPaths');
+          ModuleDom.setUncheckedElementById('buttonOpenPaths');
         }
       }, reportError);
     }
-   
-    getOpenPaths();
-    getRules();
-    getStorageLazyLoading();
   }
 
   function getRules(){
@@ -231,6 +334,7 @@ function popupMain() {
           showTagsInfo(idElement2Change);
         } else {
           ModuleDom.setHiddenElementById(idElement2Change);
+          showTagsInfo(idElement2Change); // TODO ¿delete?
         }
       }
     }
@@ -335,7 +439,7 @@ function popupMain() {
       urls = ModuleDom.getValueElementById('inputUrls').split('\n');
 
       console.log('URLs at the input box: ' + urls)
-      if (ModuleDom.isCheckedElementById('boxPaths')){
+      if (ModuleDom.isCheckedElementById('buttonOpenPaths')){
         urls = getUrlsWithPaths(urls);
       }
       // Open URLs.
@@ -422,7 +526,7 @@ function popupMain() {
       }
 
       function getValues(){
-        if (!ModuleDom.isCheckedElementById('boxRules')){
+        if (!ModuleDom.isCheckedElementById('buttonOpenRules')){
           return [ModuleDom.getValueElementById('inputValueOld'), ModuleDom.getValueElementById('inputValueNew')];
         } else {
           return ModuleDom.getValueElementById('inputRules').split('\n');
@@ -465,7 +569,7 @@ function popupMain() {
 
     // open paths option
     function saveOpenPaths(){
-      if (ModuleDom.isCheckedElementById('boxPaths')){
+      if (ModuleDom.isCheckedElementById('buttonOpenPaths')){
         openPaths = 1;
       } else {
         openPaths = 0;
@@ -481,7 +585,7 @@ function popupMain() {
     }
 
     function copyRules(){
-      ModuleDom.setCheckedElementById('boxRules');
+      ModuleDom.setCheckedElementById('buttonOpenRules');
       ModuleDom.setHiddenElementById('divInputRule');
       ModuleDom.setUnhiddenElementById('divInputRules');
       ModuleDom.setValueToElementById(rules.ruleTransformationsToUseStringRepresentation, 'inputRules');
@@ -489,69 +593,273 @@ function popupMain() {
 
     }
 
-    // Detect popup's clicked buttons.
-    if (e.target.classList.contains('showConfig')){
-      console.log('Clicked button: showConfig')
-      showOrHideInfo(['menuConfig']);
-      if (!ModuleDom.isHiddenElementById('menuRules')){
-        ModuleDom.setHiddenElementById('menuRules');
+    class ButtonClicked {
+
+      constructor(buttonName) {
+        this._buttonName = buttonName;
       }
-    } else if (e.target.classList.contains('configLazyLoading')){
-      showOrHideInfo(['menuLazyLoading']);
-    } else if (e.target.classList.contains('configRules')){
-      showOrHideInfo(['menuRules']);
-    } else if (e.target.classList.contains('openRules')){
-      showOrHideInfo(['divInputRule','divInputRules']);
-    } else if (e.target.classList.contains('copy')){
-      console.log('Clicked button: copy')
-      if (ModuleDom.getValueElementById('inputUrls') !== ''){
-        copy2clipboard('inputUrls');
-      } else if (rules.isRuleTypeConfigured()){
-        copyRules();
+
+      get buttonName() {
+        return this._buttonName;
       }
-    } else if (e.target.classList.contains('cleanUrl')){
-      console.log('Clicked button: cleanUrl')
-      let urlsModifier = null;
-      rules.setRuleTypeDeobfuscate();
-      if (ModuleDom.isCheckedElementById('boxDecode')){
-        console.log('Choosen option: decode')
-        urlsModifier = ModuleUrlsModifier.urlsModifier();
-      } else {
-        console.log('Choosen option: deofuscation')
-        urlsModifier = ModuleUrlsModifier.urlsModifier(rules.ruleTransformationsInstanceToUse);
+
+      get run() {
+        throw TypeError("Not implemented: method run")
       }
-      modifyText(urlsModifier);
-    } else if (e.target.classList.contains('obfuscate')){
-      console.log('Clicked button: obfuscate')
-      rules.setRuleTypeObfuscate();
-      const urlsModifier = ModuleUrlsModifier.urlsModifier(rules.ruleTransformationsInstanceToUse);
-      modifyText(urlsModifier);
-    } else if (e.target.classList.contains('openUrls')) {
-      console.log('Clicked button: openUrls')
-      openUrls();
-    } else if (e.target.classList.contains('openPaths')){
-      saveOpenPaths();
-    } else if (e.target.classList.contains('inputObfuscation')){
-      rules.setRuleTypeObfuscate();
-      notShowRules();
-      showStoredRulesType();
-      enableElements(['pInputOld','pInputNew','inputValueOld','inputValueNew','inputRules','buttonAdd','buttonClearAll']);
-    } else if (e.target.classList.contains('inputDeobfuscation')){
-      rules.setRuleTypeDeobfuscate();
-      notShowRules();
-      showStoredRulesType();
-      enableElements(['pInputOld','pInputNew','inputValueOld','inputValueNew','inputRules','buttonAdd','buttonClearAll']);
-    } else if (e.target.classList.contains('addLazyLoading')){
-      saveLazyLoading();
-      // The following line is important to apply the new value without close and open the addons' pop-up.
-      getStorageLazyLoading();
-    } else if (e.target.classList.contains('addRule')){
-      saveRules();
-    } else if (e.target.classList.contains('clearAllInfo')){
-      browser.tabs.query({active: true, currentWindow: true})
-        .then(clearStorageInfo)
-        .catch(reportError)
+
+      get logButtonName() {
+        console.log('Clicked button: ' + this.buttonName);
+      }
+
     }
+
+    class ButtonConfigurationLazyLoading extends ButtonClicked {
+
+      constructor() {
+        super('configLazyLoading');
+      } 
+
+      get run() {
+        showOrHideInfo(['menuLazyLoading']);
+      }
+
+    }
+
+    class ButtonConfigurationRules extends ButtonClicked {
+
+      constructor() {
+        super('configRules');
+      } 
+
+      get run() {
+        showOrHideInfo(['menuRules']);
+      }
+
+    }
+
+    class ButtonOpenRules extends ButtonClicked {
+
+      constructor() {
+        super('openRules');
+      } 
+
+      get run() {
+        showOrHideInfo(['divInputRule','divInputRules']);
+      }
+
+    }
+
+    class ButtonConfiguration extends ButtonClicked {
+
+      constructor() {
+        super('showConfig');
+      } 
+
+      get run() {
+        this.logButtonName;
+        showOrHideInfo(['menuConfig']);
+        if (!ModuleDom.isHiddenElementById('menuRules')) {
+          ModuleDom.setHiddenElementById('menuRules');
+        }
+      }
+
+    }
+
+    class ButtonCopy extends ButtonClicked {
+
+      constructor() {
+        super('copy');
+      } 
+
+      get run() {
+        this.logButtonName;
+        if (ModuleDom.getValueElementById('inputUrls') !== ''){
+          copy2clipboard('inputUrls');
+        } else if (rules.isRuleTypeConfigured()){
+          copyRules();
+        }
+      }
+
+    }
+
+    class ButtonCleanUrl extends ButtonClicked {
+      
+      constructor() {
+        super('cleanUrl');
+      } 
+
+      get run() {
+        this.logButtonName;
+        let urlsModifier = null;
+        rules.setRuleTypeDeobfuscate();
+        if (ModuleDom.isCheckedElementById('buttonBoxDecode')){
+          console.log('Choosen option: decode')
+          urlsModifier = ModuleUrlsModifier.urlsModifier();
+        } else {
+          console.log('Choosen option: deofuscation')
+          urlsModifier = ModuleUrlsModifier.urlsModifier(rules.ruleTransformationsInstanceToUse);
+        }
+        modifyText(urlsModifier);
+      }
+
+    }
+
+    class ButtonObfuscate extends ButtonClicked {
+      
+      constructor() {
+        super('obfuscate');
+      } 
+
+      get run() {
+        this.logButtonName;
+        rules.setRuleTypeObfuscate();
+        const urlsModifier = ModuleUrlsModifier.urlsModifier(rules.ruleTransformationsInstanceToUse);
+        modifyText(urlsModifier);
+      }
+
+    }
+
+    class ButtonOpenUrls extends ButtonClicked {
+
+      constructor() {
+        super('openUrls');
+      } 
+
+      get run() {
+        this.logButtonName;
+        openUrls();
+      }
+
+    }
+
+    class ButtonOpenPaths extends ButtonClicked {
+
+      constructor() {
+        super('openPaths');
+      } 
+
+      get run() {
+        saveOpenPaths();
+      }
+
+    }
+
+    class ButtonInputObfuscation extends ButtonClicked {
+
+      constructor() {
+        super('inputObfuscation');
+      } 
+
+      get run() {
+        rules.setRuleTypeObfuscate();
+        notShowRules();
+        showStoredRulesType();
+        enableElements(['pInputOld','pInputNew','inputValueOld','inputValueNew','inputRules','buttonAddRule','buttonClearAllRules']);
+      }
+
+    }
+
+    class ButtonInputDeobfuscation extends ButtonClicked {
+
+      constructor() {
+        super('inputDeobfuscation');
+      } 
+
+      get run() {
+        rules.setRuleTypeDeobfuscate();
+        notShowRules();
+        showStoredRulesType();
+        enableElements(['pInputOld','pInputNew','inputValueOld','inputValueNew','inputRules','buttonAddRule','buttonClearAllRules']);
+      }
+
+    }
+
+    class ButtonAddLazyLoading extends ButtonClicked {
+
+      constructor() {
+        super('addLazyLoading');
+      } 
+
+      get run() {
+        saveLazyLoading();
+        // The following line is important to apply the new value without close and open the addons' pop-up.
+        getStorageLazyLoading();
+      }
+
+    }
+
+    class ButtonAddRule extends ButtonClicked {
+
+      constructor() {
+        super('addRule');
+      } 
+
+      get run() {
+        saveRules();
+      }
+
+    }
+
+    class ButtonClearAllRules extends ButtonClicked {
+
+      constructor() {
+        super('clearAllRules');
+      } 
+
+      get run() {
+        browser.tabs.query({active: true, currentWindow: true})
+          .then(clearStorageInfo)
+          .catch(reportError)
+      }
+    
+    }
+
+    function createClickedButton() {
+      console.log('working with: '+clickedButtonName);
+      switch (clickedButtonName) {
+        case new ButtonConfiguration().buttonName:
+          return new ButtonConfiguration();
+        case new ButtonCopy().buttonName:
+          return new ButtonCopy();
+        case new ButtonCleanUrl().buttonName:
+          return new ButtonCleanUrl();
+        case new ButtonOpenUrls().buttonName:
+          return new ButtonOpenUrls();
+        case new ButtonObfuscate().buttonName:
+          return new ButtonObfuscate();
+        case new ButtonOpenPaths().buttonName:
+          return new ButtonOpenPaths();
+        case new ButtonConfigurationLazyLoading().buttonName:
+          return new ButtonConfigurationLazyLoading();
+        case new ButtonAddLazyLoading().buttonName:
+          return new ButtonAddLazyLoading();
+        case new ButtonConfigurationRules().buttonName:
+          return new ButtonConfigurationRules();
+        case new ButtonInputDeobfuscation().buttonName:
+          return new ButtonInputDeobfuscation();
+        case new ButtonInputObfuscation().buttonName:
+          return new ButtonInputObfuscation();
+
+        // TODO continue here
+        case new ButtonOpenRules().buttonName:
+          //TODO as the action is done twice it brokes the execution.
+          return new ButtonOpenRules();
+        case new ButtonAddRule().buttonName:
+          return new ButtonAddRule();
+        case new ButtonClearAllRules().buttonName:
+          return new ButtonClearAllRules();    
+      }
+    }
+
+    const clickedButton =  createClickedButton();
+    if (clickedButton === undefined){
+        console.error("Invalid clicked button:");
+        console.error(e.target);
+        console.error(e.target.classList);
+    } else {
+      clickedButton.run;
+    }
+    clickedButtonName = null;
 
   });
 
