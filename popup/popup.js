@@ -11,11 +11,11 @@ import * as ModuleUrlsModifier from './modules/urlsModifier.js';
 const rules = new ModuleUrlsModifier.Rules();
 
 // https://www.scriptol.com/html5/button-on-off.php
-class ButtonTest {
+class ButtonOnOff {
 
-  constructor() {
-    this._buttonIdHtml = "buttonTestOnOff";
-    this._buttonIdStorage = "buttonTestOnOffIsOn";
+  constructor(buttonIdHtml, buttonIdStorage) {
+    this._buttonIdHtml = buttonIdHtml;
+    this._buttonIdStorage = buttonIdStorage;
   }
 
   get buttonIdHtml() { return this._buttonIdHtml; }
@@ -63,6 +63,15 @@ class ButtonTest {
 
 }
 
+class ButtonTest extends ButtonOnOff {
+
+  constructor() {
+    const buttonIdHtml = "buttonTestOnOff";
+    const buttonIdStorage = "buttonTestOnOffIsOn";
+    super(buttonIdHtml, buttonIdStorage);
+  }
+
+}
 
 // Global variables.
 var lazyLoadingTime = 0;
