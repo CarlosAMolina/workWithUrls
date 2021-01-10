@@ -50,40 +50,40 @@ function showOrHideRuleOrRules() {
 
 
 var clickedButtonName = null;
-document.getElementById('buttonShowConfig').addEventListener("click", function() {
+ModuleDom.getElementById('buttonShowConfig').addEventListener("click", function() {
   clickedButtonName = 'showConfig';
 });
-document.getElementById('buttonCopy').addEventListener("click", function() {
+ModuleDom.getElementById('buttonCopy').addEventListener("click", function() {
   clickedButtonName = 'copy';
 });
-document.getElementById('buttonCleanUrl').addEventListener("click", function() {
+ModuleDom.getElementById('buttonCleanUrl').addEventListener("click", function() {
   clickedButtonName = 'cleanUrl';
 });
-document.getElementById('buttonObfuscate').addEventListener("click", function() {
+ModuleDom.getElementById('buttonObfuscate').addEventListener("click", function() {
   clickedButtonName = 'obfuscate';
 });
-document.getElementById('buttonOpenUrls').addEventListener("click", function() {
+ModuleDom.getElementById('buttonOpenUrls').addEventListener("click", function() {
   clickedButtonName = 'openUrls';
 });
-document.getElementById('buttonConfigLazyLoading').addEventListener("click", function() {
+ModuleDom.getElementById('buttonConfigLazyLoading').addEventListener("click", function() {
   clickedButtonName = 'configLazyLoading';
 });
-document.getElementById('buttonAddLazyLoading').addEventListener("click", function() {
+ModuleDom.getElementById('buttonAddLazyLoading').addEventListener("click", function() {
   clickedButtonName = 'addLazyLoading';
 });
-document.getElementById('buttonConfigRules').addEventListener("click", function() {
+ModuleDom.getElementById('buttonConfigRules').addEventListener("click", function() {
   clickedButtonName = 'configRules';
 });
-document.getElementById('buttonInputDeobfuscation').addEventListener("click", function() {
+ModuleDom.getElementById('buttonInputDeobfuscation').addEventListener("click", function() {
   clickedButtonName = 'inputDeobfuscation';
 });
-document.getElementById('buttonInputObfuscation').addEventListener("click", function() {
+ModuleDom.getElementById('buttonInputObfuscation').addEventListener("click", function() {
   clickedButtonName = 'inputObfuscation';
 });
-document.getElementById('buttonAddRule').addEventListener("click", function() {
+ModuleDom.getElementById('buttonAddRule').addEventListener("click", function() {
   clickedButtonName = 'addRule';
 });
-document.getElementById('buttonClearAllRules').addEventListener("click", function() {
+ModuleDom.getElementById('buttonClearAllRules').addEventListener("click", function() {
   clickedButtonName = 'clearAllRules';
 });
 ModuleDom.getElementById(new ModuleButtons.ButtonOpenPaths().buttonIdHtml).addEventListener("click", function() {
