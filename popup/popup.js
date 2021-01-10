@@ -689,7 +689,6 @@ function popupMain() {
     }
 
     function createClickedButton() {
-      console.log('working with: '+clickedButtonName);
       switch (clickedButtonName) {
         case new ButtonConfiguration().buttonName:
           return new ButtonConfiguration();
