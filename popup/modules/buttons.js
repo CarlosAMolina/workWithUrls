@@ -79,16 +79,6 @@ class ButtonOnOff {
 
 }
 
-class ButtonTest extends ButtonOnOff {
-
-  constructor() {
-    const buttonIdHtml = "buttonTestOnOff";
-    const buttonIdStorage = "buttonTestOnOffIsOn";
-    super(buttonIdHtml, buttonIdStorage);
-  }
-
-}
-
 
 class ButtonOpenPaths extends ButtonOnOff {
 
@@ -127,6 +117,5 @@ export {
   ButtonDecodeUrls,
   ButtonClicked,
   ButtonOpenPaths,
-  ButtonOpenRules,
-  ButtonTest
+  ButtonOpenRules
 };

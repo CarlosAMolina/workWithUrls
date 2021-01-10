@@ -49,10 +49,6 @@ function showOrHideRuleOrRules() {
 }
 
 
-ModuleDom.getElementById('buttonTestOnOff').addEventListener("click", function() {
-  new ModuleButtons.ButtonTest().switchStyleAndStorageOnOff();
-});
-
 var clickedButtonName = null;
 document.getElementById('buttonShowConfig').addEventListener("click", function() {
   clickedButtonName = 'showConfig';
@@ -108,7 +104,6 @@ function popupMain() {
 
     getRules();
     getStorageLazyLoading();
-    new ModuleButtons.ButtonTest().setStylePrevious();
     new ModuleButtons.ButtonDecodeUrls().setStylePrevious();
     new ModuleButtons.ButtonOpenPaths().setStylePrevious();
     new ModuleButtons.ButtonOpenRules().setStylePrevious();
