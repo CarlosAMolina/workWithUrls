@@ -12,7 +12,7 @@ describe("Check script dom.js: ", function() {
       assert.equal(ModuleDom.getValueElementById(elementId), inputUrlsNew);
     });
     it("Check function setCheckedElementById, setUncheckedElementById and isCheckedElementById: ", function() {
-      const elementId = 'boxDecode';
+      const elementId = 'buttonBoxDecode';
       ModuleDom.setCheckedElementById(elementId);
       assert.isTrue(ModuleDom.isCheckedElementById(elementId));
       ModuleDom.setUncheckedElementById(elementId);
@@ -40,6 +40,12 @@ describe("Check script dom.js: ", function() {
       assert.equal(ModuleDom.getElementById(elementId).style.boxShadow, ModuleDom.STYLE_BOX_SHADOW_ERROR);
       ModuleDom.unsetStyleBoxErrorToElementById(elementId);
       assert.equal(ModuleDom.getElementById(elementId).style.boxShadow, '');
+    });
+    it("Check function showOrHideArrayElementsById: ", function() {
+      const elementId = 'menuLazyLoading';
+      assert.isTrue(ModuleDom.isHiddenElementById(elementId));
+      ModuleDom.showOrHideArrayElementsById([elementId]);
+      assert.isFalse(ModuleDom.isHiddenElementById(elementId));
     });
   });
 });

@@ -254,21 +254,6 @@ function popupMain() {
   // listen to clicks on the buttons
   document.addEventListener('click', (e) => {
 
-    function showOrHideInfo(idElements2Change){ // idElements2Change: array
-
-      function showTagsInfo(idElement2Change){
-        ModuleDom.setUnhiddenElementById(idElement2Change);
-      }
-      for (const idElement2Change of idElements2Change){
-        if (ModuleDom.isHiddenElementById(idElement2Change)){
-          showTagsInfo(idElement2Change);
-        } else {
-          ModuleDom.setHiddenElementById(idElement2Change);
-          showTagsInfo(idElement2Change); // TODO ¿delete?
-        }
-      }
-    }
-
     function enableElements(idElements2Change){
       for (const arrayValue of idElements2Change){
         ModuleDom.setEnabledElementById(arrayValue);
@@ -518,7 +503,7 @@ function popupMain() {
       } 
 
       get run() {
-        showOrHideInfo(['menuLazyLoading']);
+        ModuleDom.showOrHideArrayElementsById(['menuLazyLoading']);
       }
 
     }
@@ -530,7 +515,7 @@ function popupMain() {
       } 
 
       get run() {
-        showOrHideInfo(['menuRules']);
+        ModuleDom.showOrHideArrayElementsById(['menuRules']);
       }
 
     }
@@ -542,7 +527,7 @@ function popupMain() {
       } 
 
       get run() {
-        showOrHideInfo(['divInputRule','divInputRules']);
+        ModuleDom.showOrHideArrayElementsById(['divInputRule','divInputRules']);
       }
 
     }
@@ -555,7 +540,7 @@ function popupMain() {
 
       get run() {
         this.logButtonName;
-        showOrHideInfo(['menuConfig']);
+        ModuleDom.showOrHideArrayElementsById(['menuConfig']);
         if (!ModuleDom.isHiddenElementById('menuRules')) {
           ModuleDom.setHiddenElementById('menuRules');
         }

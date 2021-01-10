@@ -58,10 +58,23 @@ function setStyleBoxErrorToElementById(elementId){
   getElementById(elementId).style.boxShadow = STYLE_BOX_SHADOW_ERROR;
 }
 
+
 function unsetStyleBoxErrorToElementById(elementId){
   getElementById(elementId).style.removeProperty("box-shadow");
 }
 
+/*
+param idElements2Change: array
+*/
+function showOrHideArrayElementsById(idElements2Change) {
+  for (const idElement2Change of idElements2Change) {
+    if (isHiddenElementById(idElement2Change)) {
+      setUnhiddenElementById(idElement2Change);
+    } else {
+      setHiddenElementById(idElement2Change);
+    }
+  }
+}
 
 export {
   getElementById,
@@ -76,6 +89,7 @@ export {
   setUncheckedElementById,
   setUnhiddenElementById,
   setValueToElementById,
+  showOrHideArrayElementsById,
   STYLE_BOX_SHADOW_ERROR,
   unsetStyleBoxErrorToElementById
 };
