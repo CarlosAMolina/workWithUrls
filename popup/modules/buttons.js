@@ -25,14 +25,20 @@ class ButtonClicked {
 // https://www.scriptol.com/html5/button-on-off.php
 class ButtonOnOff {
 
-  constructor(buttonIdHtml, buttonIdStorage) {
+  constructor(buttonIdHtml, buttonIdStorage, buttonName) {
     this._buttonIdHtml = buttonIdHtml;
     this._buttonIdStorage = buttonIdStorage;
+    this._buttonName = buttonName;
   }
 
   get buttonIdHtml() { return this._buttonIdHtml; }
   get buttonIdStorage() { return this._buttonIdStorage; }
+  get buttonName() { return this._buttonName; }
   
+  get run() {
+    this.switchStyleAndStorageOnOff();
+  }
+
   setStylePrevious() {
     browser.storage.local.get(this.buttonIdStorage).then((result) => {
       if (result[this.buttonIdStorage]){
@@ -95,17 +101,23 @@ class ButtonOpenPaths extends ButtonOnOff {
     this._buttonName = 'openPaths';
   }
 
-  get buttonName() {
-    return this._buttonName;
-  }
+}
 
-  get run() {
-    this.switchStyleAndStorageOnOff();
+
+class ButtonDecodeUrls extends ButtonOnOff {
+
+  constructor() {
+    const buttonIdHtml = 'buttonDecodeUrls';
+    const buttonIdStorage = 'buttonDecodeUrlsIsOn';
+    super(buttonIdHtml, buttonIdStorage);
+    this._buttonName = 'boxDecode';
   }
 
 }
 
+
 export {
+  ButtonDecodeUrls,
   ButtonClicked,
   ButtonOpenPaths,
   ButtonTest

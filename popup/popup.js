@@ -79,8 +79,11 @@ document.getElementById('buttonAddRule').addEventListener("click", function() {
 document.getElementById('buttonClearAllRules').addEventListener("click", function() {
   clickedButtonName = 'clearAllRules';
 });
-ModuleDom.getElementById('buttonOpenPaths').addEventListener("click", function() {
+ModuleDom.getElementById(new ModuleButtons.ButtonOpenPaths().buttonIdHtml).addEventListener("click", function() {
   clickedButtonName = new ModuleButtons.ButtonOpenPaths().buttonName;
+});
+ModuleDom.getElementById(new ModuleButtons.ButtonDecodeUrls().buttonIdHtml).addEventListener("click", function() {
+  clickedButtonName = new ModuleButtons.ButtonDecodeUrls().buttonName;
 });
 
 function popupMain() {
@@ -93,6 +96,7 @@ function popupMain() {
     getStorageLazyLoading();
     new ModuleButtons.ButtonTest().setStylePrevious();
     new ModuleButtons.ButtonOpenPaths().setStylePrevious();
+    new ModuleButtons.ButtonDecodeUrls().setStylePrevious();
 
   }
 
@@ -354,7 +358,7 @@ function popupMain() {
       urls = ModuleDom.getValueElementById('inputUrls').split('\n');
 
       console.log('URLs at the input box: ' + urls)
-      if (ModuleDom.isCheckedElementById('buttonOpenPaths')){
+      if (ModuleDom.isCheckedElementById(new ModuleButtons.ButtonOpenPaths().buttonIdHtml)){
         urls = getUrlsWithPaths(urls);
       }
       // Open URLs.
@@ -575,7 +579,7 @@ function popupMain() {
         this.logButtonName;
         let urlsModifier = null;
         rules.setRuleTypeDeobfuscate();
-        if (ModuleDom.isCheckedElementById('buttonBoxDecode')){
+        if (ModuleDom.isCheckedElementById(new ModuleButtons.ButtonDecodeUrls().buttonIdHtml)){
           console.log('Choosen option: decode')
           urlsModifier = ModuleUrlsModifier.urlsModifier();
         } else {
@@ -710,6 +714,8 @@ function popupMain() {
           return new ButtonInputDeobfuscation();
         case new ButtonInputObfuscation().buttonName:
           return new ButtonInputObfuscation();
+        case new ModuleButtons.ButtonDecodeUrls().buttonName:
+          return new ModuleButtons.ButtonDecodeUrls();
 
         // TODO continue here
         case new ButtonOpenRules().buttonName:

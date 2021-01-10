@@ -12,7 +12,7 @@ describe("Check script dom.js: ", function() {
       assert.equal(ModuleDom.getValueElementById(elementId), inputUrlsNew);
     });
     it("Check function setCheckedElementById, setUncheckedElementById and isCheckedElementById: ", function() {
-      const elementId = 'buttonBoxDecode';
+      const elementId = 'buttonDecodeUrls';
       ModuleDom.setCheckedElementById(elementId);
       assert.isTrue(ModuleDom.isCheckedElementById(elementId));
       ModuleDom.setUncheckedElementById(elementId);
