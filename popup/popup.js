@@ -13,7 +13,6 @@ const rules = new ModuleUrlsModifier.Rules();
 
 // Global variables.
 var lazyLoadingTime = 0;
-var openPaths = 0;
 var PROTOCOL_DEFAULT = 'http://'
 var urls = [];
 // Variable to save the result of window.open()
@@ -42,48 +41,47 @@ ModuleDom.getElementById('buttonTestOnOff').addEventListener("click", function()
 
 var clickedButtonName = null;
 document.getElementById('buttonShowConfig').addEventListener("click", function() {
-clickedButtonName = 'showConfig';
+  clickedButtonName = 'showConfig';
 });
 document.getElementById('buttonCopy').addEventListener("click", function() {
-clickedButtonName = 'copy';
+  clickedButtonName = 'copy';
 });
 document.getElementById('buttonCleanUrl').addEventListener("click", function() {
-clickedButtonName = 'cleanUrl';
+  clickedButtonName = 'cleanUrl';
 });
 document.getElementById('buttonObfuscate').addEventListener("click", function() {
-clickedButtonName = 'obfuscate';
+  clickedButtonName = 'obfuscate';
 });
 document.getElementById('buttonOpenUrls').addEventListener("click", function() {
-clickedButtonName = 'openUrls';
+  clickedButtonName = 'openUrls';
 });
 document.getElementById('buttonOpenRules').addEventListener("click", function() {
-clickedButtonName = 'openRules';
+  clickedButtonName = 'openRules';
 });
 document.getElementById('buttonConfigLazyLoading').addEventListener("click", function() {
-clickedButtonName = 'configLazyLoading';
+  clickedButtonName = 'configLazyLoading';
 });
 document.getElementById('buttonAddLazyLoading').addEventListener("click", function() {
-clickedButtonName = 'addLazyLoading';
+  clickedButtonName = 'addLazyLoading';
 });
 document.getElementById('buttonConfigRules').addEventListener("click", function() {
-clickedButtonName = 'configRules';
+  clickedButtonName = 'configRules';
 });
 document.getElementById('buttonInputDeobfuscation').addEventListener("click", function() {
-clickedButtonName = 'inputDeobfuscation';
+  clickedButtonName = 'inputDeobfuscation';
 });
 document.getElementById('buttonInputObfuscation').addEventListener("click", function() {
-clickedButtonName = 'inputObfuscation';
+  clickedButtonName = 'inputObfuscation';
 });
 document.getElementById('buttonAddRule').addEventListener("click", function() {
-clickedButtonName = 'addRule';
+  clickedButtonName = 'addRule';
 });
 document.getElementById('buttonClearAllRules').addEventListener("click", function() {
-clickedButtonName = 'clearAllRules';
+  clickedButtonName = 'clearAllRules';
 });
-document.getElementById('buttonOpenPaths').addEventListener("click", function() {
-clickedButtonName = 'openPaths';
+ModuleDom.getElementById('buttonOpenPaths').addEventListener("click", function() {
+  clickedButtonName = new ModuleButtons.ButtonOpenPaths().buttonName;
 });
-
 
 function popupMain() {
 
@@ -91,26 +89,11 @@ function popupMain() {
 
   function initializePopup() {
 
-    getOpenPaths();
     getRules();
     getStorageLazyLoading();
     new ModuleButtons.ButtonTest().setStylePrevious();
+    new ModuleButtons.ButtonOpenPaths().setStylePrevious();
 
-    // Get value of the open paths option at the storage.
-    function getOpenPaths(){
-      console.log('Init getOpenPaths()')
-      var gettingItem = browser.storage.local.get('idOpenPaths');
-      // Object result: empty object if the searched value is not stored.
-      gettingItem.then((result) => {
-        // Undefined -> open paths option has never been used.
-        if ( (typeof result.idOpenPaths != 'undefined') && (result.idOpenPaths == 1) ){
-          // On/off openPaths switch.
-          ModuleDom.setCheckedElementById('buttonOpenPaths');
-        } else {
-          ModuleDom.setUncheckedElementById('buttonOpenPaths');
-        }
-      }, reportError);
-    }
   }
 
   function getRules(){
@@ -514,18 +497,6 @@ function popupMain() {
       }   
     }
 
-    // open paths option
-    function saveOpenPaths(){
-      if (ModuleDom.isCheckedElementById('buttonOpenPaths')){
-        openPaths = 1;
-      } else {
-        openPaths = 0;
-      }
-      var storingInfo = browser.storage.local.set({['idOpenPaths']:openPaths});
-      storingInfo.then(() => {
-      });
-    }
-
     function copy2clipboard (idWithInfo){
       document.getElementById(idWithInfo).select();
       document.execCommand('copy');
@@ -540,27 +511,7 @@ function popupMain() {
 
     }
 
-    class ButtonClicked {
-
-      constructor(buttonName) {
-        this._buttonName = buttonName;
-      }
-
-      get buttonName() {
-        return this._buttonName;
-      }
-
-      get run() {
-        throw TypeError("Not implemented: method run")
-      }
-
-      get logButtonName() {
-        console.log('Clicked button: ' + this.buttonName);
-      }
-
-    }
-
-    class ButtonConfigurationLazyLoading extends ButtonClicked {
+    class ButtonConfigurationLazyLoading extends ModuleButtons.ButtonClicked {
 
       constructor() {
         super('configLazyLoading');
@@ -572,7 +523,7 @@ function popupMain() {
 
     }
 
-    class ButtonConfigurationRules extends ButtonClicked {
+    class ButtonConfigurationRules extends ModuleButtons.ButtonClicked {
 
       constructor() {
         super('configRules');
@@ -584,7 +535,7 @@ function popupMain() {
 
     }
 
-    class ButtonOpenRules extends ButtonClicked {
+    class ButtonOpenRules extends ModuleButtons.ButtonClicked {
 
       constructor() {
         super('openRules');
@@ -596,7 +547,7 @@ function popupMain() {
 
     }
 
-    class ButtonConfiguration extends ButtonClicked {
+    class ButtonConfiguration extends ModuleButtons.ButtonClicked {
 
       constructor() {
         super('showConfig');
@@ -612,7 +563,7 @@ function popupMain() {
 
     }
 
-    class ButtonCopy extends ButtonClicked {
+    class ButtonCopy extends ModuleButtons.ButtonClicked {
 
       constructor() {
         super('copy');
@@ -629,7 +580,7 @@ function popupMain() {
 
     }
 
-    class ButtonCleanUrl extends ButtonClicked {
+    class ButtonCleanUrl extends ModuleButtons.ButtonClicked {
       
       constructor() {
         super('cleanUrl');
@@ -651,7 +602,7 @@ function popupMain() {
 
     }
 
-    class ButtonObfuscate extends ButtonClicked {
+    class ButtonObfuscate extends ModuleButtons.ButtonClicked {
       
       constructor() {
         super('obfuscate');
@@ -666,7 +617,7 @@ function popupMain() {
 
     }
 
-    class ButtonOpenUrls extends ButtonClicked {
+    class ButtonOpenUrls extends ModuleButtons.ButtonClicked {
 
       constructor() {
         super('openUrls');
@@ -679,19 +630,7 @@ function popupMain() {
 
     }
 
-    class ButtonOpenPaths extends ButtonClicked {
-
-      constructor() {
-        super('openPaths');
-      } 
-
-      get run() {
-        saveOpenPaths();
-      }
-
-    }
-
-    class ButtonInputObfuscation extends ButtonClicked {
+    class ButtonInputObfuscation extends ModuleButtons.ButtonClicked {
 
       constructor() {
         super('inputObfuscation');
@@ -706,7 +645,7 @@ function popupMain() {
 
     }
 
-    class ButtonInputDeobfuscation extends ButtonClicked {
+    class ButtonInputDeobfuscation extends ModuleButtons.ButtonClicked {
 
       constructor() {
         super('inputDeobfuscation');
@@ -721,7 +660,7 @@ function popupMain() {
 
     }
 
-    class ButtonAddLazyLoading extends ButtonClicked {
+    class ButtonAddLazyLoading extends ModuleButtons.ButtonClicked {
 
       constructor() {
         super('addLazyLoading');
@@ -735,7 +674,7 @@ function popupMain() {
 
     }
 
-    class ButtonAddRule extends ButtonClicked {
+    class ButtonAddRule extends ModuleButtons.ButtonClicked {
 
       constructor() {
         super('addRule');
@@ -747,7 +686,7 @@ function popupMain() {
 
     }
 
-    class ButtonClearAllRules extends ButtonClicked {
+    class ButtonClearAllRules extends ModuleButtons.ButtonClicked {
 
       constructor() {
         super('clearAllRules');
@@ -774,8 +713,8 @@ function popupMain() {
           return new ButtonOpenUrls();
         case new ButtonObfuscate().buttonName:
           return new ButtonObfuscate();
-        case new ButtonOpenPaths().buttonName:
-          return new ButtonOpenPaths();
+        case new ModuleButtons.ButtonOpenPaths().buttonName:
+          return new ModuleButtons.ButtonOpenPaths();
         case new ButtonConfigurationLazyLoading().buttonName:
           return new ButtonConfigurationLazyLoading();
         case new ButtonAddLazyLoading().buttonName:

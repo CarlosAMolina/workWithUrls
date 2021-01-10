@@ -1,6 +1,27 @@
 import * as ModuleDom from './dom.js';
 
 
+class ButtonClicked {
+
+  constructor(buttonName) {
+    this._buttonName = buttonName;
+  }
+
+  get buttonName() {
+    return this._buttonName;
+  }
+
+  get run() {
+    throw TypeError("Not implemented: method run")
+  }
+
+  get logButtonName() {
+    console.log('Clicked button: ' + this.buttonName);
+  }
+
+}
+
+
 // https://www.scriptol.com/html5/button-on-off.php
 class ButtonOnOff {
 
@@ -64,6 +85,28 @@ class ButtonTest extends ButtonOnOff {
 
 }
 
+
+class ButtonOpenPaths extends ButtonOnOff {
+
+  constructor() {
+    const buttonIdHtml = 'buttonOpenPaths';
+    const buttonIdStorage = 'buttonOpenPathsIsOn';
+    super(buttonIdHtml, buttonIdStorage);
+    this._buttonName = 'openPaths';
+  }
+
+  get buttonName() {
+    return this._buttonName;
+  }
+
+  get run() {
+    this.switchStyleAndStorageOnOff();
+  }
+
+}
+
 export {
+  ButtonClicked,
+  ButtonOpenPaths,
   ButtonTest
 };
