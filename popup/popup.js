@@ -35,6 +35,20 @@ function modifyText(urlsModifier){
   ModuleDom.setValueToElementById(urlsNew, 'inputUrls');
 }
 
+
+function showOrHideRuleOrRules() {
+  browser.storage.local.get(new ModuleButtons.ButtonOpenRules().buttonIdStorage).then((result) => {
+    if (result[new ModuleButtons.ButtonOpenRules().buttonIdStorage]){
+      ModuleDom.setHiddenElementById('divInputRule');
+      ModuleDom.setUnhiddenElementById('divInputRules');
+    } else {
+      ModuleDom.setUnhiddenElementById('divInputRule');
+      ModuleDom.setHiddenElementById('divInputRules');
+    }
+  }, console.error);
+}
+
+
 ModuleDom.getElementById('buttonTestOnOff').addEventListener("click", function() {
   new ModuleButtons.ButtonTest().switchStyleAndStorageOnOff();
 });
@@ -54,9 +68,6 @@ document.getElementById('buttonObfuscate').addEventListener("click", function() 
 });
 document.getElementById('buttonOpenUrls').addEventListener("click", function() {
   clickedButtonName = 'openUrls';
-});
-document.getElementById('buttonOpenRules').addEventListener("click", function() {
-  clickedButtonName = 'openRules';
 });
 document.getElementById('buttonConfigLazyLoading').addEventListener("click", function() {
   clickedButtonName = 'configLazyLoading';
@@ -80,10 +91,13 @@ document.getElementById('buttonClearAllRules').addEventListener("click", functio
   clickedButtonName = 'clearAllRules';
 });
 ModuleDom.getElementById(new ModuleButtons.ButtonOpenPaths().buttonIdHtml).addEventListener("click", function() {
-  clickedButtonName = new ModuleButtons.ButtonOpenPaths().buttonName;
+  clickedButtonName = new ModuleButtons.ButtonOpenPaths().buttonIdHtml;
 });
 ModuleDom.getElementById(new ModuleButtons.ButtonDecodeUrls().buttonIdHtml).addEventListener("click", function() {
-  clickedButtonName = new ModuleButtons.ButtonDecodeUrls().buttonName;
+  clickedButtonName = new ModuleButtons.ButtonDecodeUrls().buttonIdHtml;
+});
+ModuleDom.getElementById(new ModuleButtons.ButtonOpenRules().buttonIdHtml).addEventListener("click", function() {
+  clickedButtonName = new ModuleButtons.ButtonOpenRules().buttonIdHtml;
 });
 
 function popupMain() {
@@ -95,8 +109,9 @@ function popupMain() {
     getRules();
     getStorageLazyLoading();
     new ModuleButtons.ButtonTest().setStylePrevious();
-    new ModuleButtons.ButtonOpenPaths().setStylePrevious();
     new ModuleButtons.ButtonDecodeUrls().setStylePrevious();
+    new ModuleButtons.ButtonOpenPaths().setStylePrevious();
+    new ModuleButtons.ButtonOpenRules().setStylePrevious();
 
   }
 
@@ -445,10 +460,10 @@ function popupMain() {
       }
 
       function getValues(){
-        if (!ModuleDom.isCheckedElementById('buttonOpenRules')){
-          return [ModuleDom.getValueElementById('inputValueOld'), ModuleDom.getValueElementById('inputValueNew')];
-        } else {
+        if (ModuleDom.isCheckedElementById(new ModuleButtons.ButtonOpenRules().buttonIdHtml)){
           return ModuleDom.getValueElementById('inputRules').split('\n');
+        } else {
+          return [ModuleDom.getValueElementById('inputValueOld'), ModuleDom.getValueElementById('inputValueNew')];
         }
       }
 
@@ -492,7 +507,7 @@ function popupMain() {
     }
 
     function copyRules(){
-      ModuleDom.setCheckedElementById('buttonOpenRules');
+      ModuleDom.setCheckedElementById(new ModuleButtons.ButtonOpenRules().buttonIdHtml); //TODO check if store modification is required. 
       ModuleDom.setHiddenElementById('divInputRule');
       ModuleDom.setUnhiddenElementById('divInputRules');
       ModuleDom.setValueToElementById(rules.ruleTransformationsToUseStringRepresentation, 'inputRules');
@@ -520,18 +535,6 @@ function popupMain() {
 
       get run() {
         ModuleDom.showOrHideArrayElementsById(['menuRules']);
-      }
-
-    }
-
-    class ButtonOpenRules extends ModuleButtons.ButtonClicked {
-
-      constructor() {
-        super('openRules');
-      } 
-
-      get run() {
-        ModuleDom.showOrHideArrayElementsById(['divInputRule','divInputRules']);
       }
 
     }
@@ -702,7 +705,7 @@ function popupMain() {
           return new ButtonOpenUrls();
         case new ButtonObfuscate().buttonName:
           return new ButtonObfuscate();
-        case new ModuleButtons.ButtonOpenPaths().buttonName:
+        case new ModuleButtons.ButtonOpenPaths().buttonIdHtml:
           return new ModuleButtons.ButtonOpenPaths();
         case new ButtonConfigurationLazyLoading().buttonName:
           return new ButtonConfigurationLazyLoading();
@@ -714,13 +717,12 @@ function popupMain() {
           return new ButtonInputDeobfuscation();
         case new ButtonInputObfuscation().buttonName:
           return new ButtonInputObfuscation();
-        case new ModuleButtons.ButtonDecodeUrls().buttonName:
+        case new ModuleButtons.ButtonDecodeUrls().buttonIdHtml:
           return new ModuleButtons.ButtonDecodeUrls();
+        case new ModuleButtons.ButtonOpenRules().buttonIdHtml:
+          return new ModuleButtons.ButtonOpenRules();
 
         // TODO continue here
-        case new ButtonOpenRules().buttonName:
-          //TODO as the action is done twice it brokes the execution.
-          return new ButtonOpenRules();
         case new ButtonAddRule().buttonName:
           return new ButtonAddRule();
         case new ButtonClearAllRules().buttonName:
@@ -730,11 +732,12 @@ function popupMain() {
 
     const clickedButton =  createClickedButton();
     if (clickedButton === undefined){
-        console.error("Invalid clicked button:");
-        console.error(e.target);
-        console.error(e.target.classList);
+      console.error("Invalid clicked button:");
+      console.error(e.target);
+      console.error(e.target.classList);
     } else {
       clickedButton.run;
+      showOrHideRuleOrRules();
     }
     clickedButtonName = null;
 
