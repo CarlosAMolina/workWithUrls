@@ -17,3 +17,5 @@ Try use private methods at:
 ## Use document.querySelector instead document.getElementById
 
 ## Not use global variables.
+
+## The rules are not applied correctly.

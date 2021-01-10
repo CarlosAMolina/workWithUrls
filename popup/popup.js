@@ -475,19 +475,20 @@ function popupMain() {
     // clear display/storage
     function clearStorageInfo() {
   
+      var gettingAllStoredItems = browser.storage.local.get(null);
+      gettingAllStoredItems.then((storedItems) => {
+        deleteAllRulesType(storedItems);
+      }, reportError);
+
       function deleteAllRulesType(storedItems){
         var keysUrl = Object.keys(storedItems).filter(key => key.includes(rules.ruleType+'_')); //array
-        for (keyUrl of keysUrl) {
+        for (const keyUrl of keysUrl) {
           browser.storage.local.remove(keyUrl);
         }
         getRules();
         notShowRules();
       }
 
-      var gettingAllStoredItems = browser.storage.local.get(null);
-      gettingAllStoredItems.then((storedItems) => {
-        deleteAllRulesType(storedItems);
-      }, reportError);
     }
 
     function notShowRules(){
@@ -682,7 +683,7 @@ function popupMain() {
       get run() {
         browser.tabs.query({active: true, currentWindow: true})
           .then(clearStorageInfo)
-          .catch(reportError)
+          .catch(console.log)
       }
     
     }
@@ -716,8 +717,6 @@ function popupMain() {
           return new ModuleButtons.ButtonDecodeUrls();
         case new ModuleButtons.ButtonOpenRules().buttonIdHtml:
           return new ModuleButtons.ButtonOpenRules();
-
-        // TODO continue here
         case new ButtonAddRule().buttonName:
           return new ButtonAddRule();
         case new ButtonClearAllRules().buttonName:
