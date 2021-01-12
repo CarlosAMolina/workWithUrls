@@ -268,12 +268,6 @@ function popupMain() {
   // listen to clicks on the buttons
   document.addEventListener('click', (e) => {
 
-    function enableElements(idElements2Change){
-      for (const arrayValue of idElements2Change){
-        ModuleDom.setEnabledElementById(arrayValue);
-      }
-    }
-
     function showStoredRulesType(){
       console.log('Init showStoredRulesType()')
       var gettingAllStoredItems = browser.storage.local.get(null);
@@ -628,7 +622,7 @@ function popupMain() {
         rules.setRuleTypeObfuscate();
         notShowRules();
         showStoredRulesType();
-        enableElements(['pInputOld','pInputNew','inputValueOld','inputValueNew','inputRules','buttonAddRule','buttonClearAllRules']);
+        ModuleDom.setEnabledArrayElementsById(['pInputOld','pInputNew','inputValueOld','inputValueNew','inputRules','buttonAddRule','buttonClearAllRules']);
       }
 
     }
@@ -643,7 +637,7 @@ function popupMain() {
         rules.setRuleTypeDeobfuscate();
         notShowRules();
         showStoredRulesType();
-        enableElements(['pInputOld','pInputNew','inputValueOld','inputValueNew','inputRules','buttonAddRule','buttonClearAllRules']);
+        ModuleDom.setEnabledArrayElementsById(['pInputOld','pInputNew','inputValueOld','inputValueNew','inputRules','buttonAddRule','buttonClearAllRules']);
       }
 
     }
