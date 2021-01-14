@@ -96,9 +96,11 @@ ModuleDom.getElementById(new ModuleButtons.ButtonOpenRules().buttonIdHtml).addEv
   clickedButtonName = new ModuleButtons.ButtonOpenRules().buttonIdHtml;
 });
 
+
 function reportError(error) {
   console.error(`Error: ${error}`);
 }
+
 
 function getRules(){
   console.log('Init getRules()')
@@ -119,6 +121,28 @@ function getRules(){
 }
 
 
+/* Get Lazy Loading time value at the storage.
+:param: no param.
+:return: no value, value saved at global variable lazyLoadingTime.
+*/
+function getStorageLazyLoading(){
+  console.log('Init getStorageLazyLoading()')
+  var gettingItem = browser.storage.local.get('idLazyLoadingTime');
+  // Object result: empty object if the searched value is not stored.
+  gettingItem.then((result) => {
+    // Undefined -> Lazy Loading time value option has never been set.
+    if ( (typeof result.idLazyLoadingTime != 'undefined') ){
+      lazyLoadingTime = result.idLazyLoadingTime;
+      console.log('Stored lazy loading time (type ' + typeof(lazyLoadingTime) + '): \'' + lazyLoadingTime + '\'');
+    } else{
+      lazyLoadingTime = 0;
+      console.log('Not previous stored lazy loading time value. Return (type ' + typeof(lazyLoadingTime) + '): \'' + lazyLoadingTime + '\'');
+    }
+  ModuleDom.setValueToElementById(lazyLoadingTime, 'inputLazyLoading');
+  }, reportError);
+}
+
+
 function popupMain() {
 
   initializePopup();
@@ -131,27 +155,6 @@ function popupMain() {
     new ModuleButtons.ButtonOpenPaths().setStylePrevious();
     new ModuleButtons.ButtonOpenRules().setStylePrevious();
 
-  }
-
-  /* Get Lazy Loading time value at the storage.
-  :param: no param.
-  :return: no value, value saved at global variable lazyLoadingTime.
-  */
-  function getStorageLazyLoading(){
-    console.log('Init getStorageLazyLoading()')
-    var gettingItem = browser.storage.local.get('idLazyLoadingTime');
-    // Object result: empty object if the searched value is not stored.
-    gettingItem.then((result) => {
-      // Undefined -> Lazy Loading time value option has never been set.
-      if ( (typeof result.idLazyLoadingTime != 'undefined') ){
-        lazyLoadingTime = result.idLazyLoadingTime;
-        console.log('Stored lazy loading time (type ' + typeof(lazyLoadingTime) + '): \'' + lazyLoadingTime + '\'');
-      } else{
-        lazyLoadingTime = 0;
-        console.log('Not previous stored lazy loading time value. Return (type ' + typeof(lazyLoadingTime) + '): \'' + lazyLoadingTime + '\'');
-      }
-    ModuleDom.setValueToElementById(lazyLoadingTime, 'inputLazyLoading');
-    }, reportError);
   }
 
   // Display info.
