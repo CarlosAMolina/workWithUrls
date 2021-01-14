@@ -12,6 +12,7 @@ import * as ModuleUrlsModifier from './modules/urlsModifier.js';
 const rules = new ModuleUrlsModifier.Rules();
 
 // Global variables.
+var clickedButtonName = null;
 var lazyLoadingTime = 0;
 var PROTOCOL_DEFAULT = 'http://'
 var urls = [];
@@ -49,7 +50,6 @@ function showOrHideRuleOrRules() {
 }
 
 
-var clickedButtonName = null;
 ModuleDom.getElementById('buttonShowConfig').addEventListener("click", function() {
   clickedButtonName = 'showConfig';
 });
@@ -143,6 +143,117 @@ function getStorageLazyLoading(){
 }
 
 
+// Display info.
+function showStoredInfo(eValues) {
+  // Display box.
+  var entry = document.createElement('div');
+  var entryDisplay = document.createElement('div');
+  var entryValue = document.createElement('p');
+  var editBtn = document.createElement('button');
+  var deleteBtn = document.createElement('button');
+  var clearFix = document.createElement('div'); // for background color and correct position
+  deleteBtn.textContent = 'Delete';
+  deleteBtn.innerHTML = '<img src="/icons/trash.png"/>';
+  editBtn.textContent = 'Edit';
+  editBtn.innerHTML = '<img src="/icons/edit.png"/>';
+  clearFix.setAttribute('class','clearfix');
+  deleteBtn.setAttribute('title','Delete');
+  deleteBtn.setAttribute('class','floatLeft button');
+  editBtn.setAttribute('title','Edit');
+  editBtn.setAttribute('class','floatLeft button');
+  entryValue.setAttribute('style','margin-left: 75px');
+  entry.appendChild(entryDisplay);
+  entryDisplay.appendChild(deleteBtn);
+  entryDisplay.appendChild(editBtn);
+  entryDisplay.appendChild(entryValue);
+  entryDisplay.appendChild(clearFix);
+
+  entryValue.textContent = eValues[0] + ' ---> ' + eValues[1];
+  ModuleDom.getInfoContainer().appendChild(entry);
+
+  // edit box
+  var cancelBtn = document.createElement('button');
+  var clearFix2 = document.createElement('div');
+  var entryEdit = document.createElement('div');
+  var entryEditInputOldValue = document.createElement('input');
+  var entryEditInputNewValue = document.createElement('input');
+  var updateBtn = document.createElement('button');
+  cancelBtn.innerHTML = '<img src="/icons/cancel.png"/>';
+  cancelBtn.setAttribute('title','Cancel update');
+  cancelBtn.setAttribute('class','floatLeft button');
+  clearFix2.setAttribute('class','clearfix');
+  entry.appendChild(entryEdit);
+  entryEdit.appendChild(entryEditInputOldValue);
+  entryEdit.appendChild(entryEditInputNewValue);
+  entryEdit.appendChild(updateBtn);
+  entryEdit.appendChild(cancelBtn);
+  entryEdit.appendChild(clearFix2);
+  entryEditInputOldValue.setAttribute('class','input');
+  entryEditInputOldValue.setAttribute('style','width:30%');
+  entryEditInputNewValue.setAttribute('class','input');
+  entryEditInputNewValue.setAttribute('style','width:30%');
+  updateBtn.innerHTML = '<img src="/icons/ok.png"/>';
+  updateBtn.setAttribute('title','Update');
+  updateBtn.setAttribute('class','floatLeft button');
+
+  entryEdit.style.display = 'none';
+  entryEditInputOldValue.value = eValues[0];
+  entryEditInputNewValue.value = eValues[1];
+
+  // set up listener for the delete functionality
+  deleteBtn.addEventListener('click',(e) => {
+    const evtTgt = e.target;
+    evtTgt.parentNode.parentNode.parentNode.removeChild(evtTgt.parentNode.parentNode);
+    browser.storage.local.remove([rules.ruleType+'_old_'+eValues[0], rules.ruleType+'_new_'+eValues[0]]);
+    getRules();
+  })
+
+  // set up listeners for the buttons
+
+  entryValue.addEventListener('click',() => {
+    entryDisplay.style.display = 'none';
+    entryEdit.style.display = 'block';
+  })
+
+  editBtn.addEventListener('click',() => {
+    entryDisplay.style.display = 'none';
+    entryEdit.style.display = 'block';
+  })
+
+  cancelBtn.addEventListener('click',() => {
+    entryDisplay.style.display = 'block';
+    entryEdit.style.display = 'none';
+  })
+
+  updateBtn.addEventListener('click',() => {
+
+    function updateValue(ids2change, ids2save, values2save) {
+      for (var i = 0; i < 2; i++) {
+        browser.storage.local.remove(ids2change[i]);
+        var storingInfo = browser.storage.local.set({ [ids2save[i]] : values2save[i] });
+        storingInfo.then(() => {
+        }, reportError);
+      }
+    }
+
+    var eKeys2change = [rules.ruleType + '_old_' + eValues[0], rules.ruleType + '_new_' + eValues[0]];
+    var values2save = [entryEditInputOldValue.value, entryEditInputNewValue.value];
+    var ids2save = [rules.ruleType + '_old_' + values2save[0], rules.ruleType + '_new_' + values2save[0]];
+    var gettingItem = browser.storage.local.get(ids2save[0]);
+    gettingItem.then((storedItem) => { // result: empty object if the searched value is not stored
+      var searchInStorage = Object.keys(storedItem); // array with the searched value if it is stored
+      if( (searchInStorage.length < 1) || ( (eKeys2change[0] == ids2save[0]) && (eValues[1] != values2save[1]) ) ) { // searchInStorage.length < 1 -> no stored
+        updateValue(eKeys2change, ids2save, values2save);
+        getRules()
+        entry.parentNode.removeChild(entry);
+        showStoredInfo(values2save);
+      }
+    });
+  });
+
+}
+
+
 function popupMain() {
 
   initializePopup();
@@ -157,117 +268,7 @@ function popupMain() {
 
   }
 
-  // Display info.
-  function showStoredInfo(eValues) {
-    // Display box.
-    var entry = document.createElement('div');
-    var entryDisplay = document.createElement('div');
-    var entryValue = document.createElement('p');
-    var editBtn = document.createElement('button');
-    var deleteBtn = document.createElement('button');
-    var clearFix = document.createElement('div'); // for background color and correct position
-    deleteBtn.textContent = 'Delete';
-    deleteBtn.innerHTML = '<img src="/icons/trash.png"/>';
-    editBtn.textContent = 'Edit';
-    editBtn.innerHTML = '<img src="/icons/edit.png"/>';
-    clearFix.setAttribute('class','clearfix');
-    deleteBtn.setAttribute('title','Delete');
-    deleteBtn.setAttribute('class','floatLeft button');
-    editBtn.setAttribute('title','Edit');
-    editBtn.setAttribute('class','floatLeft button');
-    entryValue.setAttribute('style','margin-left: 75px');
-    entry.appendChild(entryDisplay);
-    entryDisplay.appendChild(deleteBtn);
-    entryDisplay.appendChild(editBtn);
-    entryDisplay.appendChild(entryValue);
-    entryDisplay.appendChild(clearFix);
-
-    entryValue.textContent = eValues[0] + ' ---> ' + eValues[1];
-    ModuleDom.getInfoContainer().appendChild(entry);
-
-    // edit box
-    var cancelBtn = document.createElement('button');
-    var clearFix2 = document.createElement('div');
-    var entryEdit = document.createElement('div');
-    var entryEditInputOldValue = document.createElement('input');
-    var entryEditInputNewValue = document.createElement('input');
-    var updateBtn = document.createElement('button');
-    cancelBtn.innerHTML = '<img src="/icons/cancel.png"/>';
-    cancelBtn.setAttribute('title','Cancel update');
-    cancelBtn.setAttribute('class','floatLeft button');
-    clearFix2.setAttribute('class','clearfix');
-    entry.appendChild(entryEdit);
-    entryEdit.appendChild(entryEditInputOldValue);
-    entryEdit.appendChild(entryEditInputNewValue);
-    entryEdit.appendChild(updateBtn);
-    entryEdit.appendChild(cancelBtn);
-    entryEdit.appendChild(clearFix2);
-    entryEditInputOldValue.setAttribute('class','input');
-    entryEditInputOldValue.setAttribute('style','width:30%');
-    entryEditInputNewValue.setAttribute('class','input');
-    entryEditInputNewValue.setAttribute('style','width:30%');
-    updateBtn.innerHTML = '<img src="/icons/ok.png"/>';
-    updateBtn.setAttribute('title','Update');
-    updateBtn.setAttribute('class','floatLeft button');
-
-    entryEdit.style.display = 'none';
-    entryEditInputOldValue.value = eValues[0];
-    entryEditInputNewValue.value = eValues[1];
-
-    // set up listener for the delete functionality
-    deleteBtn.addEventListener('click',(e) => {
-      const evtTgt = e.target;
-      evtTgt.parentNode.parentNode.parentNode.removeChild(evtTgt.parentNode.parentNode);
-      browser.storage.local.remove([rules.ruleType+'_old_'+eValues[0], rules.ruleType+'_new_'+eValues[0]]);
-      getRules();
-    })
-
-    // set up listeners for the buttons
-
-    entryValue.addEventListener('click',() => {
-      entryDisplay.style.display = 'none';
-      entryEdit.style.display = 'block';
-    })
-
-    editBtn.addEventListener('click',() => {
-      entryDisplay.style.display = 'none';
-      entryEdit.style.display = 'block';
-    })
-  
-    cancelBtn.addEventListener('click',() => {
-      entryDisplay.style.display = 'block';
-      entryEdit.style.display = 'none';
-    })
-
-    updateBtn.addEventListener('click',() => {
-
-      function updateValue(ids2change, ids2save, values2save) {
-        for (var i = 0; i < 2; i++) {
-          browser.storage.local.remove(ids2change[i]);
-          var storingInfo = browser.storage.local.set({ [ids2save[i]] : values2save[i] });
-          storingInfo.then(() => {
-          }, reportError);
-        }
-      }
-
-      var eKeys2change = [rules.ruleType + '_old_' + eValues[0], rules.ruleType + '_new_' + eValues[0]];
-      var values2save = [entryEditInputOldValue.value, entryEditInputNewValue.value];
-      var ids2save = [rules.ruleType + '_old_' + values2save[0], rules.ruleType + '_new_' + values2save[0]];
-      var gettingItem = browser.storage.local.get(ids2save[0]);
-      gettingItem.then((storedItem) => { // result: empty object if the searched value is not stored
-        var searchInStorage = Object.keys(storedItem); // array with the searched value if it is stored
-        if( (searchInStorage.length < 1) || ( (eKeys2change[0] == ids2save[0]) && (eValues[1] != values2save[1]) ) ) { // searchInStorage.length < 1 -> no stored
-          updateValue(eKeys2change, ids2save, values2save);
-          getRules()
-          entry.parentNode.removeChild(entry);
-          showStoredInfo(values2save);
-        }
-      });
-    });
- 
-  }
-
-  // listen to clicks on the buttons
+  // Listen to clicks on the buttons.
   document.addEventListener('click', (e) => {
 
     function showStoredRulesType(){
