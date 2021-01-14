@@ -734,11 +734,7 @@ function popupMain() {
   });
 
   //TODO: created only for testing.
-  popupMain.getRules = getRules; 
-  popupMain.getStorageLazyLoading = getStorageLazyLoading;
   popupMain.initializePopup = initializePopup; 
-  popupMain.reportError = reportError; 
-  popupMain.showStoredInfo = showStoredInfo;
 }
 
 // There was an error executing the script.
@@ -758,7 +754,11 @@ catch (error){
 
 //TODO: created only for testing.
 export {
+  getRules,
+  getStorageLazyLoading,
   modifyText,
   popupMain,
-  reportExecuteScriptError
+  reportError,
+  reportExecuteScriptError,
+  showStoredInfo,
 };
