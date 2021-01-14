@@ -96,6 +96,10 @@ ModuleDom.getElementById(new ModuleButtons.ButtonOpenRules().buttonIdHtml).addEv
   clickedButtonName = new ModuleButtons.ButtonOpenRules().buttonIdHtml;
 });
 
+function reportError(error) {
+  console.error(`Error: ${error}`);
+}
+
 function popupMain() {
 
   initializePopup();
@@ -150,10 +154,6 @@ function popupMain() {
   }
 
 
-  // Error.
-  function reportError(error) {
-    console.error(`Error: ${error}`);
-  }
 
   // Display info.
   function showStoredInfo(eValues) {
