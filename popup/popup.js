@@ -100,6 +100,25 @@ function reportError(error) {
   console.error(`Error: ${error}`);
 }
 
+function getRules(){
+  console.log('Init getRules()')
+  var gettingAllStoredItems = browser.storage.local.get(null);
+  gettingAllStoredItems.then((storedItems) => { // storedItems: object of keys and values
+    rules.initializeRules();
+    for (const ruleType of rules.ruleTypes) {
+      var keysRuleOld = Object.keys(storedItems).filter(key => key.includes(ruleType+'_old_')); //array
+      var rules2SaveOld = keysRuleOld.map(keysRuleOld => storedItems[keysRuleOld]); // array
+      var keysRuleNew = Object.keys(storedItems).filter(key => key.includes(ruleType+'_new_')); //array
+      var rules2SaveNew = keysRuleNew.map(keysRuleNew => storedItems[keysRuleNew]); // array
+      let ruleTransformations = new ModuleUrlsModifier.RuleTransformations(rules2SaveOld, rules2SaveNew); 
+      rules.addTypeAndRule(ruleType, ruleTransformations);
+    }
+    console.log('Rules:')
+    console.log(rules.rules)
+  }, reportError);
+}
+
+
 function popupMain() {
 
   initializePopup();
@@ -112,24 +131,6 @@ function popupMain() {
     new ModuleButtons.ButtonOpenPaths().setStylePrevious();
     new ModuleButtons.ButtonOpenRules().setStylePrevious();
 
-  }
-
-  function getRules(){
-    console.log('Init getRules()')
-    var gettingAllStoredItems = browser.storage.local.get(null);
-    gettingAllStoredItems.then((storedItems) => { // storedItems: object of keys and values
-      rules.initializeRules();
-      for (const ruleType of rules.ruleTypes) {
-        var keysRuleOld = Object.keys(storedItems).filter(key => key.includes(ruleType+'_old_')); //array
-        var rules2SaveOld = keysRuleOld.map(keysRuleOld => storedItems[keysRuleOld]); // array
-        var keysRuleNew = Object.keys(storedItems).filter(key => key.includes(ruleType+'_new_')); //array
-        var rules2SaveNew = keysRuleNew.map(keysRuleNew => storedItems[keysRuleNew]); // array
-        let ruleTransformations = new ModuleUrlsModifier.RuleTransformations(rules2SaveOld, rules2SaveNew); 
-        rules.addTypeAndRule(ruleType, ruleTransformations);
-      }
-      console.log('Rules:')
-      console.log(rules.rules)
-    }, reportError);
   }
 
   /* Get Lazy Loading time value at the storage.
@@ -152,8 +153,6 @@ function popupMain() {
     ModuleDom.setValueToElementById(lazyLoadingTime, 'inputLazyLoading');
     }, reportError);
   }
-
-
 
   // Display info.
   function showStoredInfo(eValues) {
