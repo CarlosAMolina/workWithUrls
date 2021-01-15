@@ -254,6 +254,463 @@ function showStoredInfo(eValues) {
 }
 
 
+function showStoredRulesType(){
+  console.log('Init showStoredRulesType()')
+  var gettingAllStoredItems = browser.storage.local.get(null);
+  gettingAllStoredItems.then((storedItems) => {
+    console.log('storedItems:')
+    console.log(storedItems)
+    // Get keys of the dictionary for the current rule type
+    // (ofuscation or deofuscation) with the terms 
+    // (last part of each key) that must be replaced.
+    var keysRuleTypeOld = Object.keys(storedItems).filter(key => key.includes(rules.ruleType+'_old')); //array
+    console.log('keysRuleTypeOld:')
+    console.log(keysRuleTypeOld)
+    // Get values of the dictionary to replace last term 
+    // of the previous keys.
+    var valuesRuleTypeOld = keysRuleTypeOld.map(keysRuleTypeOld => storedItems[keysRuleTypeOld]); // array
+    console.log('valuesRuleTypeOld:')
+    console.log(valuesRuleTypeOld)
+    for (var i = 0; i < valuesRuleTypeOld.length; i+=1) {
+      var values2show = [valuesRuleTypeOld[i], storedItems[rules.ruleType+'_new_'+valuesRuleTypeOld[i]]];
+      console.log('values2show:')
+      console.log(values2show)
+      showStoredInfo(values2show);
+    }
+  }, reportError);
+}
+
+/* If the URL has not got protocol, add one.
+:param url: str, url to check.
+:return url: str, url with protocol.
+*/
+function getUrlWithProtocol(url){
+  if (url.substring(0, 4).toLowerCase() != 'http'){
+    return PROTOCOL_DEFAULT + url;
+  }
+  return url;
+}
+
+/* Get all URLs quitting last part path until no more parts available.
+Example. For 'http://github.com/CarlosAMolina' two URLs will be 
+created: 'http://github.com/CarlosAMolina' and 'http://github.com'.
+:param urls: list of strings, URLs to work with.
+:return urls_paths: list of strings, all possible URLs omitting
+  parts of the paths.
+*/
+function getUrlsWithPaths(urls){
+  // Variable with results.
+  var urls_paths = []
+  for (let url of urls) {
+    // Quit last slash.
+    if (url.slice(-1) == '/'){
+      url = url.substring(0, url.length -1);
+    }
+    // Loop all parts of the path until no more parts.
+    while (url.slice(-1) != '/') {
+      url = getUrlWithProtocol(url)
+      urls_paths.push(url)
+      if ( url.indexOf('/') != -1 ){
+        // Quit last path parth.
+        url = url.slice(0, url.lastIndexOf('/'));
+      }
+      else {
+        // Character to stop the while loop.
+        url = '/';
+      }
+    }
+  }
+  console.log('URLs with all paths: ' + urls_paths)
+  return urls_paths;
+}
+
+
+/* Open an url and catches possible exception.
+:param url: str, url to check.
+:return null.
+*/
+function openUrl(url){
+  try{
+    windowObjectReference = window.open(url);
+    console.log('Done open url \'' + url + '\'. Window object reference: ' + windowObjectReference)
+  }
+  catch(error){
+    reportError(error);
+  }
+}
+
+
+/* Open URLs and its paths if option checked.
+:param: null.
+:return: null.
+*/
+async function openUrls(){
+
+  // Get URLs at the input box.
+  urls = ModuleDom.getValueElementById('inputUrls').split('\n');
+
+  console.log('URLs at the input box: ' + urls)
+  if (ModuleDom.isCheckedElementById(new ModuleButtons.ButtonOpenPaths().buttonIdHtml)){
+    urls = getUrlsWithPaths(urls);
+  }
+  // Open URLs.
+  var urlsLength = urls.length;
+  for (var i = 0; i < urlsLength; i++) { 
+    var url = urls[i];
+    console.log('Init url ' + (i + 1) + '/' + urlsLength + ': \'' + url + '\'');
+    // Check if an empty string was provided.
+    // It can have the protocol, example added by the 
+    // getUrlsWithPaths function.
+    if (url == '' || url == PROTOCOL_DEFAULT){
+      console.log('Not URL provided. Omitting');
+    } else {
+      url = getUrlWithProtocol(url);
+      // Only wait between URLs.
+      if (i != 0){
+        console.log('Init. Wait miliseconds: ' + lazyLoadingTime);
+        await ModuleSleep.sleepMs(lazyLoadingTime);
+        console.log('Done. Wait miliseconds: ' + lazyLoadingTime);
+      }
+      console.log(url);
+      openUrl(url);
+    }
+  }
+}
+
+/*Get and save Lazy Loading wait time.
+:param: not required.
+:return false: bool, function not done correctly.
+        true: bool, function done correctly.
+*/
+function saveLazyLoading(){
+  var lazyLoadingTime = ModuleDom.getValueElementById('inputLazyLoading');
+  console.log('Lazy loading time: \'' + lazyLoadingTime + '\'');
+  // Convert input to type number.
+  // Example: 1a -> 1, 1.1 -> 1, a1 -> Nan
+  lazyLoadingTime = parseInt(lazyLoadingTime);
+  ModuleDom.setValueToElementById(lazyLoadingTime, 'inputLazyLoading');
+  // Check value is a number.
+  if (isNaN(lazyLoadingTime)) {
+    console.log('Error. Lazy loading time is not a number');
+    ModuleDom.setStyleBoxErrorToElementById('inputLazyLoading');
+    return false;
+  }
+  else {
+    // Quit possible previous red error border.
+    ModuleDom.unsetStyleBoxErrorToElementById('inputLazyLoading');
+  }
+  // Set value >= 0. Type number.
+  lazyLoadingTime = Math.abs(lazyLoadingTime)
+  // Save value to the local storage.
+  var storingInfo = browser.storage.local.set({['idLazyLoadingTime']:lazyLoadingTime});
+  storingInfo.then(() => {
+  }, reportError);
+  // Set value at the popup.
+  ModuleDom.setValueToElementById(lazyLoadingTime, 'inputLazyLoading');
+  return true;
+}
+
+// Save input boxes info.
+function saveRules(){
+
+  function saveRule(values2save){
+
+    function saveInfo(ids2save,values2save) {
+      console.log('Init saveInfo(). ids2save \'' + ids2save + '\', values2save \'' + values2save +'\'')
+      for (var i = 0; i < ids2save.length; i++) {
+        var storingInfo = browser.storage.local.set({[ids2save[i]]:values2save[i]});
+        storingInfo.then(() => {
+        }, reportError);
+      }
+    }
+
+    var ids2save = [rules.ruleType + '_old_' + values2save[0], rules.ruleType + '_new_' + values2save[0]];
+    var gettingItem = browser.storage.local.get(ids2save[0]);
+    gettingItem.then((result) => { // result: empty object if the searched value is not stored
+      var searchInStorage = Object.keys(result); // array with the searched value if it is stored
+      if(searchInStorage.length < 1) { // searchInStorage.length < 1 -> no stored
+        saveInfo(ids2save,values2save);
+        showStoredInfo(values2save);
+        getRules();
+      }
+    }, reportError);
+  }
+
+  function getValues(){
+    if (ModuleDom.isCheckedElementById(new ModuleButtons.ButtonOpenRules().buttonIdHtml)){
+      return ModuleDom.getValueElementById('inputRules').split('\n');
+    } else {
+      return [ModuleDom.getValueElementById('inputValueOld'), ModuleDom.getValueElementById('inputValueNew')];
+    }
+  }
+
+  var valuesRules = getValues();
+  for (var i = 0; i < valuesRules.length; i+=2) {
+    if (typeof valuesRules[i+1] != 'undefined'){
+      saveRule([valuesRules[i],valuesRules[i+1]]);
+    } else {
+      saveRule([valuesRules[i],'']);
+    }
+  }
+}
+
+
+// clear display/storage
+function clearStorageInfo() {
+
+  var gettingAllStoredItems = browser.storage.local.get(null);
+  gettingAllStoredItems.then((storedItems) => {
+    deleteAllRulesType(storedItems);
+  }, reportError);
+
+  function deleteAllRulesType(storedItems){
+    var keysUrl = Object.keys(storedItems).filter(key => key.includes(rules.ruleType+'_')); //array
+    for (const keyUrl of keysUrl) {
+      browser.storage.local.remove(keyUrl);
+    }
+    getRules();
+    notShowRules();
+  }
+
+}
+
+
+function notShowRules(){
+  while (ModuleDom.getInfoContainer().firstChild) {
+    ModuleDom.getInfoContainer().removeChild(ModuleDom.getInfoContainer().firstChild);
+  }   
+}
+
+
+function copy2clipboard (idWithInfo){
+  document.getElementById(idWithInfo).select();
+  document.execCommand('copy');
+}
+
+
+function copyRules(){
+  if(!ModuleDom.isCheckedElementById(new ModuleButtons.ButtonOpenRules().buttonIdHtml)){
+    new ModuleButtons.ButtonOpenRules().switchStyleAndStorageOnOff();
+  }
+  ModuleDom.setValueToElementById(rules.ruleTransformationsToUseStringRepresentation, 'inputRules');
+  copy2clipboard ('inputRules');
+}
+
+
+class ButtonConfigurationLazyLoading extends ModuleButtons.ButtonClicked {
+
+  constructor() {
+    super('configLazyLoading');
+  } 
+
+  get run() {
+    ModuleDom.showOrHideArrayElementsById(['menuLazyLoading']);
+  }
+
+}
+
+class ButtonConfigurationRules extends ModuleButtons.ButtonClicked {
+
+  constructor() {
+    super('configRules');
+  } 
+
+  get run() {
+    ModuleDom.showOrHideArrayElementsById(['menuRules']);
+  }
+
+}
+
+class ButtonConfiguration extends ModuleButtons.ButtonClicked {
+
+  constructor() {
+    super('showConfig');
+  } 
+
+  get run() {
+    this.logButtonName;
+    ModuleDom.showOrHideArrayElementsById(['menuConfig']);
+    if (!ModuleDom.isHiddenElementById('menuRules')) {
+      ModuleDom.setHiddenElementById('menuRules');
+    }
+  }
+
+}
+
+class ButtonCopy extends ModuleButtons.ButtonClicked {
+
+  constructor() {
+    super('copy');
+  } 
+
+  get run() {
+    this.logButtonName;
+    if (ModuleDom.getValueElementById('inputUrls') !== ''){
+      copy2clipboard('inputUrls');
+    } else if (rules.isRuleTypeConfigured()){
+      copyRules();
+    }
+  }
+
+}
+
+class ButtonCleanUrl extends ModuleButtons.ButtonClicked {
+  
+  constructor() {
+    super('cleanUrl');
+  } 
+
+  get run() {
+    this.logButtonName;
+    let urlsModifier = null;
+    rules.setRuleTypeDeobfuscate();
+    if (ModuleDom.isCheckedElementById(new ModuleButtons.ButtonDecodeUrls().buttonIdHtml)){
+      console.log('Choosen option: decode')
+      urlsModifier = ModuleUrlsModifier.urlsModifier();
+    } else {
+      console.log('Choosen option: deofuscation')
+      urlsModifier = ModuleUrlsModifier.urlsModifier(rules.ruleTransformationsInstanceToUse);
+    }
+    modifyText(urlsModifier);
+  }
+
+}
+
+class ButtonObfuscate extends ModuleButtons.ButtonClicked {
+  
+  constructor() {
+    super('obfuscate');
+  } 
+
+  get run() {
+    this.logButtonName;
+    rules.setRuleTypeObfuscate();
+    const urlsModifier = ModuleUrlsModifier.urlsModifier(rules.ruleTransformationsInstanceToUse);
+    modifyText(urlsModifier);
+  }
+
+}
+
+class ButtonOpenUrls extends ModuleButtons.ButtonClicked {
+
+  constructor() {
+    super('openUrls');
+  } 
+
+  get run() {
+    this.logButtonName;
+    openUrls();
+  }
+
+}
+
+class ButtonInputObfuscation extends ModuleButtons.ButtonClicked {
+
+  constructor() {
+    super('inputObfuscation');
+  } 
+
+  get run() {
+    rules.setRuleTypeObfuscate();
+    notShowRules();
+    showStoredRulesType();
+    ModuleDom.setEnabledArrayElementsById(['pInputOld','pInputNew','inputValueOld','inputValueNew','inputRules','buttonAddRule','buttonClearAllRules']);
+  }
+
+}
+
+class ButtonInputDeobfuscation extends ModuleButtons.ButtonClicked {
+
+  constructor() {
+    super('inputDeobfuscation');
+  } 
+
+  get run() {
+    rules.setRuleTypeDeobfuscate();
+    notShowRules();
+    showStoredRulesType();
+    ModuleDom.setEnabledArrayElementsById(['pInputOld','pInputNew','inputValueOld','inputValueNew','inputRules','buttonAddRule','buttonClearAllRules']);
+  }
+
+}
+
+class ButtonAddLazyLoading extends ModuleButtons.ButtonClicked {
+
+  constructor() {
+    super('addLazyLoading');
+  } 
+
+  get run() {
+    saveLazyLoading();
+    // The following line is important to apply the new value without close and open the addons' pop-up.
+    getStorageLazyLoading();
+  }
+
+}
+
+class ButtonAddRule extends ModuleButtons.ButtonClicked {
+
+  constructor() {
+    super('addRule');
+  } 
+
+  get run() {
+    saveRules();
+  }
+
+}
+
+class ButtonClearAllRules extends ModuleButtons.ButtonClicked {
+
+  constructor() {
+    super('clearAllRules');
+  } 
+
+  get run() {
+    browser.tabs.query({active: true, currentWindow: true})
+      .then(clearStorageInfo)
+      .catch(console.log)
+  }
+
+}
+
+
+function createClickedButton() {
+  switch (clickedButtonName) {
+    case new ButtonConfiguration().buttonName:
+      return new ButtonConfiguration();
+    case new ButtonCopy().buttonName:
+      return new ButtonCopy();
+    case new ButtonCleanUrl().buttonName:
+      return new ButtonCleanUrl();
+    case new ButtonOpenUrls().buttonName:
+      return new ButtonOpenUrls();
+    case new ButtonObfuscate().buttonName:
+      return new ButtonObfuscate();
+    case new ModuleButtons.ButtonOpenPaths().buttonIdHtml:
+      return new ModuleButtons.ButtonOpenPaths();
+    case new ButtonConfigurationLazyLoading().buttonName:
+      return new ButtonConfigurationLazyLoading();
+    case new ButtonAddLazyLoading().buttonName:
+      return new ButtonAddLazyLoading();
+    case new ButtonConfigurationRules().buttonName:
+      return new ButtonConfigurationRules();
+    case new ButtonInputDeobfuscation().buttonName:
+      return new ButtonInputDeobfuscation();
+    case new ButtonInputObfuscation().buttonName:
+      return new ButtonInputObfuscation();
+    case new ModuleButtons.ButtonDecodeUrls().buttonIdHtml:
+      return new ModuleButtons.ButtonDecodeUrls();
+    case new ModuleButtons.ButtonOpenRules().buttonIdHtml:
+      return new ModuleButtons.ButtonOpenRules();
+    case new ButtonAddRule().buttonName:
+      return new ButtonAddRule();
+    case new ButtonClearAllRules().buttonName:
+      return new ButtonClearAllRules();    
+  }
+}
+
+
 function popupMain() {
 
   initializePopup();
@@ -270,455 +727,6 @@ function popupMain() {
 
   // Listen to clicks on the buttons.
   document.addEventListener('click', (e) => {
-
-    function showStoredRulesType(){
-      console.log('Init showStoredRulesType()')
-      var gettingAllStoredItems = browser.storage.local.get(null);
-      gettingAllStoredItems.then((storedItems) => {
-        console.log('storedItems:')
-        console.log(storedItems)
-        // Get keys of the dictionary for the current rule type
-        // (ofuscation or deofuscation) with the terms 
-        // (last part of each key) that must be replaced.
-        var keysRuleTypeOld = Object.keys(storedItems).filter(key => key.includes(rules.ruleType+'_old')); //array
-        console.log('keysRuleTypeOld:')
-        console.log(keysRuleTypeOld)
-        // Get values of the dictionary to replace last term 
-        // of the previous keys.
-        var valuesRuleTypeOld = keysRuleTypeOld.map(keysRuleTypeOld => storedItems[keysRuleTypeOld]); // array
-        console.log('valuesRuleTypeOld:')
-        console.log(valuesRuleTypeOld)
-        for (var i = 0; i < valuesRuleTypeOld.length; i+=1) {
-          var values2show = [valuesRuleTypeOld[i], storedItems[rules.ruleType+'_new_'+valuesRuleTypeOld[i]]];
-          console.log('values2show:')
-          console.log(values2show)
-          showStoredInfo(values2show);
-        }
-      }, reportError);
-    }
-
-    /* Open URLs and its paths if option checked.
-    :param: null.
-    :return: null.
-    */
-    async function openUrls(){
-
-      /* Get all URLs quitting last part path until no more parts available.
-      Example. For 'http://github.com/CarlosAMolina' two URLs will be 
-      created: 'http://github.com/CarlosAMolina' and 'http://github.com'.
-      :param urls: list of strings, URLs to work with.
-      :return urls_paths: list of strings, all possible URLs omitting
-        parts of the paths.
-      */
-      function getUrlsWithPaths(urls){
-        // Variable with results.
-        var urls_paths = []
-        for (let url of urls) {
-          // Quit last slash.
-          if (url.slice(-1) == '/'){
-            url = url.substring(0, url.length -1);
-          }
-          // Loop all parts of the path until no more parts.
-          while (url.slice(-1) != '/') {
-            url = getUrlWithProtocol(url)
-            urls_paths.push(url)
-            if ( url.indexOf('/') != -1 ){
-              // Quit last path parth.
-              url = url.slice(0, url.lastIndexOf('/'));
-            }
-            else {
-              // Character to stop the while loop.
-              url = '/';
-            }
-          }
-        }
-        console.log('URLs with all paths: ' + urls_paths)
-        return urls_paths;
-      }
-  
-      /* If the URL has not got protocol, add one.
-      :param url: str, url to check.
-      :return url: str, url with protocol.
-      */
-      function getUrlWithProtocol(url){
-        if (url.substring(0, 4).toLowerCase() != 'http'){
-          return PROTOCOL_DEFAULT + url;
-        }
-        return url;
-      }
-
-      /* Open an url and catches possible exception.
-      :param url: str, url to check.
-      :return null.
-      */
-      function openUrl(url){
-        try{
-          windowObjectReference = window.open(url);
-          console.log('Done open url \'' + url + '\'. Window object reference: ' + windowObjectReference)
-        }
-        catch(error){
-          reportError(error);
-        }
-      }
-
-      // Get URLs at the input box.
-      urls = ModuleDom.getValueElementById('inputUrls').split('\n');
-
-      console.log('URLs at the input box: ' + urls)
-      if (ModuleDom.isCheckedElementById(new ModuleButtons.ButtonOpenPaths().buttonIdHtml)){
-        urls = getUrlsWithPaths(urls);
-      }
-      // Open URLs.
-      var urlsLength = urls.length;
-      for (var i = 0; i < urlsLength; i++) { 
-        var url = urls[i];
-        console.log('Init url ' + (i + 1) + '/' + urlsLength + ': \'' + url + '\'');
-        // Check if an empty string was provided.
-        // It can have the protocol, example added by the 
-        // getUrlsWithPaths function.
-        if (url == '' || url == PROTOCOL_DEFAULT){
-          console.log('Not URL provided. Omitting');
-        } else {
-          url = getUrlWithProtocol(url);
-          // Only wait between URLs.
-          if (i != 0){
-            console.log('Init. Wait miliseconds: ' + lazyLoadingTime);
-            await ModuleSleep.sleepMs(lazyLoadingTime);
-            console.log('Done. Wait miliseconds: ' + lazyLoadingTime);
-          }
-          console.log(url);
-          openUrl(url);
-        }
-      }
-    }
-
-    /*Get and save Lazy Loading wait time.
-    :param: not required.
-    :return false: bool, function not done correctly.
-            true: bool, function done correctly.
-    */
-    function saveLazyLoading(){
-      var lazyLoadingTime = ModuleDom.getValueElementById('inputLazyLoading');
-      console.log('Lazy loading time: \'' + lazyLoadingTime + '\'');
-      // Convert input to type number.
-      // Example: 1a -> 1, 1.1 -> 1, a1 -> Nan
-      lazyLoadingTime = parseInt(lazyLoadingTime);
-      ModuleDom.setValueToElementById(lazyLoadingTime, 'inputLazyLoading');
-      // Check value is a number.
-      if (isNaN(lazyLoadingTime)) {
-        console.log('Error. Lazy loading time is not a number');
-        ModuleDom.setStyleBoxErrorToElementById('inputLazyLoading');
-        return false;
-      }
-      else {
-        // Quit possible previous red error border.
-        ModuleDom.unsetStyleBoxErrorToElementById('inputLazyLoading');
-      }
-      // Set value >= 0. Type number.
-      lazyLoadingTime = Math.abs(lazyLoadingTime)
-      // Save value to the local storage.
-      var storingInfo = browser.storage.local.set({['idLazyLoadingTime']:lazyLoadingTime});
-      storingInfo.then(() => {
-      }, reportError);
-      // Set value at the popup.
-      ModuleDom.setValueToElementById(lazyLoadingTime, 'inputLazyLoading');
-      return true;
-    }
-
-    // Save input boxes info.
-    function saveRules(){
-
-      function saveRule(values2save){
-
-        function saveInfo(ids2save,values2save) {
-          console.log('Init saveInfo(). ids2save \'' + ids2save + '\', values2save \'' + values2save +'\'')
-          for (var i = 0; i < ids2save.length; i++) {
-            var storingInfo = browser.storage.local.set({[ids2save[i]]:values2save[i]});
-            storingInfo.then(() => {
-            }, reportError);
-          }
-        }
-
-        var ids2save = [rules.ruleType + '_old_' + values2save[0], rules.ruleType + '_new_' + values2save[0]];
-        var gettingItem = browser.storage.local.get(ids2save[0]);
-        gettingItem.then((result) => { // result: empty object if the searched value is not stored
-          var searchInStorage = Object.keys(result); // array with the searched value if it is stored
-          if(searchInStorage.length < 1) { // searchInStorage.length < 1 -> no stored
-            saveInfo(ids2save,values2save);
-            showStoredInfo(values2save);
-            getRules();
-          }
-        }, reportError);
-      }
-
-      function getValues(){
-        if (ModuleDom.isCheckedElementById(new ModuleButtons.ButtonOpenRules().buttonIdHtml)){
-          return ModuleDom.getValueElementById('inputRules').split('\n');
-        } else {
-          return [ModuleDom.getValueElementById('inputValueOld'), ModuleDom.getValueElementById('inputValueNew')];
-        }
-      }
-
-      var valuesRules = getValues();
-      for (var i = 0; i < valuesRules.length; i+=2) {
-        if (typeof valuesRules[i+1] != 'undefined'){
-          saveRule([valuesRules[i],valuesRules[i+1]]);
-        } else {
-          saveRule([valuesRules[i],'']);
-        }
-      }
-    }
-
-    // clear display/storage
-    function clearStorageInfo() {
-  
-      var gettingAllStoredItems = browser.storage.local.get(null);
-      gettingAllStoredItems.then((storedItems) => {
-        deleteAllRulesType(storedItems);
-      }, reportError);
-
-      function deleteAllRulesType(storedItems){
-        var keysUrl = Object.keys(storedItems).filter(key => key.includes(rules.ruleType+'_')); //array
-        for (const keyUrl of keysUrl) {
-          browser.storage.local.remove(keyUrl);
-        }
-        getRules();
-        notShowRules();
-      }
-
-    }
-
-    function notShowRules(){
-      while (ModuleDom.getInfoContainer().firstChild) {
-        ModuleDom.getInfoContainer().removeChild(ModuleDom.getInfoContainer().firstChild);
-      }   
-    }
-
-    function copy2clipboard (idWithInfo){
-      document.getElementById(idWithInfo).select();
-      document.execCommand('copy');
-    }
-
-    function copyRules(){
-      ModuleDom.setCheckedElementById(new ModuleButtons.ButtonOpenRules().buttonIdHtml); //TODO check if store modification is required. 
-      ModuleDom.setHiddenElementById('divInputRule');
-      ModuleDom.setUnhiddenElementById('divInputRules');
-      ModuleDom.setValueToElementById(rules.ruleTransformationsToUseStringRepresentation, 'inputRules');
-      copy2clipboard ('inputRules');
-
-    }
-
-    class ButtonConfigurationLazyLoading extends ModuleButtons.ButtonClicked {
-
-      constructor() {
-        super('configLazyLoading');
-      } 
-
-      get run() {
-        ModuleDom.showOrHideArrayElementsById(['menuLazyLoading']);
-      }
-
-    }
-
-    class ButtonConfigurationRules extends ModuleButtons.ButtonClicked {
-
-      constructor() {
-        super('configRules');
-      } 
-
-      get run() {
-        ModuleDom.showOrHideArrayElementsById(['menuRules']);
-      }
-
-    }
-
-    class ButtonConfiguration extends ModuleButtons.ButtonClicked {
-
-      constructor() {
-        super('showConfig');
-      } 
-
-      get run() {
-        this.logButtonName;
-        ModuleDom.showOrHideArrayElementsById(['menuConfig']);
-        if (!ModuleDom.isHiddenElementById('menuRules')) {
-          ModuleDom.setHiddenElementById('menuRules');
-        }
-      }
-
-    }
-
-    class ButtonCopy extends ModuleButtons.ButtonClicked {
-
-      constructor() {
-        super('copy');
-      } 
-
-      get run() {
-        this.logButtonName;
-        if (ModuleDom.getValueElementById('inputUrls') !== ''){
-          copy2clipboard('inputUrls');
-        } else if (rules.isRuleTypeConfigured()){
-          copyRules();
-        }
-      }
-
-    }
-
-    class ButtonCleanUrl extends ModuleButtons.ButtonClicked {
-      
-      constructor() {
-        super('cleanUrl');
-      } 
-
-      get run() {
-        this.logButtonName;
-        let urlsModifier = null;
-        rules.setRuleTypeDeobfuscate();
-        if (ModuleDom.isCheckedElementById(new ModuleButtons.ButtonDecodeUrls().buttonIdHtml)){
-          console.log('Choosen option: decode')
-          urlsModifier = ModuleUrlsModifier.urlsModifier();
-        } else {
-          console.log('Choosen option: deofuscation')
-          urlsModifier = ModuleUrlsModifier.urlsModifier(rules.ruleTransformationsInstanceToUse);
-        }
-        modifyText(urlsModifier);
-      }
-
-    }
-
-    class ButtonObfuscate extends ModuleButtons.ButtonClicked {
-      
-      constructor() {
-        super('obfuscate');
-      } 
-
-      get run() {
-        this.logButtonName;
-        rules.setRuleTypeObfuscate();
-        const urlsModifier = ModuleUrlsModifier.urlsModifier(rules.ruleTransformationsInstanceToUse);
-        modifyText(urlsModifier);
-      }
-
-    }
-
-    class ButtonOpenUrls extends ModuleButtons.ButtonClicked {
-
-      constructor() {
-        super('openUrls');
-      } 
-
-      get run() {
-        this.logButtonName;
-        openUrls();
-      }
-
-    }
-
-    class ButtonInputObfuscation extends ModuleButtons.ButtonClicked {
-
-      constructor() {
-        super('inputObfuscation');
-      } 
-
-      get run() {
-        rules.setRuleTypeObfuscate();
-        notShowRules();
-        showStoredRulesType();
-        ModuleDom.setEnabledArrayElementsById(['pInputOld','pInputNew','inputValueOld','inputValueNew','inputRules','buttonAddRule','buttonClearAllRules']);
-      }
-
-    }
-
-    class ButtonInputDeobfuscation extends ModuleButtons.ButtonClicked {
-
-      constructor() {
-        super('inputDeobfuscation');
-      } 
-
-      get run() {
-        rules.setRuleTypeDeobfuscate();
-        notShowRules();
-        showStoredRulesType();
-        ModuleDom.setEnabledArrayElementsById(['pInputOld','pInputNew','inputValueOld','inputValueNew','inputRules','buttonAddRule','buttonClearAllRules']);
-      }
-
-    }
-
-    class ButtonAddLazyLoading extends ModuleButtons.ButtonClicked {
-
-      constructor() {
-        super('addLazyLoading');
-      } 
-
-      get run() {
-        saveLazyLoading();
-        // The following line is important to apply the new value without close and open the addons' pop-up.
-        getStorageLazyLoading();
-      }
-
-    }
-
-    class ButtonAddRule extends ModuleButtons.ButtonClicked {
-
-      constructor() {
-        super('addRule');
-      } 
-
-      get run() {
-        saveRules();
-      }
-
-    }
-
-    class ButtonClearAllRules extends ModuleButtons.ButtonClicked {
-
-      constructor() {
-        super('clearAllRules');
-      } 
-
-      get run() {
-        browser.tabs.query({active: true, currentWindow: true})
-          .then(clearStorageInfo)
-          .catch(console.log)
-      }
-    
-    }
-
-    function createClickedButton() {
-      switch (clickedButtonName) {
-        case new ButtonConfiguration().buttonName:
-          return new ButtonConfiguration();
-        case new ButtonCopy().buttonName:
-          return new ButtonCopy();
-        case new ButtonCleanUrl().buttonName:
-          return new ButtonCleanUrl();
-        case new ButtonOpenUrls().buttonName:
-          return new ButtonOpenUrls();
-        case new ButtonObfuscate().buttonName:
-          return new ButtonObfuscate();
-        case new ModuleButtons.ButtonOpenPaths().buttonIdHtml:
-          return new ModuleButtons.ButtonOpenPaths();
-        case new ButtonConfigurationLazyLoading().buttonName:
-          return new ButtonConfigurationLazyLoading();
-        case new ButtonAddLazyLoading().buttonName:
-          return new ButtonAddLazyLoading();
-        case new ButtonConfigurationRules().buttonName:
-          return new ButtonConfigurationRules();
-        case new ButtonInputDeobfuscation().buttonName:
-          return new ButtonInputDeobfuscation();
-        case new ButtonInputObfuscation().buttonName:
-          return new ButtonInputObfuscation();
-        case new ModuleButtons.ButtonDecodeUrls().buttonIdHtml:
-          return new ModuleButtons.ButtonDecodeUrls();
-        case new ModuleButtons.ButtonOpenRules().buttonIdHtml:
-          return new ModuleButtons.ButtonOpenRules();
-        case new ButtonAddRule().buttonName:
-          return new ButtonAddRule();
-        case new ButtonClearAllRules().buttonName:
-          return new ButtonClearAllRules();    
-      }
-    }
 
     const clickedButton =  createClickedButton();
     if (clickedButton === undefined){
