@@ -728,14 +728,13 @@ function popupMain() {
   // Listen to clicks on the buttons.
   document.addEventListener('click', (e) => {
 
-    const clickedButton =  createClickedButton();
-    if (clickedButton === undefined){
+    if (createClickedButton() !== undefined){
+      createClickedButton().run;
+      showOrHideRuleOrRules();
+    } else {
       console.error("Invalid clicked button:");
       console.error(e.target);
       console.error(e.target.classList);
-    } else {
-      clickedButton.run;
-      showOrHideRuleOrRules();
     }
     clickedButtonName = null;
 
