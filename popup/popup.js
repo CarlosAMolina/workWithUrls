@@ -500,7 +500,7 @@ function copyRules(){
 class ButtonConfigurationLazyLoading extends ModuleButtons.ButtonClicked {
 
   constructor() {
-    super('configLazyLoading');
+    super('buttonConfigLazyLoading');
   } 
 
   get run() {
@@ -512,7 +512,7 @@ class ButtonConfigurationLazyLoading extends ModuleButtons.ButtonClicked {
 class ButtonConfigurationRules extends ModuleButtons.ButtonClicked {
 
   constructor() {
-    super('configRules');
+    super('buttonConfigRules');
   } 
 
   get run() {
@@ -524,7 +524,7 @@ class ButtonConfigurationRules extends ModuleButtons.ButtonClicked {
 class ButtonConfiguration extends ModuleButtons.ButtonClicked {
 
   constructor() {
-    super('showConfig');
+    super('buttonShowConfig');
   } 
 
   get run() {
@@ -540,7 +540,7 @@ class ButtonConfiguration extends ModuleButtons.ButtonClicked {
 class ButtonCopy extends ModuleButtons.ButtonClicked {
 
   constructor() {
-    super('copy');
+    super('buttonCopy');
   } 
 
   get run() {
@@ -557,7 +557,7 @@ class ButtonCopy extends ModuleButtons.ButtonClicked {
 class ButtonCleanUrl extends ModuleButtons.ButtonClicked {
   
   constructor() {
-    super('cleanUrl');
+    super('buttonCleanUrl');
   } 
 
   get run() {
@@ -579,7 +579,7 @@ class ButtonCleanUrl extends ModuleButtons.ButtonClicked {
 class ButtonObfuscate extends ModuleButtons.ButtonClicked {
   
   constructor() {
-    super('obfuscate');
+    super('buttonObfuscate');
   } 
 
   get run() {
@@ -594,7 +594,7 @@ class ButtonObfuscate extends ModuleButtons.ButtonClicked {
 class ButtonOpenUrls extends ModuleButtons.ButtonClicked {
 
   constructor() {
-    super('openUrls');
+    super('buttonOpenUrls');
   } 
 
   get run() {
@@ -607,7 +607,7 @@ class ButtonOpenUrls extends ModuleButtons.ButtonClicked {
 class ButtonInputObfuscation extends ModuleButtons.ButtonClicked {
 
   constructor() {
-    super('inputObfuscation');
+    super('buttonInputObfuscation');
   } 
 
   get run() {
@@ -622,7 +622,7 @@ class ButtonInputObfuscation extends ModuleButtons.ButtonClicked {
 class ButtonInputDeobfuscation extends ModuleButtons.ButtonClicked {
 
   constructor() {
-    super('inputDeobfuscation');
+    super('buttonInputDeobfuscation');
   } 
 
   get run() {
@@ -637,7 +637,7 @@ class ButtonInputDeobfuscation extends ModuleButtons.ButtonClicked {
 class ButtonAddLazyLoading extends ModuleButtons.ButtonClicked {
 
   constructor() {
-    super('addLazyLoading');
+    super('buttonAddLazyLoading');
   } 
 
   get run() {
@@ -651,7 +651,7 @@ class ButtonAddLazyLoading extends ModuleButtons.ButtonClicked {
 class ButtonAddRule extends ModuleButtons.ButtonClicked {
 
   constructor() {
-    super('addRule');
+    super('buttonAddRule');
   } 
 
   get run() {
@@ -663,49 +663,49 @@ class ButtonAddRule extends ModuleButtons.ButtonClicked {
 class ButtonClearAllRules extends ModuleButtons.ButtonClicked {
 
   constructor() {
-    super('clearAllRules');
+    super('buttonClearAllRules');
   } 
 
   get run() {
     browser.tabs.query({active: true, currentWindow: true})
       .then(clearStorageInfo)
       .catch(console.log)
-  }
-
+  } 
 }
 
 
-function createClickedButton() {
-  switch (clickedButtonName) {
-    case new ButtonConfiguration().buttonName:
+function createClickedButton(buttonIdHtml) {
+  console.log('ID HTML: ' + buttonIdHtml) //TODO delete
+  switch (buttonIdHtml) {
+    case new ButtonConfiguration().buttonIdHtml:
       return new ButtonConfiguration();
-    case new ButtonCopy().buttonName:
+    case new ButtonCopy().buttonIdHtml:
       return new ButtonCopy();
-    case new ButtonCleanUrl().buttonName:
+    case new ButtonCleanUrl().buttonIdHtml:
       return new ButtonCleanUrl();
-    case new ButtonOpenUrls().buttonName:
+    case new ButtonOpenUrls().buttonIdHtml:
       return new ButtonOpenUrls();
-    case new ButtonObfuscate().buttonName:
+    case new ButtonObfuscate().buttonIdHtml:
       return new ButtonObfuscate();
     case new ModuleButtons.ButtonOpenPaths().buttonIdHtml:
       return new ModuleButtons.ButtonOpenPaths();
-    case new ButtonConfigurationLazyLoading().buttonName:
+    case new ButtonConfigurationLazyLoading().buttonIdHtml:
       return new ButtonConfigurationLazyLoading();
-    case new ButtonAddLazyLoading().buttonName:
+    case new ButtonAddLazyLoading().buttonIdHtml:
       return new ButtonAddLazyLoading();
-    case new ButtonConfigurationRules().buttonName:
+    case new ButtonConfigurationRules().buttonIdHtml:
       return new ButtonConfigurationRules();
-    case new ButtonInputDeobfuscation().buttonName:
+    case new ButtonInputDeobfuscation().buttonIdHtml:
       return new ButtonInputDeobfuscation();
-    case new ButtonInputObfuscation().buttonName:
+    case new ButtonInputObfuscation().buttonIdHtml:
       return new ButtonInputObfuscation();
     case new ModuleButtons.ButtonDecodeUrls().buttonIdHtml:
       return new ModuleButtons.ButtonDecodeUrls();
     case new ModuleButtons.ButtonOpenRules().buttonIdHtml:
       return new ModuleButtons.ButtonOpenRules();
-    case new ButtonAddRule().buttonName:
+    case new ButtonAddRule().buttonIdHtml:
       return new ButtonAddRule();
-    case new ButtonClearAllRules().buttonName:
+    case new ButtonClearAllRules().buttonIdHtml:
       return new ButtonClearAllRules();    
     default:
       return false;
@@ -730,9 +730,9 @@ function popupMain() {
   // Listen to clicks on the buttons.
   document.addEventListener('click', (e) => {
 
-    if (createClickedButton()){
-      createClickedButton().run;
-      showOrHideRuleOrRules();
+    if (createClickedButton(e.target.id)){
+      createClickedButton(e.target.id).run;
+      showOrHideRuleOrRules(); // TODO check if must be deleted.
     } else {
       console.error("Invalid clicked button:");
       console.error(e.target);

@@ -3,12 +3,12 @@ import * as ModuleDom from './dom.js';
 
 class ButtonClicked {
 
-  constructor(buttonName) {
-    this._buttonName = buttonName;
+  constructor(buttonIdHtml) {
+    this._buttonIdHtml = buttonIdHtml;
   }
 
-  get buttonName() {
-    return this._buttonName;
+  get buttonIdHtml() {
+    return this._buttonIdHtml;
   }
 
   get run() {
@@ -16,7 +16,7 @@ class ButtonClicked {
   }
 
   get logButtonName() {
-    console.log('Clicked button: ' + this.buttonName);
+    console.log('Clicked button ID Html: ' + this.buttonIdHtml);
   }
 
 }

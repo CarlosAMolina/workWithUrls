@@ -13,3 +13,13 @@ Try use private methods at:
 ## Not use global variables.
 
 ## The rules are not applied correctly.
+
+## Buttons blue and orange: not detected if the image is clicked.
+
+## createClickedButton() call it only one (factory should return a class with empty run()).
+
+## buttons.js as the buttonclicked has the attribute buttonIdHtml, the class ButtonOnOff should extend from it.
+
+## Delete global variable clickedButtonName as the buttons ID are being used.
+
+## popup.css delete class names if they are not being used (now the script uses the buttons ID).
