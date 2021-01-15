@@ -707,6 +707,8 @@ function createClickedButton() {
       return new ButtonAddRule();
     case new ButtonClearAllRules().buttonName:
       return new ButtonClearAllRules();    
+    default:
+      return false;
   }
 }
 
@@ -728,7 +730,7 @@ function popupMain() {
   // Listen to clicks on the buttons.
   document.addEventListener('click', (e) => {
 
-    if (createClickedButton() !== undefined){
+    if (createClickedButton()){
       createClickedButton().run;
       showOrHideRuleOrRules();
     } else {
