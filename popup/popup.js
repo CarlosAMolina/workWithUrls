@@ -9,11 +9,11 @@ import * as ModuleSleep from '../popup/modules/sleep.js';
 import * as ModuleUrlsModifier from './modules/urlsModifier.js';
 
 // Global constants.
+const PROTOCOL_DEFAULT = 'http://'
 const rules = new ModuleUrlsModifier.Rules();
 
 // Global variables.
 var lazyLoadingTime = 0;
-var PROTOCOL_DEFAULT = 'http://'
 // Variable to save the result of window.open()
 // https://developer.mozilla.org/en-US/docs/Web/API/Window/open
 var windowObjectReference = null;
