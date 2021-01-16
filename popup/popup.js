@@ -675,10 +675,11 @@ function popupMain() {
 
   document.addEventListener('click', (e) => {
     const buttonIdHtml = getIdHtmlOfClickedButtonOrImageFromEventClick(e);
-    if (createClickedButton(buttonIdHtml)){
-      createClickedButton(buttonIdHtml).run;
+    const buttonClicked = createClickedButton(buttonIdHtml)
+    if (buttonClicked){
+      buttonClicked.run;
       showOrHideRuleOrRules();
-    } else {
+    } else { //TODO delete to avoid unnecessary logs.
       console.error("Invalid clicked button:");
       console.error(e.target);
       console.error(e.target.classList);
