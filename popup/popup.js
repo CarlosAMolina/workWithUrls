@@ -12,7 +12,6 @@ import * as ModuleUrlsModifier from './modules/urlsModifier.js';
 const rules = new ModuleUrlsModifier.Rules();
 
 // Global variables.
-var clickedButtonName = null;
 var lazyLoadingTime = 0;
 var PROTOCOL_DEFAULT = 'http://'
 var urls = [];
@@ -48,53 +47,6 @@ function showOrHideRuleOrRules() {
     }
   }, console.error);
 }
-
-
-ModuleDom.getElementById('buttonShowConfig').addEventListener("click", function() {
-  clickedButtonName = 'showConfig';
-});
-ModuleDom.getElementById('buttonCopy').addEventListener("click", function() {
-  clickedButtonName = 'copy';
-});
-ModuleDom.getElementById('buttonCleanUrl').addEventListener("click", function() {
-  clickedButtonName = 'cleanUrl';
-});
-ModuleDom.getElementById('buttonObfuscate').addEventListener("click", function() {
-  clickedButtonName = 'obfuscate';
-});
-ModuleDom.getElementById('buttonOpenUrls').addEventListener("click", function() {
-  clickedButtonName = 'openUrls';
-});
-ModuleDom.getElementById('buttonConfigLazyLoading').addEventListener("click", function() {
-  clickedButtonName = 'configLazyLoading';
-});
-ModuleDom.getElementById('buttonAddLazyLoading').addEventListener("click", function() {
-  clickedButtonName = 'addLazyLoading';
-});
-ModuleDom.getElementById('buttonConfigRules').addEventListener("click", function() {
-  clickedButtonName = 'configRules';
-});
-ModuleDom.getElementById('buttonInputDeobfuscation').addEventListener("click", function() {
-  clickedButtonName = 'inputDeobfuscation';
-});
-ModuleDom.getElementById('buttonInputObfuscation').addEventListener("click", function() {
-  clickedButtonName = 'inputObfuscation';
-});
-ModuleDom.getElementById('buttonAddRule').addEventListener("click", function() {
-  clickedButtonName = 'addRule';
-});
-ModuleDom.getElementById('buttonClearAllRules').addEventListener("click", function() {
-  clickedButtonName = 'clearAllRules';
-});
-ModuleDom.getElementById(new ModuleButtons.ButtonOpenPaths().buttonIdHtml).addEventListener("click", function() {
-  clickedButtonName = new ModuleButtons.ButtonOpenPaths().buttonIdHtml;
-});
-ModuleDom.getElementById(new ModuleButtons.ButtonDecodeUrls().buttonIdHtml).addEventListener("click", function() {
-  clickedButtonName = new ModuleButtons.ButtonDecodeUrls().buttonIdHtml;
-});
-ModuleDom.getElementById(new ModuleButtons.ButtonOpenRules().buttonIdHtml).addEventListener("click", function() {
-  clickedButtonName = new ModuleButtons.ButtonOpenRules().buttonIdHtml;
-});
 
 
 function reportError(error) {
@@ -738,8 +690,6 @@ function popupMain() {
       console.error(e.target);
       console.error(e.target.classList);
     }
-    clickedButtonName = null;
-
   });
 
   //TODO: created only for testing.
