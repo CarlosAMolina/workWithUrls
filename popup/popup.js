@@ -677,7 +677,7 @@ function popupMain() {
     const buttonIdHtml = getIdHtmlOfClickedButtonOrImageFromEventClick(e);
     if (createClickedButton(buttonIdHtml)){
       createClickedButton(buttonIdHtml).run;
-      showOrHideRuleOrRules(); // TODO check if must be deleted.
+      showOrHideRuleOrRules();
     } else {
       console.error("Invalid clicked button:");
       console.error(e.target);
