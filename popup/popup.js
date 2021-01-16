@@ -14,10 +14,6 @@ const rules = new ModuleUrlsModifier.Rules();
 
 // Global variables.
 var lazyLoadingTime = 0;
-// Variable to save the result of window.open()
-// https://developer.mozilla.org/en-US/docs/Web/API/Window/open
-var windowObjectReference = null;
-
 
 /*
 param urlsModifier: module urlsModifier class urlsModifier instance.
@@ -277,12 +273,13 @@ function getUrlsWithPaths(urls){
 
 
 /* Open an url and catches possible exception.
+https://developer.mozilla.org/en-US/docs/Web/API/Window/open
 :param url: str, url to check.
 :return null.
 */
 function openUrl(url){
   try{
-    windowObjectReference = window.open(url);
+    const windowObjectReference = window.open(url);
     console.log('Done open url \'' + url + '\'. Window object reference: ' + windowObjectReference)
   }
   catch(error){
