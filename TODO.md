@@ -16,6 +16,4 @@ Try use private methods at:
 
 ## Buttons blue and orange: not detected if the image is clicked.
 
-## buttons.js as the buttonclicked has the attribute buttonIdHtml, the class ButtonOnOff should extend from it.
-
 ## popup.css delete class names if they are not being used (now the script uses the buttons ID).

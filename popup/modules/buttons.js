@@ -23,14 +23,13 @@ class ButtonClicked {
 
 
 // https://www.scriptol.com/html5/button-on-off.php
-class ButtonOnOff {
+class ButtonOnOff extends ButtonClicked {
 
   constructor(buttonIdHtml, buttonIdStorage) {
-    this._buttonIdHtml = buttonIdHtml;
+    super(buttonIdHtml);
     this._buttonIdStorage = buttonIdStorage;
   }
 
-  get buttonIdHtml() { return this._buttonIdHtml; }
   get buttonIdStorage() { return this._buttonIdStorage; }
   
   get run() {
