@@ -14,7 +14,6 @@ const rules = new ModuleUrlsModifier.Rules();
 // Global variables.
 var lazyLoadingTime = 0;
 var PROTOCOL_DEFAULT = 'http://'
-var urls = [];
 // Variable to save the result of window.open()
 // https://developer.mozilla.org/en-US/docs/Web/API/Window/open
 var windowObjectReference = null;
@@ -299,7 +298,7 @@ function openUrl(url){
 async function openUrls(){
 
   // Get URLs at the input box.
-  urls = ModuleDom.getValueElementById('inputUrls').split('\n');
+  let urls = ModuleDom.getValueElementById('inputUrls').split('\n');
 
   console.log('URLs at the input box: ' + urls)
   if (ModuleDom.isCheckedElementById(new ModuleButtons.ButtonOpenPaths().buttonIdHtml)){
