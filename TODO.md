@@ -20,6 +20,4 @@ Try use private methods at:
 
 ## buttons.js as the buttonclicked has the attribute buttonIdHtml, the class ButtonOnOff should extend from it.
 
-## Delete global variable clickedButtonName as the buttons ID are being used.
-
 ## popup.css delete class names if they are not being used (now the script uses the buttons ID).

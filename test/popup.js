@@ -60,15 +60,9 @@ describe("Check script popup.js: ", function() {
   });
   describe("Check function popupMain: ", function() {
     ModulePopup.popupMain(); // Functon instance, required to access inner functions.
-    describe("Check function initializePopup: ", function() {
+    describe("Check function getOpenPaths: ", function() {
       it("Check function runs without exceptions: ", function() {
-        const result = ModulePopup.popupMain.initializePopup();
-        assert.equal(result, undefined);
-      });
-      describe("Check function getOpenPaths: ", function() {
-        it("Check function runs without exceptions: ", function() {
-          console.log("Not checked") // TODO
-        });
+        console.log("Not checked") // TODO
       });
     });
     describe("Check functions that modify document: ", function() {

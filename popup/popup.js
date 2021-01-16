@@ -667,19 +667,12 @@ function createClickedButton(buttonIdHtml) {
 
 function popupMain() {
 
-  initializePopup();
+  getRules();
+  getStorageLazyLoading();
+  new ModuleButtons.ButtonDecodeUrls().setStylePrevious();
+  new ModuleButtons.ButtonOpenPaths().setStylePrevious();
+  new ModuleButtons.ButtonOpenRules().setStylePrevious();
 
-  function initializePopup() {
-
-    getRules();
-    getStorageLazyLoading();
-    new ModuleButtons.ButtonDecodeUrls().setStylePrevious();
-    new ModuleButtons.ButtonOpenPaths().setStylePrevious();
-    new ModuleButtons.ButtonOpenRules().setStylePrevious();
-
-  }
-
-  // Listen to clicks on the buttons.
   document.addEventListener('click', (e) => {
     const buttonIdHtml = getIdHtmlOfClickedButtonOrImageFromEventClick(e);
     if (createClickedButton(buttonIdHtml)){
@@ -692,8 +685,6 @@ function popupMain() {
     }
   });
 
-  //TODO: created only for testing.
-  popupMain.initializePopup = initializePopup; 
 }
 
 
