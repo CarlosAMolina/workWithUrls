@@ -729,9 +729,9 @@ function popupMain() {
 
   // Listen to clicks on the buttons.
   document.addEventListener('click', (e) => {
-
-    if (createClickedButton(e.target.id)){
-      createClickedButton(e.target.id).run;
+    const buttonIdHtml = getIdHtmlOfClickedButtonOrImageFromEventClick(e);
+    if (createClickedButton(buttonIdHtml)){
+      createClickedButton(buttonIdHtml).run;
       showOrHideRuleOrRules(); // TODO check if must be deleted.
     } else {
       console.error("Invalid clicked button:");
@@ -745,6 +745,12 @@ function popupMain() {
   //TODO: created only for testing.
   popupMain.initializePopup = initializePopup; 
 }
+
+
+function getIdHtmlOfClickedButtonOrImageFromEventClick(click){
+  return click.target.id || click.target.parentElement.id;
+}
+
 
 // There was an error executing the script.
 // Display the pop-up's error message, and hide the normal UI.
