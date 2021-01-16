@@ -747,8 +747,8 @@ function popupMain() {
 }
 
 
-function getIdHtmlOfClickedButtonOrImageFromEventClick(click){
-  return click.target.id || click.target.parentElement.id;
+function getIdHtmlOfClickedButtonOrImageFromEventClick(eventClick){
+  return eventClick.target.id || eventClick.target.parentElement.id;
 }
 
 
