@@ -8,12 +8,11 @@ import * as ModuleDom from '../popup/modules/dom.js';
 import * as ModuleSleep from '../popup/modules/sleep.js';
 import * as ModuleUrlsModifier from './modules/urlsModifier.js';
 
+
 // Global constants.
 const PROTOCOL_DEFAULT = 'http://'
 const rules = new ModuleUrlsModifier.Rules();
 
-// Global variables.
-var lazyLoadingTime = 0;
 
 /*
 param urlsModifier: module urlsModifier class urlsModifier instance.
@@ -70,23 +69,23 @@ function getRules(){
 
 /* Get Lazy Loading time value at the storage.
 :param: no param.
-:return: no value, value saved at global variable lazyLoadingTime.
+:return: int.
 */
-function getStorageLazyLoading(){
-  console.log('Init getStorageLazyLoading()')
-  var gettingItem = browser.storage.local.get('idLazyLoadingTime');
-  // Object result: empty object if the searched value is not stored.
-  gettingItem.then((result) => {
-    // Undefined -> Lazy Loading time value option has never been set.
-    if ( (typeof result.idLazyLoadingTime != 'undefined') ){
-      lazyLoadingTime = result.idLazyLoadingTime;
-      console.log('Stored lazy loading time (type ' + typeof(lazyLoadingTime) + '): \'' + lazyLoadingTime + '\'');
-    } else{
-      lazyLoadingTime = 0;
-      console.log('Not previous stored lazy loading time value. Return (type ' + typeof(lazyLoadingTime) + '): \'' + lazyLoadingTime + '\'');
-    }
-  ModuleDom.setValueToElementById(lazyLoadingTime, 'inputLazyLoading');
-  }, reportError);
+async function getStorageLazyLoading(){
+  let lazyLoadingTime = 0;
+  let resultGetStorage = {};
+  try {
+    resultGetStorage = await browser.storage.local.get('idLazyLoadingTime');
+  } catch(e) {
+    console.error(e)
+  }
+  if ( (typeof resultGetStorage.idLazyLoadingTime == 'undefined') ){
+    console.log('Not previous stored lazy loading time value stored');
+  } else{
+    lazyLoadingTime = resultGetStorage.idLazyLoadingTime;
+  }
+  console.log('Lazy loading time to use: ' + lazyLoadingTime);
+  return lazyLoadingTime;
 }
 
 
@@ -293,10 +292,9 @@ function openUrl(url){
 :return: null.
 */
 async function openUrls(){
-
+  const lazyLoadingTime = await getStorageLazyLoading();
   // Get URLs at the input box.
   let urls = ModuleDom.getValueElementById('inputUrls').split('\n');
-
   console.log('URLs at the input box: ' + urls)
   if (ModuleDom.isCheckedElementById(new ModuleButtons.ButtonOpenPaths().buttonIdHtml)){
     urls = getUrlsWithPaths(urls);
@@ -325,36 +323,43 @@ async function openUrls(){
   }
 }
 
-/*Get and save Lazy Loading wait time.
-:param: not required.
-:return false: bool, function not done correctly.
-        true: bool, function done correctly.
+/*
+return number int or false.
 */
-function saveLazyLoading(){
-  var lazyLoadingTime = ModuleDom.getValueElementById('inputLazyLoading');
-  console.log('Lazy loading time: \'' + lazyLoadingTime + '\'');
+function getValidLazyLoadingTimeToSaveAndNotifyBadValue(){
+  let lazyLoadingTimeToSave = ModuleDom.getValueElementById('inputLazyLoading');
   // Convert input to type number.
   // Example: 1a -> 1, 1.1 -> 1, a1 -> Nan
-  lazyLoadingTime = parseInt(lazyLoadingTime);
-  ModuleDom.setValueToElementById(lazyLoadingTime, 'inputLazyLoading');
+  lazyLoadingTimeToSave = parseInt(lazyLoadingTimeToSave);
   // Check value is a number.
-  if (isNaN(lazyLoadingTime)) {
+  if (isNaN(lazyLoadingTimeToSave)) {
     console.log('Error. Lazy loading time is not a number');
     ModuleDom.setStyleBoxErrorToElementById('inputLazyLoading');
-    return false;
+    lazyLoadingTimeToSave = false;
   }
   else {
     // Quit possible previous red error border.
     ModuleDom.unsetStyleBoxErrorToElementById('inputLazyLoading');
+    // Set value >= 0. Type number.
+    lazyLoadingTimeToSave = Math.abs(lazyLoadingTimeToSave)
+    console.log('Lazy loading time to save: \'' + lazyLoadingTimeToSave + '\'');
+    ModuleDom.setValueToElementById(lazyLoadingTimeToSave, 'inputLazyLoading');
   }
-  // Set value >= 0. Type number.
-  lazyLoadingTime = Math.abs(lazyLoadingTime)
+  return lazyLoadingTimeToSave
+}
+
+
+/*Get and save Lazy Loading wait time.
+:param lazyLoadingTimeToSave.
+:return false: bool, function not done correctly.
+        true: bool, function done correctly.
+*/
+function saveLazyLoading(lazyLoadingTimeToSave){
+  console.log('Saving loading time: \'' + lazyLoadingTimeToSave + '\'');
   // Save value to the local storage.
-  var storingInfo = browser.storage.local.set({['idLazyLoadingTime']:lazyLoadingTime});
+  var storingInfo = browser.storage.local.set({['idLazyLoadingTime']:lazyLoadingTimeToSave});
   storingInfo.then(() => {
   }, reportError);
-  // Set value at the popup.
-  ModuleDom.setValueToElementById(lazyLoadingTime, 'inputLazyLoading');
   return true;
 }
 
@@ -452,7 +457,13 @@ class ButtonConfigurationLazyLoading extends ModuleButtons.ButtonClicked {
   } 
 
   get run() {
+    this.runAsync();
+  }
+
+  async runAsync(){
+    const lazyLoadingTime = await getStorageLazyLoading();
     ModuleDom.showOrHideArrayElementsById(['menuLazyLoading']);
+    ModuleDom.setValueToElementById(lazyLoadingTime, 'inputLazyLoading');
   }
 
 }
@@ -589,9 +600,10 @@ class ButtonAddLazyLoading extends ModuleButtons.ButtonClicked {
   } 
 
   get run() {
-    saveLazyLoading();
-    // The following line is important to apply the new value without close and open the addons' pop-up.
-    getStorageLazyLoading();
+    const lazyLoadingTimeToSave = getValidLazyLoadingTimeToSaveAndNotifyBadValue();
+    if (lazyLoadingTimeToSave !== false) {
+      saveLazyLoading(lazyLoadingTimeToSave);
+    }
   }
 
 }
@@ -664,7 +676,6 @@ function createClickedButton(buttonIdHtml) {
 function popupMain() {
 
   getRules();
-  getStorageLazyLoading();
   new ModuleButtons.ButtonDecodeUrls().setStylePrevious();
   new ModuleButtons.ButtonOpenPaths().setStylePrevious();
   new ModuleButtons.ButtonOpenRules().setStylePrevious();
