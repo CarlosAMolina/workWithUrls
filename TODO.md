@@ -20,3 +20,7 @@ Try use private methods at:
 ## Tests: use beforeEach
 
 ## Refactor: use map instead for loops
+
+## Save more than one rule grey if no type of rule has been selected
+
+If no type of rule has been selected and the on-off button of save more than one rule is on, the box musn't be white.
