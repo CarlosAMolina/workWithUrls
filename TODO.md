@@ -12,4 +12,4 @@ Try use private methods at:
 
 ## The rules are not applied correctly.
 
-## Set ore than one rule: use json instead of '--->'
+## Set more than one rule: use json instead of '--->'

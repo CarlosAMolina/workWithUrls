@@ -26,6 +26,7 @@ https://www.scriptol.com/html5/button-on-off.php
   font-size:12px;
   background:lightgray;
   text-align:center;
+  cursor: pointer;
 }
 .buttonOnOff div {
   width:18px;
