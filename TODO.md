@@ -18,3 +18,5 @@ Try use private methods at:
 - Main menu buttons with different hight.
 
 ## Tests: use beforeEach
+
+## Refactor: use map instead for loops
