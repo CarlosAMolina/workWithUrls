@@ -142,13 +142,25 @@ describe("Check script urlsModifier.js: ", function() {
       const result = urlsDecoder.modifyUrls(urls);
       assert.equal(String(result), String(urls_result));
     });
-    it("Check function modifyUrls, malformed url: ", function() {
+    it("Check function modifyUrls, not encoded url: ", function() {
       const urls = [
         'nonEncodedUrl.com',
         'https%3A%2F%2Fgithub.com%2FCarlosAMolina%2FworkWithUrls%2F'
       ];
       const urls_result = [
         'nonEncodedUrl.com',
+        'https://github.com/CarlosAMolina/workWithUrls/'
+      ];
+      const result = urlsDecoder.modifyUrls(urls);
+      assert.equal(String(result), String(urls_result));
+    });
+    it("Check function modifyUrls, malformed url: ", function() {
+      const urls = [
+        '%E0%A4%A',
+        'https%3A%2F%2Fgithub.com%2FCarlosAMolina%2FworkWithUrls%2F'
+      ];
+      const urls_result = [
+        '%E0%A4%A',
         'https://github.com/CarlosAMolina/workWithUrls/'
       ];
       const result = urlsDecoder.modifyUrls(urls);
