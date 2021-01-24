@@ -1,0 +1,11 @@
+# Create .zip package to publish.
+# https://extensionworkshop.com/documentation/publish/package-your-extension/
+zip -r -FS ../workWithUrls.zip * \
+-x 'create_zip' \
+-x '*.git*' \
+-x '.gitignore' \
+-x 'node_modules/*' \
+-x 'package.json' \
+-x 'package-lock.json' \
+-x 'test/*' \
+-x 'TODO.md'
