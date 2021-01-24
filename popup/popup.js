@@ -629,7 +629,7 @@ class ButtonClearAllRules extends ModuleButtons.ButtonClicked {
 
 
 function createClickedButton(buttonIdHtml) {
-  console.log('ID HTML: ' + buttonIdHtml) //TODO delete
+  //console.log('ID HTML: ' + buttonIdHtml) //TODO only for development
   switch (buttonIdHtml) {
     case new ButtonConfiguration().buttonIdHtml:
       return new ButtonConfiguration();
@@ -680,11 +680,11 @@ function popupMain() {
     if (buttonClicked){
       buttonClicked.run;
       showOrHideRuleOrRules();
-    } else { //TODO delete to avoid unnecessary logs.
-      console.error("Invalid clicked button:");
-      console.error(e.target);
-      console.error(e.target.classList);
-    }
+    }// else { //TODO logs only for development
+    //  console.error("Invalid clicked button:");
+    //  console.error(e.target);
+    //  console.error(e.target.classList);
+    //}
   });
 
 }
