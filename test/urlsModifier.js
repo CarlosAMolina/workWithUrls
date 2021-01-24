@@ -108,11 +108,15 @@ describe("Check script urlsModifier.js: ", function() {
     });
   });
   describe("Check class RulesApplicator: ", function() {
+    const ruleTransformations = new ModuleUrlsModifier.RuleTransformations(
+      ['http', '\\.'],
+      ['hXXp', '[.]']
+    )
     const rulesApplicator = new ModuleUrlsModifier.RulesApplicator(ruleTransformations);
     it("Check function modifyUrls: ", function() {
-      const urls = ['test1.com', 'test2.com'];
-      const urls_result = ['changed1.com', 'changed2.com'];
+      const urls = ['https://www.test1.com', 'www.test2.com/path/file.txt'];
       const result = rulesApplicator.modifyUrls(urls);
+      const urls_result = ['hXXps://www[.]test1[.]com', 'www[.]test2[.]com/path/file[.]txt'];
       assert.equal(String(result), String(urls_result));
     });
   });

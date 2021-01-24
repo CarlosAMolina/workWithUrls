@@ -185,11 +185,12 @@ class RulesApplicator {
   modifyUrls(urls){
     let urlsNew = [];
     if (this.rule.isThereAnyRule()){
-      for (const url of urls) {
+      for (let urlNew of urls) {
         for (const ruleTransformation of this.rule.ruleTransformations) {
           const regex = new RegExp(ruleTransformation.valueOld, "g");
-          urlsNew.push(url.replace(regex, ruleTransformation.valueNew));
+          urlNew = urlNew.replace(regex, ruleTransformation.valueNew);
         }
+        urlsNew.push(urlNew);
       }
     }
     return urlsNew;

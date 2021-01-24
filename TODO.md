@@ -10,6 +10,15 @@ Try use private methods at:
 
 ## Not use global constant rules.
 
-## The rules are not applied correctly.
+## Set more than one rule: use json instead of one rule condition per line
 
-## Set more than one rule: use json instead of '--->'
+## Set default rules if no others stored.
+
+## Fix HTML
+- Main menu buttons with different hight.
+
+## Tests for urlsModifier with urls
+
+## urlsModifier.modifyUrls refactor for loops
+ 
+## Tests: use beforeEach
