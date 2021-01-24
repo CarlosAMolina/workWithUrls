@@ -212,16 +212,16 @@ class UrlsDecoder {
   return: list of strings.
   */
   modifyUrls(urls) {
-    let urlsNew = [];
-    for (let url2Change of urls) {
-      try{
-        url2Change = decodeURIComponent(url2Change);
-      } catch(e) { // URIError: malformed URI sequence
-        url2Change = e;
-      }
-      urlsNew.push(url2Change);
+    return urls.map(url => this.decodeUrl(url));
+  }
+
+  decodeUrl(url) {
+    try{
+      url = decodeURIComponent(url);
+    } catch(e) { // URIError: malformed URI sequence
+      console.error(e);
     }
-    return urlsNew;
+    return url;
   }
 
 }

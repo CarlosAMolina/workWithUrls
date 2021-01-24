@@ -131,8 +131,26 @@ describe("Check script urlsModifier.js: ", function() {
   describe("Check class UrlsDecoder: ", function() {
     const urlsDecoder = new ModuleUrlsModifier.UrlsDecoder();
     it("Check function modifyUrls: ", function() {
-      const urls = ['%3Fx%3Dtest1.com', '%3Fx%3Dtest2.com'];
-      const urls_result = [ '?x=test1.com', '?x=test2.com' ];
+      const urls = [
+        'http%3A%2F%2Fexample.com%2Fabcd%3Flanguage%3DEN',
+        'https%3A%2F%2Fgithub.com%2FCarlosAMolina%2FworkWithUrls%2F'
+      ];
+      const urls_result = [
+        'http://example.com/abcd?language=EN',
+        'https://github.com/CarlosAMolina/workWithUrls/'
+      ];
+      const result = urlsDecoder.modifyUrls(urls);
+      assert.equal(String(result), String(urls_result));
+    });
+    it("Check function modifyUrls, malformed url: ", function() {
+      const urls = [
+        'nonEncodedUrl.com',
+        'https%3A%2F%2Fgithub.com%2FCarlosAMolina%2FworkWithUrls%2F'
+      ];
+      const urls_result = [
+        'nonEncodedUrl.com',
+        'https://github.com/CarlosAMolina/workWithUrls/'
+      ];
       const result = urlsDecoder.modifyUrls(urls);
       assert.equal(String(result), String(urls_result));
     });
