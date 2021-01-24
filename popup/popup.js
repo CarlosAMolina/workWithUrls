@@ -18,15 +18,9 @@ const rules = new ModuleUrlsModifier.Rules();
 param urlsModifier: module urlsModifier class urlsModifier instance.
 */
 function modifyText(urlsModifier){
-  let urlsNew = '';
-  const urls = ModuleDom.getValueElementById('inputUrls').split('\n');
-  urlsNew = urlsModifier.modifyUrls(urls);
-  if (urlsNew.length == 0){
-    urlsNew = ModuleDom.getValueElementById('inputUrls');
-  } else {
-    urlsNew = urlsNew.join('\n');
-  }
-  ModuleDom.setValueToElementById(urlsNew, 'inputUrls');
+  let urls = ModuleDom.getValueElementById('inputUrls').split('\n');
+  urls = urlsModifier.modifyUrls(urls).join('\n');
+  ModuleDom.setValueToElementById(urls, 'inputUrls');
 }
 
 

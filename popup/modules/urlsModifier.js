@@ -183,17 +183,23 @@ class RulesApplicator {
   return: list of strings.
   */
   modifyUrls(urls){
-    let urlsNew = [];
-    if (this.rule.isThereAnyRule()){
-      for (let urlNew of urls) {
-        for (const ruleTransformation of this.rule.ruleTransformations) {
-          const regex = new RegExp(ruleTransformation.valueOld, "g");
-          urlNew = urlNew.replace(regex, ruleTransformation.valueNew);
-        }
-        urlsNew.push(urlNew);
-      }
+    return urls.map(url => this.getUrlApplyRuleTransformationsToUrl(url));
+  }
+
+  getUrlApplyRuleTransformationsToUrl(url) {
+    for (const ruleTransformation of this.rule.ruleTransformations) {
+      url = this.getUrlApplyRuleTransformationToUrl(ruleTransformation, url);
     }
-    return urlsNew;
+    return url;
+  }
+
+  getUrlApplyRuleTransformationToUrl(ruleTransformation, url){
+      return url.replace(this.getRegex(ruleTransformation.valueOld), ruleTransformation.valueNew);
+  }
+
+  getRegex(ruleValue){
+      return new RegExp(ruleValue, "g");
+
   }
 
 }

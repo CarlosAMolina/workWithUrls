@@ -108,17 +108,25 @@ describe("Check script urlsModifier.js: ", function() {
     });
   });
   describe("Check class RulesApplicator: ", function() {
-    const ruleTransformations = new ModuleUrlsModifier.RuleTransformations(
-      ['http', '\\.'],
-      ['hXXp', '[.]']
-    )
-    const rulesApplicator = new ModuleUrlsModifier.RulesApplicator(ruleTransformations);
-    it("Check function modifyUrls: ", function() {
+    it("Check function modifyUrls, with rules: ", function() {
+      const ruleTransformations = new ModuleUrlsModifier.RuleTransformations(
+        ['http', '\\.'],
+        ['hXXp', '[.]']
+      )
+      const rulesApplicator = new ModuleUrlsModifier.RulesApplicator(ruleTransformations);
       const urls = ['https://www.test1.com', 'www.test2.com/path/file.txt'];
       const result = rulesApplicator.modifyUrls(urls);
       const urls_result = ['hXXps://www[.]test1[.]com', 'www[.]test2[.]com/path/file[.]txt'];
       assert.equal(String(result), String(urls_result));
     });
+    it("Check function modifyUrls, without rules: ", function() {
+      const ruleTransformations = new ModuleUrlsModifier.RuleTransformations([],[])
+      const rulesApplicator = new ModuleUrlsModifier.RulesApplicator(ruleTransformations);
+      const urls = ['https://www.test1.com', 'www.test2.com/path/file.txt'];
+      const result = rulesApplicator.modifyUrls(urls);
+      assert.equal(String(result), String(urls));
+    });
+
   });
   describe("Check class UrlsDecoder: ", function() {
     const urlsDecoder = new ModuleUrlsModifier.UrlsDecoder();
