@@ -55,7 +55,7 @@ describe("Check script popup.js: ", function() {
   describe("Check function getStorageLazyLoading: ", function() {
     it("Check function runs without exceptions: ", function() {
       const result = ModulePopup.getStorageLazyLoading();
-      assert.equal(result, undefined);
+      assert.equal(result, {});
     });
   });
   describe("Check function popupMain: ", function() {

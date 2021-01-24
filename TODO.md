@@ -17,8 +17,6 @@ Try use private methods at:
 ## Fix HTML
 - Main menu buttons with different hight.
 
-## Tests for urlsModifier with urls
-
 ## urlsModifier.modifyUrls refactor for loops
  
 ## Tests: use beforeEach
