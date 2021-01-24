@@ -8,12 +8,8 @@ Try use private methods at:
   - ruleTransformationsInstanceToUse()
   - formationsInstanceToUse()
 
-## Use document.querySelector instead document.getElementById
-
-## Not use global variables.
+## Not use global constant rules.
 
 ## The rules are not applied correctly.
 
-## Buttons blue and orange: not detected if the image is clicked.
-
-## popup.css delete class names if they are not being used (now the script uses the buttons ID).
+## Set ore than one rule: use json instead of '--->'

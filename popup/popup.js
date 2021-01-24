@@ -436,7 +436,7 @@ function notShowRules(){
 
 
 function copy2clipboard (idWithInfo){
-  document.getElementById(idWithInfo).select();
+  ModuleDom.getElementById(idWithInfo).select();
   document.execCommand('copy');
 }
 
