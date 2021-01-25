@@ -72,7 +72,7 @@ class ButtonOnOff extends ButtonClicked {
   setStyleColorLabelChecked(style, color, label, checked) {
     ModuleDom.getElementById(this.buttonIdHtml).style.background = style;
     ModuleDom.getElementById(this.buttonIdHtml).style.color = color;
-    ModuleDom.getElementById(this.buttonIdHtml).innerHTML = label;
+    ModuleDom.getElementById(this.buttonIdHtml).textContent = label;
     ModuleDom.getElementById(this.buttonIdHtml).checked = checked;
   }
 
