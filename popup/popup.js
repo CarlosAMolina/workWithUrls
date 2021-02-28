@@ -193,7 +193,6 @@ function showStoredInfo(eValues) {
 
 }
 
-
 function showStoredRulesType(){
   console.log('Init showStoredRulesType()')
   var gettingAllStoredItems = browser.storage.local.get(null);
@@ -217,6 +216,9 @@ function showStoredRulesType(){
       console.log(values2show)
       showStoredInfo(values2show);
     }
+    console.log('valuesRuleNewFormat:')
+    const rulesNewFormat = storedItems["rulesDeobfuscation"];
+    console.log(rulesNewFormat);
   }, reportError);
 }
 
@@ -360,16 +362,37 @@ function saveLazyLoading(lazyLoadingTimeToSave){
 // Save input boxes info.
 function saveRules(){
 
-  function saveRule(values2save){
+  var valuesRules = getValues();
+  valuesRules = getValuesRulesWithCorrectFormat(valuesRules);
+  for (let [valueOld, valueNew] of valuesRules.entries()) {
+    saveRule([valueOld, valueNew]);
+  }
+  saveRulesNewFormat(valuesRules); // TODO replace saveRule() with this function.
 
-    function saveInfo(ids2save,values2save) {
-      console.log('Init saveInfo(). ids2save \'' + ids2save + '\', values2save \'' + values2save +'\'')
-      for (var i = 0; i < ids2save.length; i++) {
-        var storingInfo = browser.storage.local.set({[ids2save[i]]:values2save[i]});
-        storingInfo.then(() => {
-        }, reportError);
-      }
+  function getValues(){
+    if (ModuleDom.isCheckedElementById(new ModuleButtons.ButtonOpenRules().buttonIdHtml)){
+      return ModuleDom.getValueElementById('inputRules').split('\n');
+    } else {
+      return [ModuleDom.getValueElementById('inputValueOld'), ModuleDom.getValueElementById('inputValueNew')];
     }
+  }
+
+  function getValuesRulesWithCorrectFormat(valuesRules) {
+    var valuesRulesFormatted = new Map();
+    for (var i = 0; i < valuesRules.length; i+=2) {
+      let valueOld = valuesRules[i];
+      let valueNew;
+      if (typeof valuesRules[i+1] != 'undefined'){
+        valueNew = valuesRules[i+1];
+      } else {
+        valueNew = '';
+      }
+      valuesRulesFormatted.set(valueOld, valueNew);
+    }
+    return valuesRulesFormatted;
+  }
+
+  function saveRule(values2save){
 
     var ids2save = [rules.ruleType + '_old_' + values2save[0], rules.ruleType + '_new_' + values2save[0]];
     var gettingItem = browser.storage.local.get(ids2save[0]);
@@ -381,24 +404,39 @@ function saveRules(){
         getRules();
       }
     }, reportError);
+
+    function saveInfo(ids2save, values2save) {
+      console.log('Init saveInfo(). ids2save \'' + ids2save + '\', values2save \'' + values2save +'\'')
+      for (var i = 0; i < ids2save.length; i++) {
+        var storingInfo = browser.storage.local.set({[ids2save[i]]:values2save[i]});
+        storingInfo.then(() => {
+        }, reportError);
+      }
+    }
+
   }
 
-  function getValues(){
-    if (ModuleDom.isCheckedElementById(new ModuleButtons.ButtonOpenRules().buttonIdHtml)){
-      return ModuleDom.getValueElementById('inputRules').split('\n');
-    } else {
-      return [ModuleDom.getValueElementById('inputValueOld'), ModuleDom.getValueElementById('inputValueNew')];
-    }
+  function saveRulesNewFormat(valuesRules) {
+    let ruleType = 'rulesDeobfuscation' // TODO use obfusctation type too
+    var gettingRulesType = browser.storage.local.get(ruleType);
+    gettingRulesType.then((storedRulesType) => {
+      console.log("Init get rulesNewFormat: ");
+      let rules = storedRulesType[ruleType];
+      if (typeof rules === 'undefined'){
+        rules = new Map();
+      }
+      console.log(rules);
+      for (let [valueOld, valueNew] of valuesRules.entries()) {
+        rules.set(valueOld, valueNew);
+      }
+      console.log(`Init saveInfoNewFormat(). Key: ${ruleType}. Values:`)
+      console.log(rules)
+      var storingInfo = browser.storage.local.set({[ruleType]:rules});
+      storingInfo.then(() => {
+      }, reportError);
+    }, reportError);
   }
 
-  var valuesRules = getValues();
-  for (var i = 0; i < valuesRules.length; i+=2) {
-    if (typeof valuesRules[i+1] != 'undefined'){
-      saveRule([valuesRules[i],valuesRules[i+1]]);
-    } else {
-      saveRule([valuesRules[i],'']);
-    }
-  }
 }
 
 
