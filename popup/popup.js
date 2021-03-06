@@ -217,8 +217,7 @@ function showStoredRulesType(){
       showStoredInfo(values2show);
     }
     console.log('valuesRuleNewFormat:')
-    const rulesNewFormat = storedItems["rulesDeobfuscation"];
-    console.log(rulesNewFormat);
+    console.log(storedItems[rules.ruleTypeNew]);
   }, reportError);
 }
 
@@ -417,21 +416,20 @@ function saveRules(){
   }
 
   function saveRulesNewFormat(valuesRules) {
-    let ruleType = 'rulesDeobfuscation' // TODO use obfusctation type too
-    var gettingRulesType = browser.storage.local.get(ruleType);
+    var gettingRulesType = browser.storage.local.get(rules.ruleTypeNew);
     gettingRulesType.then((storedRulesType) => {
       console.log("Init get rulesNewFormat: ");
-      let rules = storedRulesType[ruleType];
-      if (typeof rules === 'undefined'){
-        rules = new Map();
+      let rulesNew = storedRulesType[rules.ruleTypeNew];
+      if (typeof rulesNew === 'undefined'){
+        rulesNew = new Map();
       }
-      console.log(rules);
+      console.log(rulesNew);
       for (let [valueOld, valueNew] of valuesRules.entries()) {
-        rules.set(valueOld, valueNew);
+        rulesNew.set(valueOld, valueNew);
       }
-      console.log(`Init saveInfoNewFormat(). Key: ${ruleType}. Values:`)
+      console.log(`Init saveInfoNewFormat(). Key: ${rules.ruleTypeNew}. Values:`)
       console.log(rules)
-      var storingInfo = browser.storage.local.set({[ruleType]:rules});
+      var storingInfo = browser.storage.local.set({[rules.ruleTypeNew]:rulesNew});
       storingInfo.then(() => {
       }, reportError);
     }, reportError);

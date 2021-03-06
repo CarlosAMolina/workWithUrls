@@ -34,6 +34,16 @@ class RuleConfigurator extends RuleTypes{
     return this._ruleType;
   }
 
+  // TODO delete and use new rules type values
+  get ruleTypeNew() {
+    if (this._ruleType == this.ruleDeobfuscate) {
+      return 'rulesDeobfuscation'
+    } else if (this._ruleType == this.ruleObfuscate) {
+      return 'rulesObfuscation'
+    }
+    throw 'Invalid rule type'
+  }
+
   set ruleType(ruleType) {
     this.assertRuleTypeAllowed(ruleType);
     switch(ruleType) {
