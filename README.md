@@ -47,22 +47,22 @@ The (de)obfuscation rules use regular expressions. Example:
 
 - Obfuscation rules:
 
-~~~
+```bash
 http ---> hXXp
 : ---> [:]
 \\. ---> [.]
-~~~
+```
 
 Note. You can activate the 'Save more than one rule' option to save all these rules at once:
 
-~~~
+```bash
 http
 hXXp
 :
 [:]
 \\.
 [.]
-~~~
+```
 
 - Obfuscation result:
 
@@ -70,22 +70,22 @@ https://github.com/CarlosAMolina --> hXXps[:]//github[.]com/CarlosAMolina
 
 - Deobfuscation rules:
 
-~~~
+```bash
 hXXp ---> http
 \\[\\:\\] ---> :
 \\[\\.\\] ---> .
-~~~
+```
 
 Note. You can activate the 'Save more than one rule' option to save all these rules at once:
 
-~~~
+```bash
 hXXp
 http
 \\[\\:\\]
 :
 \\[\\.\\]
 .
-~~~
+```
 
 - Deobfuscation result:
 
@@ -110,13 +110,13 @@ The 'Copy' button allows you to:
 
 To copy the stored rules, the URLs box must be empty and you have to select a rule type (deobfuscation or obfuscation). Then, the deobfuscation or obfuscation rules are stored in the clipboard with this format:
 
-~~~
+```bash
 vale to change 1
 new value 1
 value to change 2
 new value 2
 ...
-~~~
+```
 
 **Lazy loading**
 
@@ -154,9 +154,9 @@ If you want to improve or test this project on your pc, please follow these step
 
 1. Clone the project.
 
-~~~
+```bash
 git clone git@github.com:CarlosAMolina/workWithUrls
-~~~
+```
 
 2. Run the addon.
 
@@ -179,13 +179,19 @@ Requirements:
 
 Install npm requirements:
 
-~~~
+```bash
 # In the same path of the package.json file.
 npm install
-~~~
+```
 
 Run tests:
 
-~~~
+```bash
 npm test
-~~~
+```
+
+Run one test:
+
+```bash
+npm test -- --grep "STRING_THAT_MATCHES_THE_TEST"
+```
