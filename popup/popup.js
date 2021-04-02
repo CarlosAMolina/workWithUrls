@@ -362,7 +362,7 @@ function saveLazyLoading(lazyLoadingTimeToSave){
 function saveRules(){
 
   var valuesRules = getValues();
-  valuesRules = getValuesRulesWithCorrectFormat(valuesRules);
+  valuesRules = new ModuleUrlsModifier.RulesParser().getValuesRulesWithCorrectFormat(valuesRules);
   for (let [valueOld, valueNew] of valuesRules.entries()) {
     saveRule([valueOld, valueNew]);
   }
@@ -374,21 +374,6 @@ function saveRules(){
     } else {
       return [ModuleDom.getValueElementById('inputValueOld'), ModuleDom.getValueElementById('inputValueNew')];
     }
-  }
-
-  function getValuesRulesWithCorrectFormat(valuesRules) {
-    var valuesRulesFormatted = new Map();
-    for (var i = 0; i < valuesRules.length; i+=2) {
-      let valueOld = valuesRules[i];
-      let valueNew;
-      if (typeof valuesRules[i+1] != 'undefined'){
-        valueNew = valuesRules[i+1];
-      } else {
-        valueNew = '';
-      }
-      valuesRulesFormatted.set(valueOld, valueNew);
-    }
-    return valuesRulesFormatted;
   }
 
   function saveRule(values2save){
