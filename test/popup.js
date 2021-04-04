@@ -1,6 +1,6 @@
 import * as ModuleMockDom from './mockDom.js'; // Global mocks.
 import * as ModulePopup from '../popup/popup.js';
-import pkgChai from 'chai';
+import chai from 'chai';
 
 
 function mockDomInputUrls(valueToMock){
@@ -40,22 +40,14 @@ function storageMock() {
 
 
 describe("Check script popup.js: ", function() {
-  const {assert: assert} = pkgChai;
   const inputUrlsTest = 'test1.com\ntest2.com';
   const mockRuleTransformationValueOld = 'test'
   const mockRuleTransformationValueNew = 'changed'
   mockBrowserStorageLocal();
-  describe("Check function getRules: ", function() {
-    it("Check function runs without exceptions: ", function() {
-      // TODO incorrect test.
-      const result = ModulePopup.getRules();
-      assert.equal(result, undefined);
-    });
-  });
   describe("Check function getStorageLazyLoading: ", function() {
     it("Check function runs without exceptions: ", async function() {
       const result = await ModulePopup.getStorageLazyLoading();
-      assert.equal(result, 0);
+      chai.expect(result).to.equal(0);
     });
   });
   describe("Check function popupMain: ", function() {
@@ -79,20 +71,20 @@ describe("Check script popup.js: ", function() {
       class MockUrlsRuleApplicator { modifyUrls(){ return ['url1.com', 'url2.com'] } };
       const mockUrlsRuleApplicator = new MockUrlsRuleApplicator();
       const result = ModulePopup.modifyText(mockUrlsRuleApplicator);
-      assert.equal(result, undefined);
+      chai.expect(result).to.equal(undefined);
     });
   });
   describe("Check function reportError: ", function() {
     it("Check function runs without exceptions: ", function() {
       // TODO incorrect test.
       const result = ModulePopup.reportError('Testing error');
-      assert.equal(result, undefined);
+      chai.expect(result).to.equal(undefined);
     });
   });
   describe("Check function reportExecuteScriptError: ", function() {
     it("Check function runs without exceptions: ", function() {
       const result = ModulePopup.reportExecuteScriptError("Error message")
-      assert.equal(result, undefined);
+      chai.expect(result).to.equal(undefined);
     });
   });
   describe("Check function showStoredInfo: ", function() {
@@ -100,7 +92,7 @@ describe("Check script popup.js: ", function() {
     it("Check function runs without exceptions: ", function() {
       const values2save = ['value 1', 'value 2']
       const result = ModulePopup.showStoredInfo(values2save);
-      assert.equal(result, undefined);
+      chai.expect(typeof result).to.equal('undefined');
     });
     describe("Check function updateValue: ", function() {
       it("Check function runs without exceptions: ", function() {

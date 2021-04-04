@@ -7,7 +7,36 @@ const mockRuleTransformationValueNew = 'changed'
 const ruleTransformations = new ModuleUrlsModifier.RuleTransformations([mockRuleTransformationValueOld], [mockRuleTransformationValueNew]);
 
 
+function mockBrowserStorageLocal(){
+  global.browser = {};
+  browser.storage = {};
+  browser.storage.local = storageMock();
+}
+
+// Storage Mock
+// https://stackoverflow.com/questions/11485420/how-to-mock-localstorage-in-javascript-unit-tests
+function storageMock() {
+  return {
+    get: function(key) {
+      return new Promise(function(resolve, reject) {
+        resolve(new Object({ rd_new_hXXp: "http", rd_old_hXXp: "hXXp" }))
+      });
+    }
+  };
+}
+
+
 describe("Check script urlsModifier.js: ", function() {
+  describe("Check function getRules: ", function() {
+    beforeEach(function() {
+      mockBrowserStorageLocal();
+    });
+    it("Check expected result: ", async function() {
+      let rules = new ModuleUrlsModifier.Rules();
+      const result = await ModuleUrlsModifier.getRules(rules);
+      assert.equal(result.rules['rd'].stringRepresentation, 'hXXp\nhttp');
+    });
+  });
   describe("Check class RuleTypes: ", function() {
     const ruleTypes = new ModuleUrlsModifier.RuleTypes();
     it("Check function get ruleDeobfuscate: ", function() {
@@ -186,6 +215,45 @@ describe("Check script urlsModifier.js: ", function() {
       rules.ruleType = ruleType;
       rules.addTypeAndRule(ruleType, ruleTransformations);
       assert.equal(rules.ruleTransformationsToUse, ruleTransformations.ruleTransformations);
+    });
+    it("Check function addRuleTransformation: ", function() {
+      rules.ruleType = ruleType;
+      rules.addTypeAndRule(
+        ruleType,
+        new ModuleUrlsModifier.RuleTransformations(['a1', 'b1'], ['a2', 'b2'])
+      );
+      rules.addRuleTransformation(new ModuleUrlsModifier.RuleTransformation('c1', 'c2'));
+      assert.equal(
+        rules.ruleTransformationsToUseStringRepresentation,
+        new ModuleUrlsModifier.RuleTransformations(['a1', 'b1', 'c1'], ['a2', 'b2', 'c2']).stringRepresentation
+      );
+    });
+    it("Check function deleteRuleTransformation: ", function() {
+      rules.ruleType = ruleType;
+      rules.addTypeAndRule(
+        ruleType,
+        new ModuleUrlsModifier.RuleTransformations(['a1', 'b1', 'c1'], ['a2', 'b2', 'c2'])
+      );
+      rules.deleteRuleTransformation(new ModuleUrlsModifier.RuleTransformation('b1', 'b2'));
+      assert.equal(
+        rules.ruleTransformationsToUseStringRepresentation,
+        new ModuleUrlsModifier.RuleTransformations(['a1', 'c1'], ['a2', 'c2']).stringRepresentation
+      );
+    });
+    it("Check function updateRuleTransformation: ", function() {
+      rules.ruleType = ruleType;
+      rules.addTypeAndRule(
+        ruleType,
+        new ModuleUrlsModifier.RuleTransformations(['a1', 'b1'], ['a2', 'b2'])
+      );
+      rules.updateRuleTransformation(
+        new ModuleUrlsModifier.RuleTransformation('b1', 'b2'),
+        new ModuleUrlsModifier.RuleTransformation('c1', 'c2'),
+      )
+      assert.equal(
+        rules.ruleTransformationsToUseStringRepresentation,
+        new ModuleUrlsModifier.RuleTransformations(['a1', 'c1'], ['a2', 'c2']).stringRepresentation
+      );
     });
     it("Check Rules._ruleConfigurator._ruleTypes: ", function() {
       assert.equal(String(rules.ruleTypes), String(new ModuleUrlsModifier.RuleTypes().ruleTypes));

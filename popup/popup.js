@@ -3,15 +3,16 @@
 https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/storage/local
 */
 
+
 import * as ModuleButtons from '../popup/modules/buttons.js';
 import * as ModuleDom from '../popup/modules/dom.js';
 import * as ModuleSleep from '../popup/modules/sleep.js';
 import * as ModuleUrlsModifier from './modules/urlsModifier.js';
 
 
-// Global constants.
+// Global constants or variables.
 const PROTOCOL_DEFAULT = 'http://'
-const rules = new ModuleUrlsModifier.Rules();
+let rules = new ModuleUrlsModifier.Rules();
 
 
 /*
@@ -40,26 +41,6 @@ function showOrHideRuleOrRules() {
 function reportError(error) {
   console.error(`Error: ${error}`);
 }
-
-
-function getRules(){
-  console.log('Init getRules()')
-  var gettingAllStoredItems = browser.storage.local.get(null);
-  gettingAllStoredItems.then((storedItems) => { // storedItems: object of keys and values
-    rules.initializeRules();
-    for (const ruleType of rules.ruleTypes) {
-      var keysRuleOld = Object.keys(storedItems).filter(key => key.includes(ruleType+'_old_')); //array
-      var rules2SaveOld = keysRuleOld.map(keysRuleOld => storedItems[keysRuleOld]); // array
-      var keysRuleNew = Object.keys(storedItems).filter(key => key.includes(ruleType+'_new_')); //array
-      var rules2SaveNew = keysRuleNew.map(keysRuleNew => storedItems[keysRuleNew]); // array
-      let ruleTransformations = new ModuleUrlsModifier.RuleTransformations(rules2SaveOld, rules2SaveNew); 
-      rules.addTypeAndRule(ruleType, ruleTransformations);
-    }
-    console.log('Rules:')
-    console.log(rules.rules)
-  }, reportError);
-}
-
 
 /* Get Lazy Loading time value at the storage.
 :param: no param.
@@ -145,7 +126,7 @@ function showStoredInfo(eValues) {
     const evtTgt = e.target;
     evtTgt.parentNode.parentNode.parentNode.removeChild(evtTgt.parentNode.parentNode);
     browser.storage.local.remove([rules.ruleType+'_old_'+eValues[0], rules.ruleType+'_new_'+eValues[0]]);
-    getRules();
+    rules.deleteRuleTransformation(new ModuleUrlsModifier.RuleTransformation(eValues[0], eValues[1]))
   })
 
   // set up listeners for the buttons
@@ -166,6 +147,22 @@ function showStoredInfo(eValues) {
   })
 
   updateBtn.addEventListener('click',() => {
+    var eKeys2change = [rules.ruleType + '_old_' + eValues[0], rules.ruleType + '_new_' + eValues[0]];
+    var values2save = [entryEditInputOldValue.value, entryEditInputNewValue.value];
+    var ids2save = [rules.ruleType + '_old_' + values2save[0], rules.ruleType + '_new_' + values2save[0]];
+    var gettingItem = browser.storage.local.get(ids2save[0]);
+    gettingItem.then((storedItem) => { // result: empty object if the searched value is not stored
+      var searchInStorage = Object.keys(storedItem); // array with the searched value if it is stored
+      if( (searchInStorage.length < 1) || ( (eKeys2change[0] == ids2save[0]) && (eValues[1] != values2save[1]) ) ) { // searchInStorage.length < 1 -> no stored
+        updateValue(eKeys2change, ids2save, values2save);
+        rules.updateRuleTransformation(
+          new ModuleUrlsModifier.RuleTransformation(eValues[0], eValues[1]),
+          new ModuleUrlsModifier.RuleTransformation(values2save[0], values2save[1])
+        )
+        entry.parentNode.removeChild(entry);
+        showStoredInfo(values2save);
+      }
+    });
 
     function updateValue(ids2change, ids2save, values2save) {
       for (var i = 0; i < 2; i++) {
@@ -175,20 +172,6 @@ function showStoredInfo(eValues) {
         }, reportError);
       }
     }
-
-    var eKeys2change = [rules.ruleType + '_old_' + eValues[0], rules.ruleType + '_new_' + eValues[0]];
-    var values2save = [entryEditInputOldValue.value, entryEditInputNewValue.value];
-    var ids2save = [rules.ruleType + '_old_' + values2save[0], rules.ruleType + '_new_' + values2save[0]];
-    var gettingItem = browser.storage.local.get(ids2save[0]);
-    gettingItem.then((storedItem) => { // result: empty object if the searched value is not stored
-      var searchInStorage = Object.keys(storedItem); // array with the searched value if it is stored
-      if( (searchInStorage.length < 1) || ( (eKeys2change[0] == ids2save[0]) && (eValues[1] != values2save[1]) ) ) { // searchInStorage.length < 1 -> no stored
-        updateValue(eKeys2change, ids2save, values2save);
-        getRules()
-        entry.parentNode.removeChild(entry);
-        showStoredInfo(values2save);
-      }
-    });
   });
 
 }
@@ -359,13 +342,15 @@ function saveLazyLoading(lazyLoadingTimeToSave){
 }
 
 // Save input boxes info.
-function saveRules(){
+async function saveRules(){
 
   var valuesRules = getValues();
   valuesRules = new ModuleUrlsModifier.RulesParser().getValuesRulesWithCorrectFormat(valuesRules);
   for (let [valueOld, valueNew] of valuesRules.entries()) {
     saveRule([valueOld, valueNew]);
+    rules = await ModuleUrlsModifier.getRules(rules);
   }
+
   saveRulesNewFormat(valuesRules); // TODO replace saveRule() with this function.
 
   function getValues(){
@@ -385,7 +370,6 @@ function saveRules(){
       if(searchInStorage.length < 1) { // searchInStorage.length < 1 -> no stored
         saveInfo(ids2save,values2save);
         showStoredInfo(values2save);
-        getRules();
       }
     }, reportError);
 
@@ -424,19 +408,19 @@ function saveRules(){
 
 
 // clear display/storage
-function clearStorageInfo() {
+async function clearStorageInfo() {
 
   var gettingAllStoredItems = browser.storage.local.get(null);
   gettingAllStoredItems.then((storedItems) => {
     deleteAllRulesType(storedItems);
   }, reportError);
+  rules = await ModuleUrlsModifier.getRules(rules);
 
   function deleteAllRulesType(storedItems){
     var keysUrl = Object.keys(storedItems).filter(key => key.includes(rules.ruleType+'_')); //array
     for (const keyUrl of keysUrl) {
       browser.storage.local.remove(keyUrl);
     }
-    getRules();
     notShowRules();
   }
 
@@ -688,9 +672,9 @@ function createClickedButton(buttonIdHtml) {
 }
 
 
-function popupMain() {
+async function popupMain() {
 
-  getRules();
+  rules = await ModuleUrlsModifier.getRules(rules);
   new ModuleButtons.ButtonDecodeUrls().setStylePrevious();
   new ModuleButtons.ButtonOpenPaths().setStylePrevious();
   new ModuleButtons.ButtonOpenRules().setStylePrevious();
@@ -733,7 +717,6 @@ catch (error){
 
 //TODO: created only for testing.
 export {
-  getRules,
   getStorageLazyLoading,
   modifyText,
   popupMain,

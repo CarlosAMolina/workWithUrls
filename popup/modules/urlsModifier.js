@@ -172,6 +172,43 @@ class Rules extends RuleConfigurator{
     this._rules[ruleType] = ruleTransformations;
   }
 
+  /*
+  param ruleTransformation: RuleTransformation instance.
+  */
+  addRuleTransformation(ruleTransformation) {
+    this.ruleTransformationsToUse.push(ruleTransformation);
+  }
+
+  /*
+  param ruleTransformation: RuleTransformation instance.
+  */
+  deleteRuleTransformation(ruleTransformation) {
+    let indexToDelete = -1;
+    let match = false;
+    for (const ruleTransformationStored of this.ruleTransformationsToUse) {
+      indexToDelete += 1;
+      if (
+        ruleTransformationStored.valueOld === ruleTransformation.valueOld
+        && ruleTransformationStored.valueNew === ruleTransformation.valueNew
+      ) {
+        match = true;
+        break;
+      }
+    }
+    if (match && indexToDelete !== -1) {
+      this.ruleTransformationsToUse.splice(indexToDelete, 1);
+    }
+  }
+
+  /*
+  param ruleTransformationToChange: RuleTransformation instance.
+  param ruleTransformationNew: RuleTransformation instance.
+  */
+  updateRuleTransformation(ruleTransformationToChange, ruleTransformationNew) {
+    this.deleteRuleTransformation(ruleTransformationToChange)
+    this.addRuleTransformation(ruleTransformationNew)
+  }
+
   initializeRules() {
     this._rules = {};
   }
@@ -273,7 +310,32 @@ function urlsModifier(rule) {
 }
 
 
+async function getRules(rules){
+  console.log('Init getRules()');
+  let storedItems = {};
+  try {
+    storedItems = await browser.storage.local.get(null);
+  } catch(e) {
+    console.error(e)
+    return {};
+  }
+  rules.initializeRules();
+  for (const ruleType of rules.ruleTypes) {
+    var keysRuleOld = Object.keys(storedItems).filter(key => key.includes(ruleType+'_old_')); //array
+    var rules2SaveOld = keysRuleOld.map(keysRuleOld => storedItems[keysRuleOld]); // array
+    var keysRuleNew = Object.keys(storedItems).filter(key => key.includes(ruleType+'_new_')); //array
+    var rules2SaveNew = keysRuleNew.map(keysRuleNew => storedItems[keysRuleNew]); // array
+    let ruleTransformations = new RuleTransformations(rules2SaveOld, rules2SaveNew); 
+    rules.addTypeAndRule(ruleType, ruleTransformations);
+  }
+    console.log('Rules:')
+    console.log(rules.rules)
+  return rules;
+}
+
+
 export {
+  getRules,
   RulesApplicator,
   RulesParser,
   Rules,
