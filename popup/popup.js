@@ -6,6 +6,7 @@ https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/stora
 
 import * as ModuleButtons from '../popup/modules/buttons.js';
 import * as ModuleDom from '../popup/modules/dom.js';
+import * as ModuleRulesStorage from '../popup/modules/rules/storage.js';
 import * as ModuleSleep from '../popup/modules/sleep.js';
 import * as ModuleUrlsModifier from './modules/urlsModifier.js';
 
@@ -348,7 +349,7 @@ async function saveRules(){
   valuesRules = new ModuleUrlsModifier.RulesParser().getValuesRulesWithCorrectFormat(valuesRules);
   for (let [valueOld, valueNew] of valuesRules.entries()) {
     saveRule([valueOld, valueNew]);
-    rules = await ModuleUrlsModifier.getRules(rules);
+    rules = await ModuleRulesStorage.getRules(rules);
   }
 
   saveRulesNewFormat(valuesRules); // TODO replace saveRule() with this function.
@@ -414,7 +415,7 @@ async function clearStorageInfo() {
   gettingAllStoredItems.then((storedItems) => {
     deleteAllRulesType(storedItems);
   }, reportError);
-  rules = await ModuleUrlsModifier.getRules(rules);
+  rules = await ModuleRulesStorage.getRules(rules);
 
   function deleteAllRulesType(storedItems){
     var keysUrl = Object.keys(storedItems).filter(key => key.includes(rules.ruleType+'_')); //array
@@ -674,7 +675,7 @@ function createClickedButton(buttonIdHtml) {
 
 async function popupMain() {
 
-  rules = await ModuleUrlsModifier.getRules(rules);
+  rules = await ModuleRulesStorage.getRules(rules);
   new ModuleButtons.ButtonDecodeUrls().setStylePrevious();
   new ModuleButtons.ButtonOpenPaths().setStylePrevious();
   new ModuleButtons.ButtonOpenRules().setStylePrevious();

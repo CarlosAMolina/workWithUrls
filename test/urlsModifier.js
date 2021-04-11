@@ -7,36 +7,7 @@ const mockRuleTransformationValueNew = 'changed'
 const ruleTransformations = new ModuleUrlsModifier.RuleTransformations([mockRuleTransformationValueOld], [mockRuleTransformationValueNew]);
 
 
-function mockBrowserStorageLocal(){
-  global.browser = {};
-  browser.storage = {};
-  browser.storage.local = storageMock();
-}
-
-// Storage Mock
-// https://stackoverflow.com/questions/11485420/how-to-mock-localstorage-in-javascript-unit-tests
-function storageMock() {
-  return {
-    get: function(key) {
-      return new Promise(function(resolve, reject) {
-        resolve(new Object({ rd_new_hXXp: "http", rd_old_hXXp: "hXXp" }))
-      });
-    }
-  };
-}
-
-
 describe("Check script urlsModifier.js: ", function() {
-  describe("Check function getRules: ", function() {
-    beforeEach(function() {
-      mockBrowserStorageLocal();
-    });
-    it("Check expected result: ", async function() {
-      let rules = new ModuleUrlsModifier.Rules();
-      const result = await ModuleUrlsModifier.getRules(rules);
-      assert.equal(result.rules['rd'].stringRepresentation, 'hXXp\nhttp');
-    });
-  });
   describe("Check class RuleTypes: ", function() {
     const ruleTypes = new ModuleUrlsModifier.RuleTypes();
     it("Check function get ruleDeobfuscate: ", function() {
