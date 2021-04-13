@@ -1,5 +1,6 @@
 import * as ModuleUrlsModifier from '../urlsModifier.js';
 
+
 /*
 :param rules: Rules.
 :return rules: Rules.
@@ -26,7 +27,6 @@ async function getRules(rules){
     console.log(rules.rules)
   return rules;
 }
-
 
 export {
   getRules,

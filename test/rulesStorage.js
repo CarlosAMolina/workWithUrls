@@ -1,5 +1,6 @@
 import pkgChai from 'chai';
 
+import * as ModulePopup from '../popup/popup.js'; // TODO not use this import.
 import * as ModuleRulesStorage from '../popup/modules/rules/storage.js';
 import * as ModuleUrlsModifier from '../popup/modules/urlsModifier.js';
 
@@ -24,14 +25,22 @@ function storageMock() {
 }
 
 describe("Check script rules storage.js: ", function() {
+  beforeEach(function() {
+    mockBrowserStorageLocal();
+  });
   describe("Check function getRules: ", function() {
-    beforeEach(function() {
-      mockBrowserStorageLocal();
-    });
     it("Check expected result: ", async function() {
       let rules = new ModuleUrlsModifier.Rules();
       const result = await ModuleRulesStorage.getRules(rules);
       assert.equal(result.rules['rd'].stringRepresentation, 'hXXp\nhttp');
+    });
+  });
+  // TODO, move the function showStoredRulesType to the rules/storage.js file.
+  describe("Check function showStoredRulesType: ", function() {
+    it("Check expected result: ", async function() {
+      let rules = new ModuleUrlsModifier.Rules();
+      rules.setRuleTypeDeobfuscate()
+      ModulePopup.showStoredRulesType(rules);
     });
   });
 });

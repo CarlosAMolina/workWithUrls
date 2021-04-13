@@ -177,7 +177,11 @@ function showStoredInfo(eValues) {
 
 }
 
-function showStoredRulesType(){
+
+/*
+:param rules: Rules.
+*/
+function showStoredRulesType(rules){
   console.log('Init showStoredRulesType()')
   var gettingAllStoredItems = browser.storage.local.get(null);
   gettingAllStoredItems.then((storedItems) => {
@@ -572,7 +576,7 @@ class ButtonInputObfuscation extends ModuleButtons.ButtonClicked {
   get run() {
     rules.setRuleTypeObfuscate();
     notShowRules();
-    showStoredRulesType();
+    showStoredRulesType(rules);
     ModuleDom.setEnabledArrayElementsById(['pInputOld','pInputNew','inputValueOld','inputValueNew','inputRules','buttonAddRule','buttonClearAllRules']);
   }
 
@@ -587,7 +591,7 @@ class ButtonInputDeobfuscation extends ModuleButtons.ButtonClicked {
   get run() {
     rules.setRuleTypeDeobfuscate();
     notShowRules();
-    showStoredRulesType();
+    showStoredRulesType(rules);
     ModuleDom.setEnabledArrayElementsById(['pInputOld','pInputNew','inputValueOld','inputValueNew','inputRules','buttonAddRule','buttonClearAllRules']);
   }
 
@@ -724,4 +728,5 @@ export {
   reportError,
   reportExecuteScriptError,
   showStoredInfo,
+  showStoredRulesType
 };
