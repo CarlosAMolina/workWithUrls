@@ -65,51 +65,70 @@ async function getStorageLazyLoading(){
 }
 
 
+
 // Display info.
 function showStoredInfo(eValues) {
+  function clearFixElement() {
+    let clearFix = document.createElement('div'); // for background color and correct position
+    clearFix.setAttribute('class','clearfix');
+    return clearFix;
+  }
+  function cancelBtnElement() {
+    let cancelBtn = document.createElement('button');
+    cancelBtn.innerHTML = '<img src="/icons/cancel.png"/>';
+    cancelBtn.setAttribute('title','Cancel update');
+    cancelBtn.setAttribute('class','floatLeft button');
+    return cancelBtn;
+  }
+  function deleteBtnElement() {
+    let deleteBtn = document.createElement('button');
+    deleteBtn.textContent = 'Delete';
+    deleteBtn.innerHTML = '<img src="/icons/trash.png"/>';
+    deleteBtn.setAttribute('title','Delete');
+    deleteBtn.setAttribute('class','floatLeft button');
+    return deleteBtn;
+  }
+  function editBtnElement() {
+    let editBtn = document.createElement('button');
+    editBtn.textContent = 'Edit';
+    editBtn.innerHTML = '<img src="/icons/edit.png"/>';
+    editBtn.setAttribute('title','Edit');
+    editBtn.setAttribute('class','floatLeft button');
+    return editBtn;
+  }
+  function entryValueElement(eValues) {
+    let entryValue = document.createElement('p');
+    entryValue.setAttribute('style','margin-left: 75px');
+    entryValue.textContent = eValues[0] + ' ---> ' + eValues[1];
+    return entryValue;
+  }
+
+
   // Display box.
+  let deleteBtn = deleteBtnElement();
+  let editBtn = editBtnElement();
+  let entryValue = entryValueElement(eValues);
   var entry = document.createElement('div');
   var entryDisplay = document.createElement('div');
-  var entryValue = document.createElement('p');
-  var editBtn = document.createElement('button');
-  var deleteBtn = document.createElement('button');
-  var clearFix = document.createElement('div'); // for background color and correct position
-  deleteBtn.textContent = 'Delete';
-  deleteBtn.innerHTML = '<img src="/icons/trash.png"/>';
-  editBtn.textContent = 'Edit';
-  editBtn.innerHTML = '<img src="/icons/edit.png"/>';
-  clearFix.setAttribute('class','clearfix');
-  deleteBtn.setAttribute('title','Delete');
-  deleteBtn.setAttribute('class','floatLeft button');
-  editBtn.setAttribute('title','Edit');
-  editBtn.setAttribute('class','floatLeft button');
-  entryValue.setAttribute('style','margin-left: 75px');
-  entry.appendChild(entryDisplay);
   entryDisplay.appendChild(deleteBtn);
   entryDisplay.appendChild(editBtn);
   entryDisplay.appendChild(entryValue);
-  entryDisplay.appendChild(clearFix);
+  entryDisplay.appendChild(clearFixElement());
+  entry.appendChild(entryDisplay);
 
-  entryValue.textContent = eValues[0] + ' ---> ' + eValues[1];
   ModuleDom.getInfoContainer().appendChild(entry);
 
   // edit box
-  var cancelBtn = document.createElement('button');
-  var clearFix2 = document.createElement('div');
+  let cancelBtn = cancelBtnElement();
   var entryEdit = document.createElement('div');
   var entryEditInputOldValue = document.createElement('input');
   var entryEditInputNewValue = document.createElement('input');
   var updateBtn = document.createElement('button');
-  cancelBtn.innerHTML = '<img src="/icons/cancel.png"/>';
-  cancelBtn.setAttribute('title','Cancel update');
-  cancelBtn.setAttribute('class','floatLeft button');
-  clearFix2.setAttribute('class','clearfix');
-  entry.appendChild(entryEdit);
   entryEdit.appendChild(entryEditInputOldValue);
   entryEdit.appendChild(entryEditInputNewValue);
   entryEdit.appendChild(updateBtn);
   entryEdit.appendChild(cancelBtn);
-  entryEdit.appendChild(clearFix2);
+  entryEdit.appendChild(clearFixElement());
   entryEditInputOldValue.setAttribute('class','input');
   entryEditInputOldValue.setAttribute('style','width:30%');
   entryEditInputNewValue.setAttribute('class','input');
@@ -117,6 +136,7 @@ function showStoredInfo(eValues) {
   updateBtn.innerHTML = '<img src="/icons/ok.png"/>';
   updateBtn.setAttribute('title','Update');
   updateBtn.setAttribute('class','floatLeft button');
+  entry.appendChild(entryEdit);
 
   entryEdit.style.display = 'none';
   entryEditInputOldValue.value = eValues[0];
