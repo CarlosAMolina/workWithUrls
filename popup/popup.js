@@ -68,6 +68,38 @@ async function getStorageLazyLoading(){
 
 // Display info.
 function showStoredInfo(eValues) {
+
+  // Display box.
+  let deleteBtn = deleteBtnElement();
+  let editBtn = editBtnElement();
+  let entryValue = entryValueElement(eValues);
+  let entry = document.createElement('div');
+  let entryDisplay = document.createElement('div');
+  entryDisplay.appendChild(deleteBtn);
+  entryDisplay.appendChild(editBtn);
+  entryDisplay.appendChild(entryValue);
+  entryDisplay.appendChild(clearFixElement());
+  entry.appendChild(entryDisplay);
+
+  ModuleDom.getInfoContainer().appendChild(entry);
+
+  // edit box
+  let cancelBtn = cancelBtnElement();
+  let entryEdit = document.createElement('div');
+  let entryEditInputValueOld = entryEditInputValueElement();
+  let entryEditInputValueNew = entryEditInputValueElement(); 
+  let updateBtn = updateBtnElement();
+  entryEdit.appendChild(entryEditInputValueOld);
+  entryEdit.appendChild(entryEditInputValueNew);
+  entryEdit.appendChild(updateBtn);
+  entryEdit.appendChild(cancelBtn);
+  entryEdit.appendChild(clearFixElement());
+  entry.appendChild(entryEdit);
+
+  entryEdit.style.display = 'none';
+  entryEditInputValueOld.value = eValues[0];
+  entryEditInputValueNew.value = eValues[1];
+
   function clearFixElement() {
     let clearFix = document.createElement('div'); // for background color and correct position
     clearFix.setAttribute('class','clearfix');
@@ -102,45 +134,19 @@ function showStoredInfo(eValues) {
     entryValue.textContent = eValues[0] + ' ---> ' + eValues[1];
     return entryValue;
   }
-
-
-  // Display box.
-  let deleteBtn = deleteBtnElement();
-  let editBtn = editBtnElement();
-  let entryValue = entryValueElement(eValues);
-  var entry = document.createElement('div');
-  var entryDisplay = document.createElement('div');
-  entryDisplay.appendChild(deleteBtn);
-  entryDisplay.appendChild(editBtn);
-  entryDisplay.appendChild(entryValue);
-  entryDisplay.appendChild(clearFixElement());
-  entry.appendChild(entryDisplay);
-
-  ModuleDom.getInfoContainer().appendChild(entry);
-
-  // edit box
-  let cancelBtn = cancelBtnElement();
-  var entryEdit = document.createElement('div');
-  var entryEditInputOldValue = document.createElement('input');
-  var entryEditInputNewValue = document.createElement('input');
-  var updateBtn = document.createElement('button');
-  entryEdit.appendChild(entryEditInputOldValue);
-  entryEdit.appendChild(entryEditInputNewValue);
-  entryEdit.appendChild(updateBtn);
-  entryEdit.appendChild(cancelBtn);
-  entryEdit.appendChild(clearFixElement());
-  entryEditInputOldValue.setAttribute('class','input');
-  entryEditInputOldValue.setAttribute('style','width:30%');
-  entryEditInputNewValue.setAttribute('class','input');
-  entryEditInputNewValue.setAttribute('style','width:30%');
-  updateBtn.innerHTML = '<img src="/icons/ok.png"/>';
-  updateBtn.setAttribute('title','Update');
-  updateBtn.setAttribute('class','floatLeft button');
-  entry.appendChild(entryEdit);
-
-  entryEdit.style.display = 'none';
-  entryEditInputOldValue.value = eValues[0];
-  entryEditInputNewValue.value = eValues[1];
+  function entryEditInputValueElement() {
+    let entryEditInputValue = document.createElement('input');
+    entryEditInputValue.setAttribute('class','input');
+    entryEditInputValue.setAttribute('style','width:30%');
+    return entryEditInputValue;
+  }
+  function updateBtnElement() {
+    let updateBtn = document.createElement('button');
+    updateBtn.innerHTML = '<img src="/icons/ok.png"/>';
+    updateBtn.setAttribute('title','Update');
+    updateBtn.setAttribute('class','floatLeft button');
+    return updateBtn;
+  }
 
   // set up listener for the delete functionality
   deleteBtn.addEventListener('click',(e) => {
@@ -168,12 +174,12 @@ function showStoredInfo(eValues) {
   })
 
   updateBtn.addEventListener('click',() => {
-    var eKeys2change = [rules.ruleType + '_old_' + eValues[0], rules.ruleType + '_new_' + eValues[0]];
-    var values2save = [entryEditInputOldValue.value, entryEditInputNewValue.value];
-    var ids2save = [rules.ruleType + '_old_' + values2save[0], rules.ruleType + '_new_' + values2save[0]];
-    var gettingItem = browser.storage.local.get(ids2save[0]);
+    let eKeys2change = [rules.ruleType + '_old_' + eValues[0], rules.ruleType + '_new_' + eValues[0]];
+    let values2save = [entryEditInputValueOld.value, entryEditInputValueNew.value];
+    let ids2save = [rules.ruleType + '_old_' + values2save[0], rules.ruleType + '_new_' + values2save[0]];
+    let gettingItem = browser.storage.local.get(ids2save[0]);
     gettingItem.then((storedItem) => { // result: empty object if the searched value is not stored
-      var searchInStorage = Object.keys(storedItem); // array with the searched value if it is stored
+      let searchInStorage = Object.keys(storedItem); // array with the searched value if it is stored
       if( (searchInStorage.length < 1) || ( (eKeys2change[0] == ids2save[0]) && (eValues[1] != values2save[1]) ) ) { // searchInStorage.length < 1 -> no stored
         updateValue(eKeys2change, ids2save, values2save);
         rules.updateRuleTransformation(
@@ -186,9 +192,9 @@ function showStoredInfo(eValues) {
     });
 
     function updateValue(ids2change, ids2save, values2save) {
-      for (var i = 0; i < 2; i++) {
+      for (let i = 0; i < 2; i++) {
         browser.storage.local.remove(ids2change[i]);
-        var storingInfo = browser.storage.local.set({ [ids2save[i]] : values2save[i] });
+        let storingInfo = browser.storage.local.set({ [ids2save[i]] : values2save[i] });
         storingInfo.then(() => {
         }, reportError);
       }
