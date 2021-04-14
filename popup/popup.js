@@ -65,14 +65,63 @@ async function getStorageLazyLoading(){
 }
 
 
+class ButtonCancel {
+  get button() {
+    let button = document.createElement('button');
+    button.innerHTML = '<img src="/icons/cancel.png"/>';
+    button.setAttribute('title','Cancel update');
+    button.setAttribute('class','floatLeft button');
+    return button;
+  }
+}
+
+class ButtonDelete {
+  get button() {
+    let button = document.createElement('button');
+    button.textContent = 'Delete';
+    button.innerHTML = '<img src="/icons/trash.png"/>';
+    button.setAttribute('title','Delete');
+    button.setAttribute('class','floatLeft button');
+    return button;
+  }
+}
+
+class ButtonEdit {
+  get button() {
+    let button = document.createElement('button');
+    button.textContent = 'Edit';
+    button.innerHTML = '<img src="/icons/edit.png"/>';
+    button.setAttribute('title','Edit');
+    button.setAttribute('class','floatLeft button');
+    return button;
+  }
+}
+
+class EntryValue {
+
+  /*
+  param eValues: array of strings.
+  */
+  constructor(eValues) {
+    this._eValues = eValues;
+  }
+
+
+  get entry() {
+    let entry = document.createElement('p');
+    entry.setAttribute('style','margin-left: 75px');
+    entry.textContent = this._eValues[0] + ' ---> ' + this._eValues[1];
+    return entry;
+  }
+}
 
 // Display info.
 function showStoredInfo(eValues) {
 
   // Display box.
-  let deleteBtn = deleteBtnElement();
-  let editBtn = editBtnElement();
-  let entryValue = entryValueElement(eValues);
+  let deleteBtn = new ButtonDelete().button;
+  let editBtn = new ButtonEdit().button;
+  let entryValue = new EntryValue(eValues).entry;
   let entry = document.createElement('div');
   let entryDisplay = document.createElement('div');
   entryDisplay.appendChild(deleteBtn);
@@ -84,7 +133,7 @@ function showStoredInfo(eValues) {
   ModuleDom.getInfoContainer().appendChild(entry);
 
   // edit box
-  let cancelBtn = cancelBtnElement();
+  let cancelBtn = new ButtonCancel().button;
   let entryEdit = document.createElement('div');
   let entryEditInputValueOld = entryEditInputValueElement();
   let entryEditInputValueNew = entryEditInputValueElement(); 
@@ -105,35 +154,8 @@ function showStoredInfo(eValues) {
     clearFix.setAttribute('class','clearfix');
     return clearFix;
   }
-  function cancelBtnElement() {
-    let cancelBtn = document.createElement('button');
-    cancelBtn.innerHTML = '<img src="/icons/cancel.png"/>';
-    cancelBtn.setAttribute('title','Cancel update');
-    cancelBtn.setAttribute('class','floatLeft button');
-    return cancelBtn;
-  }
-  function deleteBtnElement() {
-    let deleteBtn = document.createElement('button');
-    deleteBtn.textContent = 'Delete';
-    deleteBtn.innerHTML = '<img src="/icons/trash.png"/>';
-    deleteBtn.setAttribute('title','Delete');
-    deleteBtn.setAttribute('class','floatLeft button');
-    return deleteBtn;
-  }
-  function editBtnElement() {
-    let editBtn = document.createElement('button');
-    editBtn.textContent = 'Edit';
-    editBtn.innerHTML = '<img src="/icons/edit.png"/>';
-    editBtn.setAttribute('title','Edit');
-    editBtn.setAttribute('class','floatLeft button');
-    return editBtn;
-  }
-  function entryValueElement(eValues) {
-    let entryValue = document.createElement('p');
-    entryValue.setAttribute('style','margin-left: 75px');
-    entryValue.textContent = eValues[0] + ' ---> ' + eValues[1];
-    return entryValue;
-  }
+
+
   function entryEditInputValueElement() {
     let entryEditInputValue = document.createElement('input');
     entryEditInputValue.setAttribute('class','input');
