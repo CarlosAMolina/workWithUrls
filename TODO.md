@@ -24,3 +24,9 @@ Try use private methods at:
 ## Save more than one rule grey if no type of rule has been selected
 
 If no type of rule has been selected and the on-off button of save more than one rule is on, the box musn't be white.
+
+## Filenames convention
+Use always the same convention. Example:
+- fileName.js 
+- file-name.js
+- file_name.js
