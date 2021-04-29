@@ -97,6 +97,16 @@ class ButtonEdit {
   }
 }
 
+class ButtonUpdate {
+  get button() {
+    let button = document.createElement('button');
+    button.innerHTML = '<img src="/icons/ok.png"/>';
+    button.setAttribute('title','Update');
+    button.setAttribute('class','floatLeft button');
+    return button;
+  }
+}
+
 class EntryValue {
 
   /*
@@ -115,6 +125,23 @@ class EntryValue {
   }
 }
 
+class InputEntryValue {
+  get entry() {
+    let entry = document.createElement('input');
+    entry.setAttribute('class','input');
+    entry.setAttribute('style','width:30%');
+    return entry;
+  }
+}
+
+class ElementClearFix {
+  get element() {
+    let element = document.createElement('div'); // for background color and correct position
+    element.setAttribute('class','clearfix');
+    return element;
+  }
+}
+
 // Display info.
 function showStoredInfo(eValues) {
 
@@ -127,7 +154,7 @@ function showStoredInfo(eValues) {
   entryDisplay.appendChild(deleteBtn);
   entryDisplay.appendChild(editBtn);
   entryDisplay.appendChild(entryValue);
-  entryDisplay.appendChild(clearFixElement());
+  entryDisplay.appendChild(new ElementClearFix().element);
   entry.appendChild(entryDisplay);
 
   ModuleDom.getInfoContainer().appendChild(entry);
@@ -135,40 +162,19 @@ function showStoredInfo(eValues) {
   // edit box
   let cancelBtn = new ButtonCancel().button;
   let entryEdit = document.createElement('div');
-  let entryEditInputValueOld = entryEditInputValueElement();
-  let entryEditInputValueNew = entryEditInputValueElement(); 
-  let updateBtn = updateBtnElement();
+  let entryEditInputValueOld = new InputEntryValue().entry;
+  let entryEditInputValueNew = new InputEntryValue().entry; 
+  let updateBtn = new ButtonUpdate().button;
   entryEdit.appendChild(entryEditInputValueOld);
   entryEdit.appendChild(entryEditInputValueNew);
   entryEdit.appendChild(updateBtn);
   entryEdit.appendChild(cancelBtn);
-  entryEdit.appendChild(clearFixElement());
+  entryEdit.appendChild(new ElementClearFix().element);
   entry.appendChild(entryEdit);
 
   entryEdit.style.display = 'none';
   entryEditInputValueOld.value = eValues[0];
   entryEditInputValueNew.value = eValues[1];
-
-  function clearFixElement() {
-    let clearFix = document.createElement('div'); // for background color and correct position
-    clearFix.setAttribute('class','clearfix');
-    return clearFix;
-  }
-
-
-  function entryEditInputValueElement() {
-    let entryEditInputValue = document.createElement('input');
-    entryEditInputValue.setAttribute('class','input');
-    entryEditInputValue.setAttribute('style','width:30%');
-    return entryEditInputValue;
-  }
-  function updateBtnElement() {
-    let updateBtn = document.createElement('button');
-    updateBtn.innerHTML = '<img src="/icons/ok.png"/>';
-    updateBtn.setAttribute('title','Update');
-    updateBtn.setAttribute('class','floatLeft button');
-    return updateBtn;
-  }
 
   // set up listener for the delete functionality
   deleteBtn.addEventListener('click',(e) => {
