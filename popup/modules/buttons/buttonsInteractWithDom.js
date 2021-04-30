@@ -1,4 +1,4 @@
-import * as ModuleDom from './dom.js';
+import * as ModuleDom from '../dom.js';
 
 
 class ButtonClicked {
