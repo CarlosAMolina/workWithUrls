@@ -1,5 +1,4 @@
 import * as ModuleDom from '../dom.js';
-import * as ModuleButtonsExceptions from './buttonsExceptions.js';
 import * as ModuleButtonsInterface from './buttonsInterface.js';
 
 
@@ -60,22 +59,22 @@ class ButtonOnOff extends ModuleButtonsInterface.ButtonClicked {
 }
 
 
-class ButtonOpenPaths extends ButtonOnOff {
+class ButtonDecodeUrls extends ButtonOnOff {
 
   constructor() {
-    const buttonIdHtml = 'buttonOpenPaths';
-    const buttonIdStorage = 'buttonOpenPathsIsOn';
+    const buttonIdHtml = 'buttonDecodeUrls';
+    const buttonIdStorage = 'buttonDecodeUrlsIsOn';
     super(buttonIdHtml, buttonIdStorage);
   }
 
 }
 
 
-class ButtonDecodeUrls extends ButtonOnOff {
+class ButtonOpenPaths extends ButtonOnOff {
 
   constructor() {
-    const buttonIdHtml = 'buttonDecodeUrls';
-    const buttonIdStorage = 'buttonDecodeUrlsIsOn';
+    const buttonIdHtml = 'buttonOpenPaths';
+    const buttonIdStorage = 'buttonOpenPathsIsOn';
     super(buttonIdHtml, buttonIdStorage);
   }
 
@@ -92,24 +91,9 @@ class ButtonOpenRules extends ButtonOnOff {
 
 }
 
-/*
-param buttonName: str.
-*/
-function getButton(buttonName) {
-  //console.log(`Button name: ${buttonName}`) //Only for development
-  switch (buttonName) {
-    case "decodeUrls":
-      return new ButtonDecodeUrls();
-    case "openPaths":
-      return new ButtonOpenPaths();
-    case "openRules":
-      return new ButtonOpenRules();
-    default:
-      throw new ModuleButtonsExceptions.ButtonNameInvalidException(`Invalid buttonName: ${buttonName}`);
-  }
-}
-
 
 export {
-  getButton
+  ButtonDecodeUrls,
+  ButtonOpenPaths, 
+  ButtonOpenRules 
 };

@@ -1,5 +1,3 @@
-import * as ModuleButtonsExceptions from './buttonsExceptions.js';
-
 class ButtonCancel {
   get button() {
     let button = document.createElement('button');
@@ -42,25 +40,10 @@ class ButtonUpdate {
   }
 }
 
-/*
-param buttonName: str.
-*/
-function getButton(buttonName) {
-  //console.log(`Button name: ${buttonName}`) //Only for development
-  switch (buttonName) {
-    case "cancel":
-      return new ButtonCancel().button;
-    case "delete":
-      return new ButtonDelete().button;
-    case "edit":
-      return new ButtonEdit().button;
-    case "update":
-      return new ButtonUpdate().button;
-    default:
-      throw new ModuleButtonsExceptions.ButtonNameInvalidException(`Invalid buttonName: ${buttonName}`);
-  }
-}
-
 export {
-  getButton
+  ButtonCancel,
+  ButtonDelete,
+  ButtonEdit ,
+  ButtonUpdate
 };
+
