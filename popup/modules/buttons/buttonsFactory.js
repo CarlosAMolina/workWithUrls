@@ -1,6 +1,6 @@
-import * as ModuleButtonsDocumentCreator from '../popup/modules/buttons/buttonsDocumentCreator.js';
+import * as ModuleButtonsDocumentCreator from './buttonsDocumentCreator.js';
 import * as ModuleButtonsExceptions from './buttonsExceptions.js';
-import * as ModuleButtonsOnOff from '../popup/modules/buttons/buttonsOnOff.js';
+import * as ModuleButtonsOnOff from './buttonsOnOff.js';
 
 /*
 param buttonName: str.
