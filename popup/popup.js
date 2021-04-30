@@ -122,7 +122,7 @@ function showStoredInfo(eValues) {
   let entryEdit = document.createElement('div');
   let entryEditInputValueOld = new InputEntryValue().entry;
   let entryEditInputValueNew = new InputEntryValue().entry; 
-  let updateBtn = new ModuleButtonsFactory.getButton("update");
+  let updateBtn = ModuleButtonsFactory.getButton("update");
   entryEdit.appendChild(entryEditInputValueOld);
   entryEdit.appendChild(entryEditInputValueNew);
   entryEdit.appendChild(updateBtn);
