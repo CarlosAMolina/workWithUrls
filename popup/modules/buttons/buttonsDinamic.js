@@ -1,44 +1,89 @@
-class ButtonCancel {
+import * as ModuleDom from '../../../popup/modules/dom.js';
+
+
+class ButtonInterface {
+
+  constructor(config) {
+    this._configDefault = {
+      'tag': 'button',
+      'innerHTML': undefined,
+      'attributes': {
+        'title': undefined,
+        'class': 'floatLeft button'
+      }
+    }
+    this._config = this._updateConfig(config);
+  }
+
   get button() {
-    let button = document.createElement('button');
-    button.innerHTML = '<img src="/icons/cancel.png"/>';
-    button.setAttribute('title','Cancel update');
-    button.setAttribute('class','floatLeft button');
-    return button;
+    return new ModuleDom.DocumentModifier().createElement(this._config);
+  }
+
+  _updateConfig(config) {
+    let result = this._configDefault;
+    result.innerHTML = config.innerHTML;
+    result.attributes.title = config.attributes.title;
+    return result;
+  }
+
+}
+
+
+class ButtonCancel extends ButtonInterface {
+
+  constructor() {
+    const config = {
+      'innerHTML': '<img src="/icons/cancel.png"/>',
+      'attributes': {
+        'title': 'Cancel update',
+      }
+    }
+    super(config);
   }
 }
 
-class ButtonDelete {
-  get button() {
-    let button = document.createElement('button');
-    button.textContent = 'Delete';
-    button.innerHTML = '<img src="/icons/trash.png"/>';
-    button.setAttribute('title','Delete');
-    button.setAttribute('class','floatLeft button');
-    return button;
+
+class ButtonDelete extends ButtonInterface{
+
+  constructor() {
+    const config = {
+      'innerHTML': '<img src="/icons/trash.png"/>',
+      'attributes': {
+        'title': 'Delete',
+      }
+    }
+    super(config);
   }
 }
 
-class ButtonEdit {
-  get button() {
-    let button = document.createElement('button');
-    button.textContent = 'Edit';
-    button.innerHTML = '<img src="/icons/edit.png"/>';
-    button.setAttribute('title','Edit');
-    button.setAttribute('class','floatLeft button');
-    return button;
+
+class ButtonEdit extends ButtonInterface{
+
+  constructor() {
+    const config = {
+      'innerHTML': '<img src="/icons/edit.png"/>',
+      'attributes': {
+        'title': 'Edit',
+      }
+    }
+    super(config);
   }
 }
 
-class ButtonUpdate {
-  get button() {
-    let button = document.createElement('button');
-    button.innerHTML = '<img src="/icons/ok.png"/>';
-    button.setAttribute('title','Update');
-    button.setAttribute('class','floatLeft button');
-    return button;
+
+class ButtonUpdate extends ButtonInterface {
+
+  constructor() {
+    const config = {
+      'innerHTML': '<img src="/icons/ok.png"/>',
+      'attributes': {
+        'title': 'Update',
+      }
+    }
+    super(config);
   }
 }
+
 
 export {
   ButtonCancel,

@@ -1,9 +1,25 @@
 import * as ModuleDom from '../popup/modules/dom.js';
 import pkgChai from 'chai';
+import chai from 'chai';
 
 
 describe("Check script dom.js: ", function() {
   const {assert: assert} = pkgChai;
+  describe("Check class DocumentModifier: ", function() {
+    it("Check function createElement: ", function() {
+      const config = {
+        'tag': 'button',
+        'innerHTML': '<img src="/icons/ok.png"/>',
+        'attributes': {
+          'title': 'Update',
+          'class': 'floatLeft button'
+        }
+      }
+      const result = new ModuleDom.DocumentModifier().createElement(config);
+      chai.expect(result.title).to.equal('Update');
+      chai.expect(result.innerHTML).to.equal('<img src="/icons/ok.png">');
+    });
+  });
   describe("Check class Dom: ", function() {
     it("Check function getValueElementById and setValueToElementById: ", function() {
       const elementId = 'inputUrls';

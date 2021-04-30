@@ -85,10 +85,27 @@ function setEnabledArrayElementsById(idElements2Change) {
   }
 }
 
+class DocumentModifier {
+
+  /*
+  param config: json
+  return: document element.
+  */
+  createElement(config){
+    let element = document.createElement(config.tag);
+    element.innerHTML = config.innerHTML;
+    element.setAttribute('title', config.attributes.title);
+    element.setAttribute('class', config.attributes.class);
+    return element;
+  }
+}
+
+
 export {
   getElementById,
   getInfoContainer,
   getValueElementById,
+  DocumentModifier,
   isCheckedElementById,
   isHiddenElementById,
   setCheckedElementById,
