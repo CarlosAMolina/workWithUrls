@@ -5,6 +5,7 @@ https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/stora
 
 
 import * as ModuleButtons from '../popup/modules/buttons.js';
+import * as ModuleButtonsDocumentCreator from '../popup/modules/buttons/buttonsDocumentCreator.js';
 import * as ModuleDom from '../popup/modules/dom.js';
 import * as ModuleRulesStorage from '../popup/modules/rules/storage.js';
 import * as ModuleSleep from '../popup/modules/sleep.js';
@@ -64,49 +65,6 @@ async function getStorageLazyLoading(){
   return lazyLoadingTime;
 }
 
-
-class ButtonCancel {
-  get button() {
-    let button = document.createElement('button');
-    button.innerHTML = '<img src="/icons/cancel.png"/>';
-    button.setAttribute('title','Cancel update');
-    button.setAttribute('class','floatLeft button');
-    return button;
-  }
-}
-
-class ButtonDelete {
-  get button() {
-    let button = document.createElement('button');
-    button.textContent = 'Delete';
-    button.innerHTML = '<img src="/icons/trash.png"/>';
-    button.setAttribute('title','Delete');
-    button.setAttribute('class','floatLeft button');
-    return button;
-  }
-}
-
-class ButtonEdit {
-  get button() {
-    let button = document.createElement('button');
-    button.textContent = 'Edit';
-    button.innerHTML = '<img src="/icons/edit.png"/>';
-    button.setAttribute('title','Edit');
-    button.setAttribute('class','floatLeft button');
-    return button;
-  }
-}
-
-class ButtonUpdate {
-  get button() {
-    let button = document.createElement('button');
-    button.innerHTML = '<img src="/icons/ok.png"/>';
-    button.setAttribute('title','Update');
-    button.setAttribute('class','floatLeft button');
-    return button;
-  }
-}
-
 class EntryValue {
 
   /*
@@ -146,8 +104,8 @@ class ElementClearFix {
 function showStoredInfo(eValues) {
 
   // Display box.
-  let deleteBtn = new ButtonDelete().button;
-  let editBtn = new ButtonEdit().button;
+  let deleteBtn = new ModuleButtonsDocumentCreator.ButtonDelete().button;
+  let editBtn = new ModuleButtonsDocumentCreator.ButtonEdit().button;
   let entryValue = new EntryValue(eValues).entry;
   let entry = document.createElement('div');
   let entryDisplay = document.createElement('div');
@@ -160,11 +118,11 @@ function showStoredInfo(eValues) {
   ModuleDom.getInfoContainer().appendChild(entry);
 
   // edit box
-  let cancelBtn = new ButtonCancel().button;
+  let cancelBtn = new ModuleButtonsDocumentCreator.ButtonCancel().button;
   let entryEdit = document.createElement('div');
   let entryEditInputValueOld = new InputEntryValue().entry;
   let entryEditInputValueNew = new InputEntryValue().entry; 
-  let updateBtn = new ButtonUpdate().button;
+  let updateBtn = new ModuleButtonsDocumentCreator.ButtonUpdate().button;
   entryEdit.appendChild(entryEditInputValueOld);
   entryEdit.appendChild(entryEditInputValueNew);
   entryEdit.appendChild(updateBtn);
