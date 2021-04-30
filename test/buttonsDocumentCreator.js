@@ -1,5 +1,4 @@
 import * as ModuleButtons from '../popup/modules/buttons/buttonsDocumentCreator.js';
-import pkgChai from 'chai';
 import chai from 'chai';
 
 describe("Check script buttonsDocumentCreator.js: ", function() {
