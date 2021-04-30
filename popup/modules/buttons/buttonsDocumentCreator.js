@@ -1,3 +1,5 @@
+import * as ModuleButtonsExceptions from './buttonsExceptions.js';
+
 class ButtonCancel {
   get button() {
     let button = document.createElement('button');
@@ -55,16 +57,10 @@ function getButton(buttonName) {
     case "update":
       return new ButtonUpdate().button;
     default:
-      throw new ButtonNameInvalidException(`Invalid buttonName: ${buttonName}`);
+      throw new ModuleButtonsExceptions.ButtonNameInvalidException(`Invalid buttonName: ${buttonName}`);
   }
 }
 
-function ButtonNameInvalidException(message) {
-  this.message = message;
-  this.name = "ButtonNameInvalidException";
-}
-
 export {
-  getButton,
-  ButtonNameInvalidException
+  getButton
 };

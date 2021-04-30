@@ -1,4 +1,5 @@
 import * as ModuleButtons from '../popup/modules/buttons/buttonsDocumentCreator.js';
+import * as ModuleButtonsExceptions from '../popup/modules/buttons/buttonsExceptions.js';
 import chai from 'chai';
 
 describe("Check script buttonsDocumentCreator.js: ", function() {
@@ -8,7 +9,7 @@ describe("Check script buttonsDocumentCreator.js: ", function() {
         ModuleButtons.getButton("invalidName");
         throw ('An exception should be raised');
       } catch(exception) {
-        if (exception.name !== ModuleButtons.ButtonNameInvalidException.name) {
+        if (exception.name !== ModuleButtonsExceptions.ButtonNameInvalidException.name) {
           throw exception
         }
       }
