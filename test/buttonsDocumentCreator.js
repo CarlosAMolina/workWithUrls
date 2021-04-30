@@ -8,7 +8,7 @@ describe("Check script buttonsDocumentCreator.js: ", function() {
         ModuleButtons.getButton("invalidName");
         throw ('An exception should be raised');
       } catch(exception) {
-        if (exception.name !== ModuleButtons.ButtonNameInvalidExceptionName) {
+        if (exception.name !== ModuleButtons.ButtonNameInvalidException.name) {
           throw exception
         }
       }

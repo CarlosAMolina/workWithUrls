@@ -104,8 +104,8 @@ class ElementClearFix {
 function showStoredInfo(eValues) {
 
   // Display box.
-  let deleteBtn = new ModuleButtonsDocumentCreator.ButtonDelete().button;
-  let editBtn = new ModuleButtonsDocumentCreator.ButtonEdit().button;
+  let deleteBtn = ModuleButtonsDocumentCreator.getButton("delete");
+  let editBtn = ModuleButtonsDocumentCreator.getButton("edit");
   let entryValue = new EntryValue(eValues).entry;
   let entry = document.createElement('div');
   let entryDisplay = document.createElement('div');
@@ -118,11 +118,11 @@ function showStoredInfo(eValues) {
   ModuleDom.getInfoContainer().appendChild(entry);
 
   // edit box
-  let cancelBtn = new ModuleButtonsDocumentCreator.ButtonCancel().button;
+  let cancelBtn = ModuleButtonsDocumentCreator.getButton("cancel");
   let entryEdit = document.createElement('div');
   let entryEditInputValueOld = new InputEntryValue().entry;
   let entryEditInputValueNew = new InputEntryValue().entry; 
-  let updateBtn = new ModuleButtonsDocumentCreator.ButtonUpdate().button;
+  let updateBtn = new ModuleButtonsDocumentCreator.getButton("update");
   entryEdit.appendChild(entryEditInputValueOld);
   entryEdit.appendChild(entryEditInputValueNew);
   entryEdit.appendChild(updateBtn);

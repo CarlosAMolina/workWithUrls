@@ -48,6 +48,12 @@ function getButton(buttonName) {
   switch (buttonName) {
     case "cancel":
       return new ButtonCancel().button;
+    case "delete":
+      return new ButtonDelete().button;
+    case "edit":
+      return new ButtonEdit().button;
+    case "update":
+      return new ButtonUpdate().button;
     default:
       throw new ButtonNameInvalidException(`Invalid buttonName: ${buttonName}`);
   }
@@ -55,17 +61,10 @@ function getButton(buttonName) {
 
 function ButtonNameInvalidException(message) {
   this.message = message;
-  this.name = ButtonNameInvalidExceptionName;
+  this.name = "ButtonNameInvalidException";
 }
-
-const ButtonNameInvalidExceptionName = "ButtonNameInvalidException"
-
 
 export {
   getButton,
-  ButtonCancel,
-  ButtonDelete,
-  ButtonEdit,
-  ButtonNameInvalidExceptionName,
-  ButtonUpdate
+  ButtonNameInvalidException
 };
