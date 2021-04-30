@@ -265,5 +265,40 @@ describe("Check script urlsModifier.js: ", function() {
       });
     });
   });
+  describe("Check function getUrlsWithPaths: ", function() {
+    it("Check function getUrlsWithPaths", function() {
+      assert.equal(
+        String(
+          [
+            "http://github.com/CarlosAMolina",
+            "http://github.com"
+          ]
+        ),
+        String(ModuleUrlsModifier.getUrlsWithPaths(["http://github.com/CarlosAMolina"]))
+      );
+    });
+  });
+  describe("Check function getUrlWithProtocol: ", function() {
+    it("Add protocol to an URL without protocol: ", function() {
+      assert.equal(
+        "http://duckduckgo.com",
+        ModuleUrlsModifier.getUrlWithProtocol("duckduckgo.com")
+      );
+    });
+    it("Not add protocol to an URL with protocol: ", function() {
+      assert.equal(
+        "https://duckduckgo.com",
+        ModuleUrlsModifier.getUrlWithProtocol("https://duckduckgo.com")
+      );
+    });
+  });
+  describe("Check constant PROTOCOL_DEFAULT: ", function() {
+    it("Check constant PROTOCOL_DEFAULT: ", function() {
+      assert.equal(
+        "http://",
+        ModuleUrlsModifier.PROTOCOL_DEFAULT
+      );
+    });
+  });
 });
 

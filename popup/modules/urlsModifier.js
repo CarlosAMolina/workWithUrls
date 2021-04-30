@@ -1,3 +1,5 @@
+const PROTOCOL_DEFAULT = 'http://'
+
 const RuleTypeInvalidExceptionName = "RuleTypeInvalidException"
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/throw#Throw_an_object
@@ -310,15 +312,64 @@ function urlsModifier(rule) {
 }
 
 
+/* Get all URLs quitting last part path until no more parts available.
+Example. For 'http://github.com/CarlosAMolina' two URLs will be 
+created: 'http://github.com/CarlosAMolina' and 'http://github.com'.
+:param urls: list of strings, URLs to work with.
+:return urls_paths: list of strings, all possible URLs omitting
+  parts of the paths.
+*/
+function getUrlsWithPaths(urls){
+  // Variable with results.
+  var urls_paths = []
+  for (let url of urls) {
+    // Quit last slash.
+    if (url.slice(-1) == '/'){
+      url = url.substring(0, url.length -1);
+    }
+    // Loop all parts of the path until no more parts.
+    while (url.slice(-1) != '/') {
+      url = getUrlWithProtocol(url)
+      urls_paths.push(url)
+      if ( url.indexOf('/') != -1 ){
+        // Quit last path parth.
+        url = url.slice(0, url.lastIndexOf('/'));
+      }
+      else {
+        // Character to stop the while loop.
+        url = '/';
+      }
+    }
+  }
+  console.log(`URLs with all paths: ${urls_paths}`)
+  return urls_paths;
+}
+
+
+/* If the URL has not got protocol, add one.
+:param url: str, url to check.
+:return url: str, url with protocol.
+*/
+function getUrlWithProtocol(url){
+  if (url.substring(0, 4).toLowerCase() != 'http'){
+    return PROTOCOL_DEFAULT + url;
+  }
+  return url;
+}
+
+
 export {
+  getUrlsWithPaths,
+  getUrlWithProtocol,
+  PROTOCOL_DEFAULT,
+  RuleConfigurator,
+  Rules,
   RulesApplicator,
   RulesParser,
-  Rules,
-  RuleConfigurator,
   RuleTransformation,
   RuleTransformations,
-  RuleTypes,
   RuleTypeInvalidExceptionName,
+  RuleTypes,
   UrlsDecoder,
   urlsModifier
 };
