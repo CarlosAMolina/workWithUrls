@@ -7,7 +7,8 @@ https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/stora
 import * as ModuleButtonsInterface from '../popup/modules/buttons/buttonsInterface.js';
 import * as ModuleButtonsFactory from '../popup/modules/buttons/buttonsFactory.js';
 import * as ModuleDom from '../popup/modules/dom.js';
-import * as ModuleRulesStorage from '../popup/modules/rules/storage.js';
+import * as ModuleStorageLazyLoading from '../popup/modules/storage/lazyLoading.js';
+import * as ModuleStorageRules from '../popup/modules/storage/rules.js';
 import * as ModuleSleep from '../popup/modules/sleep.js';
 import * as ModuleUrlsModifier from './modules/urlsModifier.js';
 
@@ -41,27 +42,6 @@ function showOrHideRuleOrRules() {
 
 function reportError(error) {
   console.error(`Error: ${error}`);
-}
-
-/* Get Lazy Loading time value at the storage.
-:param: no param.
-:return: int.
-*/
-async function getStorageLazyLoading(){
-  let lazyLoadingTime = 0;
-  let resultGetStorage = {};
-  try {
-    resultGetStorage = await browser.storage.local.get('idLazyLoadingTime');
-  } catch(e) {
-    console.error(e)
-  }
-  if ( (typeof resultGetStorage.idLazyLoadingTime == 'undefined') ){
-    console.log('Not previous stored lazy loading time value stored');
-  } else{
-    lazyLoadingTime = resultGetStorage.idLazyLoadingTime;
-  }
-  console.log('Lazy loading time to use: ' + lazyLoadingTime);
-  return lazyLoadingTime;
 }
 
 class EntryValue {
@@ -242,7 +222,7 @@ function openUrl(url){
 :return: null.
 */
 async function openUrls(){
-  const lazyLoadingTime = await getStorageLazyLoading();
+  const lazyLoadingTime = await ModuleStorageLazyLoading.getStorageLazyLoading();
   // Get URLs at the input box.
   let urls = ModuleDom.getValueElementById('inputUrls').split('\n');
   console.log('URLs at the input box: ' + urls)
@@ -320,7 +300,7 @@ async function saveRules(){
   valuesRules = new ModuleUrlsModifier.RulesParser().getValuesRulesWithCorrectFormat(valuesRules);
   for (let [valueOld, valueNew] of valuesRules.entries()) {
     saveRule([valueOld, valueNew]);
-    rules = await ModuleRulesStorage.getRules(rules);
+    rules = await ModuleStorageRules.getRules(rules);
   }
 
   saveRulesNewFormat(valuesRules); // TODO replace saveRule() with this function.
@@ -386,7 +366,7 @@ async function clearStorageInfo() {
   gettingAllStoredItems.then((storedItems) => {
     deleteAllRulesType(storedItems);
   }, reportError);
-  rules = await ModuleRulesStorage.getRules(rules);
+  rules = await ModuleStorageRules.getRules(rules);
 
   function deleteAllRulesType(storedItems){
     var keysUrl = Object.keys(storedItems).filter(key => key.includes(rules.ruleType+'_')); //array
@@ -432,7 +412,7 @@ class ButtonConfigurationLazyLoading extends ModuleButtonsInterface.ButtonClicke
   }
 
   async runAsync(){
-    const lazyLoadingTime = await getStorageLazyLoading();
+    const lazyLoadingTime = await ModuleStorageLazyLoading.getStorageLazyLoading();
     ModuleDom.showOrHideArrayElementsById(['menuLazyLoading']);
     ModuleDom.setValueToElementById(lazyLoadingTime, 'inputLazyLoading');
   }
@@ -646,7 +626,7 @@ function createClickedButton(buttonIdHtml) {
 
 async function popupMain() {
 
-  rules = await ModuleRulesStorage.getRules(rules);
+  rules = await ModuleStorageRules.getRules(rules);
   ModuleButtonsFactory.getButton("decodeUrls").setStylePrevious();
   ModuleButtonsFactory.getButton("openPaths").setStylePrevious();
   ModuleButtonsFactory.getButton("openRules").setStylePrevious();
@@ -689,7 +669,6 @@ catch (error){
 
 //TODO: created only for testing.
 export {
-  getStorageLazyLoading,
   modifyText,
   popupMain,
   reportError,

@@ -44,12 +44,6 @@ describe("Check script popup.js: ", function() {
   const mockRuleTransformationValueOld = 'test'
   const mockRuleTransformationValueNew = 'changed'
   mockBrowserStorageLocal();
-  describe("Check function getStorageLazyLoading: ", function() {
-    it("Check function runs without exceptions: ", async function() {
-      const result = await ModulePopup.getStorageLazyLoading();
-      chai.expect(result).to.equal(0);
-    });
-  });
   describe("Check function popupMain: ", function() {
     ModulePopup.popupMain(); // Functon instance, required to access inner functions.
     describe("Check function getOpenPaths: ", function() {

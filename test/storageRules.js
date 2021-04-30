@@ -1,7 +1,7 @@
 import pkgChai from 'chai';
 
 import * as ModulePopup from '../popup/popup.js'; // TODO not use this import.
-import * as ModuleRulesStorage from '../popup/modules/rules/storage.js';
+import * as ModuleStorageRules from '../popup/modules/storage/rules.js';
 import * as ModuleUrlsModifier from '../popup/modules/urlsModifier.js';
 
 const {assert: assert} = pkgChai;
@@ -24,18 +24,18 @@ function storageMock() {
   };
 }
 
-describe("Check script rules storage.js: ", function() {
+describe("Check script storage/rules.js: ", function() {
   beforeEach(function() {
     mockBrowserStorageLocal();
   });
   describe("Check function getRules: ", function() {
     it("Check expected result: ", async function() {
       let rules = new ModuleUrlsModifier.Rules();
-      const result = await ModuleRulesStorage.getRules(rules);
+      const result = await ModuleStorageRules.getRules(rules);
       assert.equal(result.rules['rd'].stringRepresentation, 'hXXp\nhttp');
     });
   });
-  // TODO, move the function showStoredRulesType to the rules/storage.js file.
+  // TODO, move the function showStoredRulesType to the storage/rules.js file.
   describe("Check function showStoredRulesType: ", function() {
     it("Check expected result: ", async function() {
       let rules = new ModuleUrlsModifier.Rules();

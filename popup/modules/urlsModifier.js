@@ -321,7 +321,7 @@ created: 'http://github.com/CarlosAMolina' and 'http://github.com'.
 */
 function getUrlsWithPaths(urls){
   // Variable with results.
-  var urls_paths = []
+  let urls_paths = []
   for (let url of urls) {
     // Quit last slash.
     if (url.slice(-1) == '/'){
