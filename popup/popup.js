@@ -29,8 +29,8 @@ function modifyText(urlsModifier){
 
 
 function showOrHideRuleOrRules() {
-  browser.storage.local.get(new ModuleButtonsOnOff.ButtonOpenRules().buttonIdStorage).then((result) => {
-    if (result[new ModuleButtonsOnOff.ButtonOpenRules().buttonIdStorage]){
+  browser.storage.local.get(ModuleButtonsOnOff.getButton("openRules").buttonIdStorage).then((result) => {
+    if (result[ModuleButtonsOnOff.getButton("openRules").buttonIdStorage]){
       ModuleDom.setHiddenElementById('divInputRule');
       ModuleDom.setUnhiddenElementById('divInputRules');
     } else {
@@ -292,7 +292,7 @@ async function openUrls(){
   // Get URLs at the input box.
   let urls = ModuleDom.getValueElementById('inputUrls').split('\n');
   console.log('URLs at the input box: ' + urls)
-  if (ModuleDom.isCheckedElementById(new ModuleButtonsOnOff.ButtonOpenPaths().buttonIdHtml)){
+  if (ModuleDom.isCheckedElementById(ModuleButtonsOnOff.getButton("openPaths").buttonIdHtml)){
     urls = getUrlsWithPaths(urls);
   }
   // Open URLs.
@@ -372,7 +372,7 @@ async function saveRules(){
   saveRulesNewFormat(valuesRules); // TODO replace saveRule() with this function.
 
   function getValues(){
-    if (ModuleDom.isCheckedElementById(new ModuleButtonsOnOff.ButtonOpenRules().buttonIdHtml)){
+    if (ModuleDom.isCheckedElementById(ModuleButtonsOnOff.getButton("openRules").buttonIdHtml)){
       return ModuleDom.getValueElementById('inputRules').split('\n');
     } else {
       return [ModuleDom.getValueElementById('inputValueOld'), ModuleDom.getValueElementById('inputValueNew')];
@@ -459,8 +459,8 @@ function copy2clipboard (idWithInfo){
 
 
 function copyRules(){
-  if(!ModuleDom.isCheckedElementById(new ModuleButtonsOnOff.ButtonOpenRules().buttonIdHtml)){
-    new ModuleButtonsOnOff.ButtonOpenRules().switchStyleAndStorageOnOff();
+  if(!ModuleDom.isCheckedElementById(ModuleButtonsOnOff.getButton("openRules").buttonIdHtml)){
+    ModuleButtonsOnOff.getButton("openRules").switchStyleAndStorageOnOff();
   }
   ModuleDom.setValueToElementById(rules.ruleTransformationsToUseStringRepresentation, 'inputRules');
   copy2clipboard ('inputRules');
@@ -540,7 +540,7 @@ class ButtonCleanUrl extends ModuleButtonsInterface.ButtonClicked {
     this.logButtonName;
     let urlsModifier = null;
     rules.setRuleTypeDeobfuscate();
-    if (ModuleDom.isCheckedElementById(new ModuleButtonsOnOff.ButtonDecodeUrls().buttonIdHtml)){
+    if (ModuleDom.isCheckedElementById(ModuleButtonsOnOff.getButton("decodeUrls").buttonIdHtml)){
       console.log('Choosen option: decode')
       urlsModifier = ModuleUrlsModifier.urlsModifier();
     } else {
@@ -664,8 +664,8 @@ function createClickedButton(buttonIdHtml) {
       return new ButtonOpenUrls();
     case new ButtonObfuscate().buttonIdHtml:
       return new ButtonObfuscate();
-    case new ModuleButtonsOnOff.ButtonOpenPaths().buttonIdHtml:
-      return new ModuleButtonsOnOff.ButtonOpenPaths();
+    case ModuleButtonsOnOff.getButton("openPaths").buttonIdHtml:
+      return ModuleButtonsOnOff.getButton("openPaths");
     case new ButtonConfigurationLazyLoading().buttonIdHtml:
       return new ButtonConfigurationLazyLoading();
     case new ButtonAddLazyLoading().buttonIdHtml:
@@ -676,10 +676,10 @@ function createClickedButton(buttonIdHtml) {
       return new ButtonInputDeobfuscation();
     case new ButtonInputObfuscation().buttonIdHtml:
       return new ButtonInputObfuscation();
-    case new ModuleButtonsOnOff.ButtonDecodeUrls().buttonIdHtml:
-      return new ModuleButtonsOnOff.ButtonDecodeUrls();
-    case new ModuleButtonsOnOff.ButtonOpenRules().buttonIdHtml:
-      return new ModuleButtonsOnOff.ButtonOpenRules();
+    case ModuleButtonsOnOff.getButton("decodeUrls").buttonIdHtml:
+      return ModuleButtonsOnOff.getButton("decodeUrls");
+    case ModuleButtonsOnOff.getButton("openRules").buttonIdHtml:
+      return ModuleButtonsOnOff.getButton("openRules");
     case new ButtonAddRule().buttonIdHtml:
       return new ButtonAddRule();
     case new ButtonClearAllRules().buttonIdHtml:
@@ -693,9 +693,9 @@ function createClickedButton(buttonIdHtml) {
 async function popupMain() {
 
   rules = await ModuleRulesStorage.getRules(rules);
-  new ModuleButtonsOnOff.ButtonDecodeUrls().setStylePrevious();
-  new ModuleButtonsOnOff.ButtonOpenPaths().setStylePrevious();
-  new ModuleButtonsOnOff.ButtonOpenRules().setStylePrevious();
+  ModuleButtonsOnOff.getButton("decodeUrls").setStylePrevious();
+  ModuleButtonsOnOff.getButton("openPaths").setStylePrevious();
+  ModuleButtonsOnOff.getButton("openRules").setStylePrevious();
 
   document.addEventListener('click', (e) => {
     const buttonIdHtml = getIdHtmlOfClickedButtonOrImageFromEventClick(e);

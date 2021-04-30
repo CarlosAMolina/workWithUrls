@@ -1,4 +1,5 @@
 import * as ModuleDom from '../dom.js';
+import * as ModuleButtonsExceptions from './buttonsExceptions.js';
 import * as ModuleButtonsInterface from './buttonsInterface.js';
 
 
@@ -91,9 +92,24 @@ class ButtonOpenRules extends ButtonOnOff {
 
 }
 
+/*
+param buttonName: str.
+*/
+function getButton(buttonName) {
+  //console.log(`Button name: ${buttonName}`) //Only for development
+  switch (buttonName) {
+    case "decodeUrls":
+      return new ButtonDecodeUrls();
+    case "openPaths":
+      return new ButtonOpenPaths();
+    case "openRules":
+      return new ButtonOpenRules();
+    default:
+      throw new ModuleButtonsExceptions.ButtonNameInvalidException(`Invalid buttonName: ${buttonName}`);
+  }
+}
+
 
 export {
-  ButtonDecodeUrls,
-  ButtonOpenPaths,
-  ButtonOpenRules
+  getButton
 };
