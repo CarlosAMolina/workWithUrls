@@ -2,7 +2,7 @@ import * as ModuleButtonsFactory from '../popup/modules/buttons/buttonsFactory.j
 import * as ModuleButtonsExceptions from '../popup/modules/buttons/buttonsExceptions.js';
 import chai from 'chai';
 
-describe("Check script buttonsDocumentCreator.js: ", function() {
+describe("Check script buttonsFactory.js and buttonsExceptions.js: ", function() {
   describe("Check function getButton: ", function() {
     it("Check get invalid button name: ", function() {
       try {
