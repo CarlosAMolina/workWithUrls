@@ -29,5 +29,5 @@ async function getRules(rules){
 }
 
 export {
-  getRules,
+  getRules
 };
