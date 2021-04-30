@@ -4,8 +4,9 @@ https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/stora
 */
 
 
-import * as ModuleButtonsDom from '../popup/modules/buttons/buttonsInteractWithDom.js';
 import * as ModuleButtonsDocumentCreator from '../popup/modules/buttons/buttonsDocumentCreator.js';
+import * as ModuleButtonsInterface from '../popup/modules/buttons/buttonsInterface.js';
+import * as ModuleButtonsOnOff from '../popup/modules/buttons/buttonsOnOff.js';
 import * as ModuleDom from '../popup/modules/dom.js';
 import * as ModuleRulesStorage from '../popup/modules/rules/storage.js';
 import * as ModuleSleep from '../popup/modules/sleep.js';
@@ -28,8 +29,8 @@ function modifyText(urlsModifier){
 
 
 function showOrHideRuleOrRules() {
-  browser.storage.local.get(new ModuleButtonsDom.ButtonOpenRules().buttonIdStorage).then((result) => {
-    if (result[new ModuleButtonsDom.ButtonOpenRules().buttonIdStorage]){
+  browser.storage.local.get(new ModuleButtonsOnOff.ButtonOpenRules().buttonIdStorage).then((result) => {
+    if (result[new ModuleButtonsOnOff.ButtonOpenRules().buttonIdStorage]){
       ModuleDom.setHiddenElementById('divInputRule');
       ModuleDom.setUnhiddenElementById('divInputRules');
     } else {
@@ -291,7 +292,7 @@ async function openUrls(){
   // Get URLs at the input box.
   let urls = ModuleDom.getValueElementById('inputUrls').split('\n');
   console.log('URLs at the input box: ' + urls)
-  if (ModuleDom.isCheckedElementById(new ModuleButtonsDom.ButtonOpenPaths().buttonIdHtml)){
+  if (ModuleDom.isCheckedElementById(new ModuleButtonsOnOff.ButtonOpenPaths().buttonIdHtml)){
     urls = getUrlsWithPaths(urls);
   }
   // Open URLs.
@@ -371,7 +372,7 @@ async function saveRules(){
   saveRulesNewFormat(valuesRules); // TODO replace saveRule() with this function.
 
   function getValues(){
-    if (ModuleDom.isCheckedElementById(new ModuleButtonsDom.ButtonOpenRules().buttonIdHtml)){
+    if (ModuleDom.isCheckedElementById(new ModuleButtonsOnOff.ButtonOpenRules().buttonIdHtml)){
       return ModuleDom.getValueElementById('inputRules').split('\n');
     } else {
       return [ModuleDom.getValueElementById('inputValueOld'), ModuleDom.getValueElementById('inputValueNew')];
@@ -458,15 +459,15 @@ function copy2clipboard (idWithInfo){
 
 
 function copyRules(){
-  if(!ModuleDom.isCheckedElementById(new ModuleButtonsDom.ButtonOpenRules().buttonIdHtml)){
-    new ModuleButtonsDom.ButtonOpenRules().switchStyleAndStorageOnOff();
+  if(!ModuleDom.isCheckedElementById(new ModuleButtonsOnOff.ButtonOpenRules().buttonIdHtml)){
+    new ModuleButtonsOnOff.ButtonOpenRules().switchStyleAndStorageOnOff();
   }
   ModuleDom.setValueToElementById(rules.ruleTransformationsToUseStringRepresentation, 'inputRules');
   copy2clipboard ('inputRules');
 }
 
 
-class ButtonConfigurationLazyLoading extends ModuleButtonsDom.ButtonClicked {
+class ButtonConfigurationLazyLoading extends ModuleButtonsInterface.ButtonClicked {
 
   constructor() {
     super('buttonConfigLazyLoading');
@@ -484,7 +485,7 @@ class ButtonConfigurationLazyLoading extends ModuleButtonsDom.ButtonClicked {
 
 }
 
-class ButtonConfigurationRules extends ModuleButtonsDom.ButtonClicked {
+class ButtonConfigurationRules extends ModuleButtonsInterface.ButtonClicked {
 
   constructor() {
     super('buttonConfigRules');
@@ -496,7 +497,7 @@ class ButtonConfigurationRules extends ModuleButtonsDom.ButtonClicked {
 
 }
 
-class ButtonConfiguration extends ModuleButtonsDom.ButtonClicked {
+class ButtonConfiguration extends ModuleButtonsInterface.ButtonClicked {
 
   constructor() {
     super('buttonShowConfig');
@@ -512,7 +513,7 @@ class ButtonConfiguration extends ModuleButtonsDom.ButtonClicked {
 
 }
 
-class ButtonCopy extends ModuleButtonsDom.ButtonClicked {
+class ButtonCopy extends ModuleButtonsInterface.ButtonClicked {
 
   constructor() {
     super('buttonCopy');
@@ -529,7 +530,7 @@ class ButtonCopy extends ModuleButtonsDom.ButtonClicked {
 
 }
 
-class ButtonCleanUrl extends ModuleButtonsDom.ButtonClicked {
+class ButtonCleanUrl extends ModuleButtonsInterface.ButtonClicked {
   
   constructor() {
     super('buttonCleanUrl');
@@ -539,7 +540,7 @@ class ButtonCleanUrl extends ModuleButtonsDom.ButtonClicked {
     this.logButtonName;
     let urlsModifier = null;
     rules.setRuleTypeDeobfuscate();
-    if (ModuleDom.isCheckedElementById(new ModuleButtonsDom.ButtonDecodeUrls().buttonIdHtml)){
+    if (ModuleDom.isCheckedElementById(new ModuleButtonsOnOff.ButtonDecodeUrls().buttonIdHtml)){
       console.log('Choosen option: decode')
       urlsModifier = ModuleUrlsModifier.urlsModifier();
     } else {
@@ -551,7 +552,7 @@ class ButtonCleanUrl extends ModuleButtonsDom.ButtonClicked {
 
 }
 
-class ButtonObfuscate extends ModuleButtonsDom.ButtonClicked {
+class ButtonObfuscate extends ModuleButtonsInterface.ButtonClicked {
   
   constructor() {
     super('buttonObfuscate');
@@ -566,7 +567,7 @@ class ButtonObfuscate extends ModuleButtonsDom.ButtonClicked {
 
 }
 
-class ButtonOpenUrls extends ModuleButtonsDom.ButtonClicked {
+class ButtonOpenUrls extends ModuleButtonsInterface.ButtonClicked {
 
   constructor() {
     super('buttonOpenUrls');
@@ -579,7 +580,7 @@ class ButtonOpenUrls extends ModuleButtonsDom.ButtonClicked {
 
 }
 
-class ButtonInputObfuscation extends ModuleButtonsDom.ButtonClicked {
+class ButtonInputObfuscation extends ModuleButtonsInterface.ButtonClicked {
 
   constructor() {
     super('buttonInputObfuscation');
@@ -594,7 +595,7 @@ class ButtonInputObfuscation extends ModuleButtonsDom.ButtonClicked {
 
 }
 
-class ButtonInputDeobfuscation extends ModuleButtonsDom.ButtonClicked {
+class ButtonInputDeobfuscation extends ModuleButtonsInterface.ButtonClicked {
 
   constructor() {
     super('buttonInputDeobfuscation');
@@ -609,7 +610,7 @@ class ButtonInputDeobfuscation extends ModuleButtonsDom.ButtonClicked {
 
 }
 
-class ButtonAddLazyLoading extends ModuleButtonsDom.ButtonClicked {
+class ButtonAddLazyLoading extends ModuleButtonsInterface.ButtonClicked {
 
   constructor() {
     super('buttonAddLazyLoading');
@@ -624,7 +625,7 @@ class ButtonAddLazyLoading extends ModuleButtonsDom.ButtonClicked {
 
 }
 
-class ButtonAddRule extends ModuleButtonsDom.ButtonClicked {
+class ButtonAddRule extends ModuleButtonsInterface.ButtonClicked {
 
   constructor() {
     super('buttonAddRule');
@@ -636,7 +637,7 @@ class ButtonAddRule extends ModuleButtonsDom.ButtonClicked {
 
 }
 
-class ButtonClearAllRules extends ModuleButtonsDom.ButtonClicked {
+class ButtonClearAllRules extends ModuleButtonsInterface.ButtonClicked {
 
   constructor() {
     super('buttonClearAllRules');
@@ -663,8 +664,8 @@ function createClickedButton(buttonIdHtml) {
       return new ButtonOpenUrls();
     case new ButtonObfuscate().buttonIdHtml:
       return new ButtonObfuscate();
-    case new ModuleButtonsDom.ButtonOpenPaths().buttonIdHtml:
-      return new ModuleButtonsDom.ButtonOpenPaths();
+    case new ModuleButtonsOnOff.ButtonOpenPaths().buttonIdHtml:
+      return new ModuleButtonsOnOff.ButtonOpenPaths();
     case new ButtonConfigurationLazyLoading().buttonIdHtml:
       return new ButtonConfigurationLazyLoading();
     case new ButtonAddLazyLoading().buttonIdHtml:
@@ -675,10 +676,10 @@ function createClickedButton(buttonIdHtml) {
       return new ButtonInputDeobfuscation();
     case new ButtonInputObfuscation().buttonIdHtml:
       return new ButtonInputObfuscation();
-    case new ModuleButtonsDom.ButtonDecodeUrls().buttonIdHtml:
-      return new ModuleButtonsDom.ButtonDecodeUrls();
-    case new ModuleButtonsDom.ButtonOpenRules().buttonIdHtml:
-      return new ModuleButtonsDom.ButtonOpenRules();
+    case new ModuleButtonsOnOff.ButtonDecodeUrls().buttonIdHtml:
+      return new ModuleButtonsOnOff.ButtonDecodeUrls();
+    case new ModuleButtonsOnOff.ButtonOpenRules().buttonIdHtml:
+      return new ModuleButtonsOnOff.ButtonOpenRules();
     case new ButtonAddRule().buttonIdHtml:
       return new ButtonAddRule();
     case new ButtonClearAllRules().buttonIdHtml:
@@ -692,9 +693,9 @@ function createClickedButton(buttonIdHtml) {
 async function popupMain() {
 
   rules = await ModuleRulesStorage.getRules(rules);
-  new ModuleButtonsDom.ButtonDecodeUrls().setStylePrevious();
-  new ModuleButtonsDom.ButtonOpenPaths().setStylePrevious();
-  new ModuleButtonsDom.ButtonOpenRules().setStylePrevious();
+  new ModuleButtonsOnOff.ButtonDecodeUrls().setStylePrevious();
+  new ModuleButtonsOnOff.ButtonOpenPaths().setStylePrevious();
+  new ModuleButtonsOnOff.ButtonOpenRules().setStylePrevious();
 
   document.addEventListener('click', (e) => {
     const buttonIdHtml = getIdHtmlOfClickedButtonOrImageFromEventClick(e);
