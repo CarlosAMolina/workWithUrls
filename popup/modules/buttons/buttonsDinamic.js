@@ -88,7 +88,7 @@ class ButtonUpdate extends ButtonInterface {
 export {
   ButtonCancel,
   ButtonDelete,
-  ButtonEdit ,
+  ButtonEdit,
   ButtonUpdate
 };
 
