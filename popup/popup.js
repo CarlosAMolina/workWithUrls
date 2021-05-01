@@ -295,6 +295,7 @@ function saveLazyLoading(lazyLoadingTimeToSave){
   return true;
 }
 
+
 // Save input boxes info.
 async function saveRules(){
 
@@ -303,34 +304,15 @@ async function saveRules(){
   ).rules;
   valuesRules = new ModuleRulesInputParser.RulesParser().getValuesRulesWithCorrectFormat(valuesRules);
   for (let [valueOld, valueNew] of valuesRules.entries()) {
-    saveRule([valueOld, valueNew]);
+    if (
+      await ModuleStorageRules.saveRule([valueOld, valueNew], rules.ruleType)
+    ) {
+      showStoredInfo([valueOld, valueNew]);
+    }
     rules = await ModuleStorageRules.getRules(rules);
   }
 
   saveRulesNewFormat(valuesRules); // TODO replace saveRule() with this function.
-
-  function saveRule(values2save){
-
-    var ids2save = [rules.ruleType + '_old_' + values2save[0], rules.ruleType + '_new_' + values2save[0]];
-    var gettingItem = browser.storage.local.get(ids2save[0]);
-    gettingItem.then((result) => { // result: empty object if the searched value is not stored
-      var searchInStorage = Object.keys(result); // array with the searched value if it is stored
-      if(searchInStorage.length < 1) { // searchInStorage.length < 1 -> no stored
-        saveInfo(ids2save,values2save);
-        showStoredInfo(values2save);
-      }
-    }, reportError);
-
-    function saveInfo(ids2save, values2save) {
-      console.log('Init saveInfo(). ids2save \'' + ids2save + '\', values2save \'' + values2save +'\'')
-      for (var i = 0; i < ids2save.length; i++) {
-        var storingInfo = browser.storage.local.set({[ids2save[i]]:values2save[i]});
-        storingInfo.then(() => {
-        }, reportError);
-      }
-    }
-
-  }
 
   function saveRulesNewFormat(valuesRules) {
     var gettingRulesType = browser.storage.local.get(rules.ruleTypeNew);
