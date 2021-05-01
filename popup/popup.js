@@ -7,6 +7,7 @@ https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/stora
 import * as ModuleButtonsFactory from '../popup/modules/buttons/buttonsFactory.js';
 import * as ModuleButtonsInterface from '../popup/modules/buttons/buttonsInterface.js';
 import * as ModuleDom from '../popup/modules/dom.js';
+import * as ModuleRulesInputParser from '../popup/modules/rules/inputParser.js';
 import * as ModuleRulesInputReader from '../popup/modules/rules/inputReader.js';
 import * as ModuleSleep from '../popup/modules/sleep.js';
 import * as ModuleStorageLazyLoading from '../popup/modules/storage/lazyLoading.js';
@@ -300,7 +301,7 @@ async function saveRules(){
   let valuesRules = ModuleRulesInputReader.getReader(
     ModuleDom.isCheckedElementById(ModuleButtonsFactory.getButton("openRules").buttonIdHtml)
   ).rules;
-  valuesRules = new ModuleUrlsModifier.RulesParser().getValuesRulesWithCorrectFormat(valuesRules);
+  valuesRules = new ModuleRulesInputParser.RulesParser().getValuesRulesWithCorrectFormat(valuesRules);
   for (let [valueOld, valueNew] of valuesRules.entries()) {
     saveRule([valueOld, valueNew]);
     rules = await ModuleStorageRules.getRules(rules);

@@ -251,20 +251,6 @@ describe("Check script urlsModifier.js: ", function() {
       assert.equal(rules.ruleTransformationsToUseStringRepresentation, mockRuleTransformationValueOld + '\n' + mockRuleTransformationValueNew)
     });
   });
-  describe("Check class RulesParser: ", function() {
-    it("Check function getValuesRulesWithCorrectFormat: ", function() {
-      const valuesRules = ['http', 'hXXp', '.', '[.]', 'x'];
-      const result = new ModuleUrlsModifier.RulesParser().getValuesRulesWithCorrectFormat(valuesRules);
-      const resultExpected = new Map([
-            ['http', 'hXXp'],
-            ['.', '[.]'],
-            ['x', ''],
-      ]);
-      resultExpected.forEach(function(value, key) {
-        assert.equal(value, result.get(key));
-      });
-    });
-  });
   describe("Check function getUrlsWithPaths: ", function() {
     it("Check function getUrlsWithPaths", function() {
       assert.equal(
