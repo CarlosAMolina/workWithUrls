@@ -22,8 +22,18 @@ class MultipleRulesReader extends ReaderInterface {
   }
 }
 
+/*
+param readMultipleRules: bool.
+*/
+function getReader(readMultipleRules) {
+  if (readMultipleRules) {
+    return new MultipleRulesReader()
+  } else {
+    return new OneRuleReader()
+  }
+}
+
 export {
-  OneRuleReader,
-  MultipleRulesReader
+  getReader
 }
 

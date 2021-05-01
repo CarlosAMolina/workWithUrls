@@ -21,18 +21,17 @@ describe("Check script inputReader.js:", function() {
     });
     it("Check function get rules():", function() {
       chai.expect(
-        new ModuleRulesInputReader.OneRuleReader().rules
+        ModuleRulesInputReader.getReader(false).rules
       ).to.deep.equal(['http', 'hXXp']);
     });
   });
   describe("Check class MultipleRulesReader:", function() {
     beforeEach(function() {
-      const inputRules = 'http\nhXXp\n.\n[.]';
-      mockDomInputRules(inputRules);
+      mockDomInputRules('http\nhXXp\n.\n[.]');
     });
     it("Check function get rules():", function() {
       chai.expect(
-        new ModuleRulesInputReader.MultipleRulesReader().rules
+        ModuleRulesInputReader.getReader(true).rules
       ).to.deep.equal(['http', 'hXXp', '.', '[.]']);
     });
   });

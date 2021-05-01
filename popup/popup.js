@@ -4,12 +4,13 @@ https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/stora
 */
 
 
-import * as ModuleButtonsInterface from '../popup/modules/buttons/buttonsInterface.js';
 import * as ModuleButtonsFactory from '../popup/modules/buttons/buttonsFactory.js';
+import * as ModuleButtonsInterface from '../popup/modules/buttons/buttonsInterface.js';
 import * as ModuleDom from '../popup/modules/dom.js';
+import * as ModuleRulesInputReader from '../popup/modules/rules/inputReader.js';
+import * as ModuleSleep from '../popup/modules/sleep.js';
 import * as ModuleStorageLazyLoading from '../popup/modules/storage/lazyLoading.js';
 import * as ModuleStorageRules from '../popup/modules/storage/rules.js';
-import * as ModuleSleep from '../popup/modules/sleep.js';
 import * as ModuleUrlsModifier from './modules/urlsModifier.js';
 
 
@@ -296,7 +297,9 @@ function saveLazyLoading(lazyLoadingTimeToSave){
 // Save input boxes info.
 async function saveRules(){
 
-  var valuesRules = getValues();
+  let valuesRules = ModuleRulesInputReader.getReader(
+    ModuleDom.isCheckedElementById(ModuleButtonsFactory.getButton("openRules").buttonIdHtml)
+  ).rules;
   valuesRules = new ModuleUrlsModifier.RulesParser().getValuesRulesWithCorrectFormat(valuesRules);
   for (let [valueOld, valueNew] of valuesRules.entries()) {
     saveRule([valueOld, valueNew]);
@@ -304,14 +307,6 @@ async function saveRules(){
   }
 
   saveRulesNewFormat(valuesRules); // TODO replace saveRule() with this function.
-
-  function getValues(){
-    if (ModuleDom.isCheckedElementById(ModuleButtonsFactory.getButton("openRules").buttonIdHtml)){
-      return ModuleDom.getValueElementById('inputRules').split('\n');
-    } else {
-      return [ModuleDom.getValueElementById('inputValueOld'), ModuleDom.getValueElementById('inputValueNew')];
-    }
-  }
 
   function saveRule(values2save){
 
