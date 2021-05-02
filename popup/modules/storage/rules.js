@@ -29,15 +29,15 @@ async function getRules(rules){
 }
 
 /*
-:param values2save: array of two strings.
+:param rule: Rule.
 :param ruleType: str. 
 :return bool.
 */
-async function saveRuleIfNew(values2save, ruleType){
+async function saveRuleIfNew(rule, ruleType){
 
-  var ids2save = [
-    `${ruleType}_old_${values2save[0]}`,
-    `${ruleType}_new_${values2save[0]}`
+  const ids2save = [
+    `${ruleType}_old_${rule.valueOld}`,
+    `${ruleType}_new_${rule.valueOld}`
   ];
   
   let storedItem;
@@ -50,18 +50,21 @@ async function saveRuleIfNew(values2save, ruleType){
   }
   const searchInStorage = Object.keys(storedItem); // array with the searched value if it is stored
   if(searchInStorage.length < 1) { // searchInStorage.length < 1 -> no stored
-    saveInfo(ids2save,values2save);
+    saveInfo(ids2save, rule);
     return true;
   }
   return false;
 
-  function saveInfo(ids2save, values2save) {
-    console.log(`Init saveInfo(). ids2save: '${ids2save}'. values2save: '${values2save}'`)
-    for (var i = 0; i < ids2save.length; i++) {
-      var storingInfo = browser.storage.local.set({[ids2save[i]]:values2save[i]});
-      storingInfo.then(() => {
-      }, console.error);
-    }
+  function saveInfo(ids2save, rule) {
+    console.log(`Init saveInfo(). ids2save: '${ids2save}'. rule: ${rule.stringRepresentation}`);
+    var storingInfo = browser.storage.local.set(
+      {
+        [ids2save[0]]: rule.valueOld,
+        [ids2save[1]]: rule.valueNew
+      }
+    );
+    storingInfo.then(() => {
+    }, console.error);
   }
 
 }

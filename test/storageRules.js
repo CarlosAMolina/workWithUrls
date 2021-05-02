@@ -1,6 +1,7 @@
 import pkgChai from 'chai';
 
 import * as ModulePopup from '../popup/popup.js'; // TODO not use this import.
+import * as ModuleRule from '../popup/modules/rules/rule.js';
 import * as ModuleStorageRules from '../popup/modules/storage/rules.js';
 import * as ModuleUrlsModifier from '../popup/modules/urlsModifier.js';
 
@@ -33,15 +34,12 @@ function mockBrowserStorageLocalSet(){
 
 function storageMockSet() {
   return {
-    set: function(keyAndValue) {
-      const key = Object.keys(keyAndValue)[0];
-      const value = keyAndValue[key];
+    set: function(infoToStore) {
       return new Promise(function(resolve, reject) {
-        return resolve(
-          new Object(
-            browser.storage[key] = value || ''
-          )
-        )
+        for (let [key, value] of Object.entries(infoToStore)) {
+          browser.storage[key] = value || ''
+        }
+        return resolve('done')
       });
     },
     get: function(key) {
@@ -68,7 +66,8 @@ describe("Check script storage/rules.js:", function() {
       mockBrowserStorageLocalSet();
     });
     it("Check expected result:", async function() {
-      await ModuleStorageRules.saveRuleIfNew(['http', 'hXXp'], 'ro');
+      const rule = new ModuleRule.Rule('http', 'hXXp');
+      await ModuleStorageRules.saveRuleIfNew(rule, 'ro');
       assert.equal(browser.storage['ro_old_http'], 'http');
       assert.equal(browser.storage['ro_new_http'], 'hXXp');
     });

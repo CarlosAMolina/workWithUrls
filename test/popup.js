@@ -1,5 +1,6 @@
 import * as ModuleMockDom from './mockDom.js'; // Global mocks.
 import * as ModulePopup from '../popup/popup.js';
+import * as ModuleRule from '../popup/modules/rules/rule.js';
 import chai from 'chai';
 
 
@@ -84,8 +85,8 @@ describe("Check script popup.js: ", function() {
   describe("Check function showStoredInfo: ", function() {
     // TODO incorrect test.
     it("Check function runs without exceptions: ", function() {
-      const values2save = ['value 1', 'value 2']
-      const result = ModulePopup.showStoredInfo(values2save);
+      const rule = new ModuleRule.Rule('http', 'hXXp');
+      const result = ModulePopup.showStoredInfo(rule);
       chai.expect(typeof result).to.equal('undefined');
     });
     describe("Check function updateValue: ", function() {

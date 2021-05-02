@@ -7,6 +7,7 @@ https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/stora
 import * as ModuleButtonsFactory from '../popup/modules/buttons/buttonsFactory.js';
 import * as ModuleButtonsInterface from '../popup/modules/buttons/buttonsInterface.js';
 import * as ModuleDom from '../popup/modules/dom.js';
+import * as ModuleRule from '../popup/modules/rules/rule.js';
 import * as ModuleRulesInputParser from '../popup/modules/rules/inputParser.js';
 import * as ModuleRulesInputReader from '../popup/modules/rules/inputReader.js';
 import * as ModuleSleep from '../popup/modules/sleep.js';
@@ -49,17 +50,17 @@ function reportError(error) {
 class EntryValue {
 
   /*
-  param eValues: array of strings.
+  :param rule: Rule.
   */
-  constructor(eValues) {
-    this._eValues = eValues;
+  constructor(rule) {
+    this._rule = rule;
   }
 
 
   get entry() {
     let entry = document.createElement('p');
     entry.setAttribute('style','margin-left: 75px');
-    entry.textContent = this._eValues[0] + ' ---> ' + this._eValues[1];
+    entry.textContent = this._rule.valueOld + ' ---> ' + this._rule.valueNew;
     return entry;
   }
 }
@@ -81,13 +82,16 @@ class ElementClearFix {
   }
 }
 
-// Display info.
-function showStoredInfo(eValues) {
+/* Display info.
+:param rule: Rule.
+*/
+
+function showStoredInfo(rule) {
 
   // Display box.
   let deleteBtn = ModuleButtonsFactory.getButton("delete");
   let editBtn = ModuleButtonsFactory.getButton("edit");
-  let entryValue = new EntryValue(eValues).entry;
+  let entryValue = new EntryValue(rule).entry;
   let entry = document.createElement('div');
   let entryDisplay = document.createElement('div');
   entryDisplay.appendChild(deleteBtn);
@@ -112,15 +116,20 @@ function showStoredInfo(eValues) {
   entry.appendChild(entryEdit);
 
   entryEdit.style.display = 'none';
-  entryEditInputValueOld.value = eValues[0];
-  entryEditInputValueNew.value = eValues[1];
+  entryEditInputValueOld.value = rule.valueOld;
+  entryEditInputValueNew.value = rule.valueNew;
 
   // set up listener for the delete functionality
   deleteBtn.addEventListener('click',(e) => {
     const evtTgt = e.target;
     evtTgt.parentNode.parentNode.parentNode.removeChild(evtTgt.parentNode.parentNode);
-    browser.storage.local.remove([rules.ruleType+'_old_'+eValues[0], rules.ruleType+'_new_'+eValues[0]]);
-    rules.deleteRuleTransformation(new ModuleUrlsModifier.RuleTransformation(eValues[0], eValues[1]))
+    browser.storage.local.remove(
+      [
+        rules.ruleType+'_old_'+rule.valueOld,
+        rules.ruleType+'_new_'+rule.valueOld
+      ]
+    );
+    rules.deleteRuleTransformation(new ModuleUrlsModifier.RuleTransformation(rule.valueOld, rule.valueNew))
   })
 
   // set up listeners for the buttons
@@ -141,20 +150,20 @@ function showStoredInfo(eValues) {
   })
 
   updateBtn.addEventListener('click',() => {
-    let eKeys2change = [rules.ruleType + '_old_' + eValues[0], rules.ruleType + '_new_' + eValues[0]];
+    let eKeys2change = [rules.ruleType + '_old_' + rule.valueOld, rules.ruleType + '_new_' + rule.valueOld];
     let values2save = [entryEditInputValueOld.value, entryEditInputValueNew.value];
     let ids2save = [rules.ruleType + '_old_' + values2save[0], rules.ruleType + '_new_' + values2save[0]];
     let gettingItem = browser.storage.local.get(ids2save[0]);
     gettingItem.then((storedItem) => { // result: empty object if the searched value is not stored
       let searchInStorage = Object.keys(storedItem); // array with the searched value if it is stored
-      if( (searchInStorage.length < 1) || ( (eKeys2change[0] == ids2save[0]) && (eValues[1] != values2save[1]) ) ) { // searchInStorage.length < 1 -> no stored
+      if( (searchInStorage.length < 1) || ( (eKeys2change[0] == ids2save[0]) && (rule.valueNew != values2save[1]) ) ) { // searchInStorage.length < 1 -> no stored
         updateValue(eKeys2change, ids2save, values2save);
         rules.updateRuleTransformation(
-          new ModuleUrlsModifier.RuleTransformation(eValues[0], eValues[1]),
+          new ModuleUrlsModifier.RuleTransformation(rule.valueOld, rule.valueNew),
           new ModuleUrlsModifier.RuleTransformation(values2save[0], values2save[1])
         )
         entry.parentNode.removeChild(entry);
-        showStoredInfo(values2save);
+        showStoredInfo(rule);
       }
     });
 
@@ -193,9 +202,13 @@ function showStoredRulesType(rules){
     console.log(valuesRuleTypeOld)
     for (var i = 0; i < valuesRuleTypeOld.length; i+=1) {
       var values2show = [valuesRuleTypeOld[i], storedItems[rules.ruleType+'_new_'+valuesRuleTypeOld[i]]];
+      let rule = new ModuleRule.Rule(
+        valuesRuleTypeOld[i],
+        storedItems[rules.ruleType+'_new_'+valuesRuleTypeOld[i]]
+      )
       console.log('values2show:')
-      console.log(values2show)
-      showStoredInfo(values2show);
+      console.log(rule)
+      showStoredInfo(rule);
     }
     console.log('valuesRuleNewFormat:')
     console.log(storedItems[rules.ruleTypeNew]);
@@ -304,10 +317,11 @@ async function saveRules(){
   ).rules;
   valuesRules = new ModuleRulesInputParser.RulesParser().getValuesRulesWithCorrectFormat(valuesRules);
   for (let [valueOld, valueNew] of valuesRules.entries()) {
+    const rule = new ModuleRule.Rule(valueOld, valueNew);
     if (
-      await ModuleStorageRules.saveRuleIfNew([valueOld, valueNew], rules.ruleType)
+      await ModuleStorageRules.saveRuleIfNew(rule, rules.ruleType)
     ) {
-      showStoredInfo([valueOld, valueNew]);
+      showStoredInfo(rule);
     }
     rules = await ModuleStorageRules.getRules(rules);
   }
