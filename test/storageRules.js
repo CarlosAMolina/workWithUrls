@@ -18,7 +18,6 @@ function storageMockGet() {
   return {
     get: function(key) {
       return new Promise(function(resolve, reject) {
-        console.log('GET'); // TODO delete
         resolve(new Object({ rd_new_hXXp: "http", rd_old_hXXp: "hXXp" }))
       });
     }
@@ -29,19 +28,25 @@ function storageMockGet() {
 function mockBrowserStorageLocalSet(){
   global.browser = {};
   browser.storage = {};
-  browser.storage.local = storageMockGet();
+  browser.storage.local = storageMockSet();
 }
 
 function storageMockSet() {
   return {
-    set: function(key, value) {
-      console.log('STORING'); // TODO delete
-      browser.storage[key] = value || '';
-      console.log('STORED'); // TODO delete
+    set: function(keyAndValue) {
+      const key = Object.keys(keyAndValue)[0];
+      const value = keyAndValue[key];
+      return new Promise(function(resolve, reject) {
+        return resolve(
+          new Object(
+            browser.storage[key] = value || ''
+          )
+        )
+      });
     },
     get: function(key) {
       return new Promise(function(resolve, reject) {
-        resolve(new Object({ rd_new_hXXp: "http", rd_old_hXXp: "hXXp" }))
+        resolve(new Object({ }))
       });
     }
   };
@@ -58,21 +63,14 @@ describe("Check script storage/rules.js:", function() {
       assert.equal(result.rules['rd'].stringRepresentation, 'hXXp\nhttp');
     });
   });
-  describe("Check function saveRule:", function() {
+  describe("Check function saveRuleIfNew:", function() {
     beforeEach(function() {
       mockBrowserStorageLocalSet();
     });
     it("Check expected result:", async function() {
-      const ruleToSave = new Map([['http', 'hXXp']]);
-      /*
-      const rulesToSave = new Map([
-            ['http', 'hXXp'],
-            ['.', '[.]'],
-            ['x', ''],
-      ]);
-      assert.equal(browser.storage, {'http': 'hXXp'});
-      */
-      ModuleStorageRules.saveRule(ruleToSave);
+      await ModuleStorageRules.saveRuleIfNew(['http', 'hXXp'], 'ro');
+      assert.equal(browser.storage['ro_old_http'], 'http');
+      assert.equal(browser.storage['ro_new_http'], 'hXXp');
     });
   });
   // TODO, move the function showStoredRulesType to the storage/rules.js file.

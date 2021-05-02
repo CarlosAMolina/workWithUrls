@@ -305,14 +305,14 @@ async function saveRules(){
   valuesRules = new ModuleRulesInputParser.RulesParser().getValuesRulesWithCorrectFormat(valuesRules);
   for (let [valueOld, valueNew] of valuesRules.entries()) {
     if (
-      await ModuleStorageRules.saveRule([valueOld, valueNew], rules.ruleType)
+      await ModuleStorageRules.saveRuleIfNew([valueOld, valueNew], rules.ruleType)
     ) {
       showStoredInfo([valueOld, valueNew]);
     }
     rules = await ModuleStorageRules.getRules(rules);
   }
 
-  saveRulesNewFormat(valuesRules); // TODO replace saveRule() with this function.
+  saveRulesNewFormat(valuesRules); // TODO replace saveRuleIfNew() with this function.
 
   function saveRulesNewFormat(valuesRules) {
     var gettingRulesType = browser.storage.local.get(rules.ruleTypeNew);

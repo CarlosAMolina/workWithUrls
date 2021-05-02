@@ -33,7 +33,7 @@ async function getRules(rules){
 :param ruleType: str. 
 :return bool.
 */
-async function saveRule(values2save, ruleType){
+async function saveRuleIfNew(values2save, ruleType){
 
   var ids2save = [
     `${ruleType}_old_${values2save[0]}`,
@@ -67,9 +67,7 @@ async function saveRule(values2save, ruleType){
 }
 
 
-
-
 export {
   getRules,
-  saveRule
+  saveRuleIfNew
 };
