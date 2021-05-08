@@ -5,7 +5,7 @@
 Firefox add-on to work with URLs:
 
 - Open, you can open all paths.
-- Apply a delay when openning the URLs.
+- Apply a delay when opening the URLs.
 - Modify URLs: obfuscate, deobfuscate and decode.
 - Copy the modification results.
 
