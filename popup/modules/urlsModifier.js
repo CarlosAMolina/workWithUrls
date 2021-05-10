@@ -1,3 +1,5 @@
+import * as ModuleRule from './rules/rule.js';
+
 const PROTOCOL_DEFAULT = 'http://'
 
 const RuleTypeInvalidExceptionName = "RuleTypeInvalidException"
@@ -36,7 +38,7 @@ class RuleConfigurator extends RuleTypes{
     return this._ruleType;
   }
 
-  // TODO delete and use new rules type values
+  // TODO delete old type and use this new rules type values
   get ruleTypeNew() {
     if (this._ruleType == this.ruleDeobfuscate) {
       return 'rulesDeobfuscation'
@@ -78,24 +80,12 @@ class RuleConfigurator extends RuleTypes{
 }
 
 
-class RuleTransformation {
-
-  constructor(valueOld, valueNew){
-    this._data = {'valueOld': valueOld, 'valueNew': valueNew};
-  }
-
-  get valueOld() {return this._data.valueOld;}
-  get valueNew() {return this._data.valueNew;}
-
-}
-
-
 class RuleTransformationsCreator {
 
   /*
   param valuesOld: list of strings.
   param valuesNew: list of strings.
-  return: list of RuleTransformation instances.
+  return: list of Rule instances.
   */
   getRuleTransformations(valuesOld, valuesNew) {
     let ruleTransformations = []
@@ -103,7 +93,7 @@ class RuleTransformationsCreator {
       throw RangeError("Rule's values old length != values new length");
     }
     for (let i = 0; i < valuesOld.length; i++) {
-      ruleTransformations.push(new RuleTransformation(valuesOld[i], valuesNew[i]));
+      ruleTransformations.push(new ModuleRule.Rule(valuesOld[i], valuesNew[i]));
     }
     return ruleTransformations;
   }
@@ -114,20 +104,20 @@ class RuleTransformationsCreator {
 class RuleTransformations extends RuleTransformationsCreator {
 
   /*
-  param ruleTransformationValuesOld: list of strings.
-  param ruleTransformationValuesNew: list of strings.
+  param ruleValuesOld: list of strings.
+  param ruleValuesNew: list of strings.
   */
-  constructor(ruleTransformationValuesOld, ruleTransformationValuesNew) {
+  constructor(ruleValuesOld, ruleValuesNew) {
     super();
-    this._ruleTransformations = this.getRuleTransformations(ruleTransformationValuesOld, ruleTransformationValuesNew);
+    this._ruleTransformations = this.getRuleTransformations(ruleValuesOld, ruleValuesNew);
   }
 
   get ruleTransformations() {return this._ruleTransformations;}
 
   get stringRepresentation() {
     let result = '';
-    for (const ruleTransformation of this.ruleTransformations) {
-      result += ruleTransformation.valueOld + '\n' + ruleTransformation.valueNew + '\n';
+    for (const rule of this.ruleTransformations) {
+      result += `${rule.valueOld}\n${rule.valueNew}\n`;
     }
     result = this.removeTrailingNewLine(result)
     return result
@@ -175,23 +165,23 @@ class Rules extends RuleConfigurator{
   }
 
   /*
-  param ruleTransformation: RuleTransformation instance.
+  param rule: Rule.
   */
-  addRuleTransformation(ruleTransformation) {
-    this.ruleTransformationsToUse.push(ruleTransformation);
+  addRule(rule) {
+    this.ruleTransformationsToUse.push(rule);
   }
 
   /*
-  param ruleTransformation: RuleTransformation instance.
+  param rule: Rule instance.
   */
-  deleteRuleTransformation(ruleTransformation) {
+  deleteRule(rule) {
     let indexToDelete = -1;
     let match = false;
-    for (const ruleTransformationStored of this.ruleTransformationsToUse) {
+    for (const ruleStored of this.ruleTransformationsToUse) {
       indexToDelete += 1;
       if (
-        ruleTransformationStored.valueOld === ruleTransformation.valueOld
-        && ruleTransformationStored.valueNew === ruleTransformation.valueNew
+        ruleStored.valueOld === rule.valueOld
+        && ruleStored.valueNew === rule.valueNew
       ) {
         match = true;
         break;
@@ -203,12 +193,12 @@ class Rules extends RuleConfigurator{
   }
 
   /*
-  param ruleTransformationToChange: RuleTransformation instance.
-  param ruleTransformationNew: RuleTransformation instance.
+  param ruleToChange: Rule.
+  param ruleNew: Rule.
   */
-  updateRuleTransformation(ruleTransformationToChange, ruleTransformationNew) {
-    this.deleteRuleTransformation(ruleTransformationToChange)
-    this.addRuleTransformation(ruleTransformationNew)
+  updateRule(ruleToChange, ruleNew) {
+    this.deleteRule(ruleToChange)
+    this.addRule(ruleNew)
   }
 
   initializeRules() {
@@ -223,8 +213,8 @@ class RulesApplicator {
   /*
   param rule: RuleTransformations instance.
   */
-  constructor(rule) {
-    this.rule = rule; 
+  constructor(ruleTransformations) {
+    this._ruleTransformations = ruleTransformations; 
   }
 
   /*
@@ -236,19 +226,18 @@ class RulesApplicator {
   }
 
   getUrlApplyRuleTransformationsToUrl(url) {
-    for (const ruleTransformation of this.rule.ruleTransformations) {
-      url = this.getUrlApplyRuleTransformationToUrl(ruleTransformation, url);
+    for (const rule of this._ruleTransformations.ruleTransformations) {
+      url = this.getUrlApplyRuleToUrl(rule, url);
     }
     return url;
   }
 
-  getUrlApplyRuleTransformationToUrl(ruleTransformation, url){
-      return url.replace(this.getRegex(ruleTransformation.valueOld), ruleTransformation.valueNew);
+  getUrlApplyRuleToUrl(rule, url){
+      return url.replace(this.getRegex(rule.valueOld), rule.valueNew);
   }
 
   getRegex(ruleValue){
       return new RegExp(ruleValue, "g");
-
   }
 
 }
@@ -338,7 +327,6 @@ export {
   RuleConfigurator,
   Rules,
   RulesApplicator,
-  RuleTransformation,
   RuleTransformations,
   RuleTypeInvalidExceptionName,
   RuleTypes,

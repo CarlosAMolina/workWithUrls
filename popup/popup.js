@@ -129,7 +129,7 @@ function showStoredInfo(rule) {
         rules.ruleType+'_new_'+rule.valueOld
       ]
     );
-    rules.deleteRuleTransformation(new ModuleUrlsModifier.RuleTransformation(rule.valueOld, rule.valueNew))
+    rules.deleteRule(rule)
   })
 
   // set up listeners for the buttons
@@ -154,16 +154,14 @@ function showStoredInfo(rule) {
     let values2save = [entryEditInputValueOld.value, entryEditInputValueNew.value];
     let ids2save = [rules.ruleType + '_old_' + values2save[0], rules.ruleType + '_new_' + values2save[0]];
     let gettingItem = browser.storage.local.get(ids2save[0]);
+    const ruleNew = new ModuleRule.Rule(values2save[0], values2save[1]);
     gettingItem.then((storedItem) => { // result: empty object if the searched value is not stored
       let searchInStorage = Object.keys(storedItem); // array with the searched value if it is stored
       if( (searchInStorage.length < 1) || ( (eKeys2change[0] == ids2save[0]) && (rule.valueNew != values2save[1]) ) ) { // searchInStorage.length < 1 -> no stored
         updateValue(eKeys2change, ids2save, values2save);
-        rules.updateRuleTransformation(
-          new ModuleUrlsModifier.RuleTransformation(rule.valueOld, rule.valueNew),
-          new ModuleUrlsModifier.RuleTransformation(values2save[0], values2save[1])
-        )
+        rules.updateRule(rule, ruleNew);
         entry.parentNode.removeChild(entry);
-        showStoredInfo(rule);
+        showStoredInfo(ruleNew);
       }
     });
 

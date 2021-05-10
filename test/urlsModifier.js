@@ -1,11 +1,16 @@
+import * as ModuleRule from '../popup/modules/rules/rule.js';
 import * as ModuleUrlsModifier from '../popup/modules/urlsModifier.js';
 import pkgChai from 'chai';
 
 const {assert: assert} = pkgChai;
-const mockRuleTransformationValueOld = 'test'
-const mockRuleTransformationValueNew = 'changed'
-const ruleTransformations = new ModuleUrlsModifier.RuleTransformations([mockRuleTransformationValueOld], [mockRuleTransformationValueNew]);
+const mockRuleValueOld = 'test'
+const mockRuleValueNew = 'changed'
+const ruleTransformations = new ModuleUrlsModifier.RuleTransformations([mockRuleValueOld], [mockRuleValueNew]);
 
+function getRule(valueOld, valueNew) {
+  return new ModuleRule.Rule(valueOld, valueNew);
+
+}
 
 describe("Check script urlsModifier.js: ", function() {
   describe("Check class RuleTypes: ", function() {
@@ -79,21 +84,12 @@ describe("Check script urlsModifier.js: ", function() {
       assert.isTrue(ruleConfigurator.isRuleTypeConfigured());
     });
   });
-  describe("Check class RuleTransformation: ", function() {
-    const ruleTransformation = new ModuleUrlsModifier.RuleTransformation('old', 'new');
-    it("Check function get valueOld: ", function() {
-      assert.equal(ruleTransformation.valueOld, 'old');
-    });
-    it("Check function get valueNew: ", function() {
-      assert.equal(ruleTransformation.valueNew, 'new');
-    });
-  });
   describe("Check class RuleTransformations: ", function() {
-    const mockRuleTransformationValuesGeneral = [new ModuleUrlsModifier.RuleTransformation(mockRuleTransformationValueOld, mockRuleTransformationValueNew)]
+    const mockRuleValuesGeneral = [getRule(mockRuleValueOld, mockRuleValueNew)]
     it("Check class: ", function() {
       assert.equal(ruleTransformations.ruleTransformations.length, 1);
-      assert.equal(ruleTransformations.ruleTransformations[0].valueNew, mockRuleTransformationValuesGeneral[0].valueNew);
-      assert.equal(ruleTransformations.ruleTransformations[0].valueOld, mockRuleTransformationValuesGeneral[0].valueOld);
+      assert.equal(ruleTransformations.ruleTransformations[0].valueNew, mockRuleValuesGeneral[0].valueNew);
+      assert.equal(ruleTransformations.ruleTransformations[0].valueOld, mockRuleValuesGeneral[0].valueOld);
     });
     it("Check function getStringRepresentation: ", function() {
       const stringRepresentation = ruleTransformations.stringRepresentation;
@@ -176,7 +172,7 @@ describe("Check script urlsModifier.js: ", function() {
       const urlsModifier = ModuleUrlsModifier.urlsModifier(ruleTransformations);
       assert.isFunction(urlsModifier.modifyUrls);
       const result = urlsModifier.modifyUrls(['test']);
-      assert.equal(String(result), String([mockRuleTransformationValueNew]));
+      assert.equal(String(result), String([mockRuleValueNew]));
     });
   });
   describe("Check class Rules: ", function() {
@@ -187,39 +183,39 @@ describe("Check script urlsModifier.js: ", function() {
       rules.addTypeAndRule(ruleType, ruleTransformations);
       assert.equal(rules.ruleTransformationsToUse, ruleTransformations.ruleTransformations);
     });
-    it("Check function addRuleTransformation: ", function() {
+    it("Check function addRule: ", function() {
       rules.ruleType = ruleType;
       rules.addTypeAndRule(
         ruleType,
         new ModuleUrlsModifier.RuleTransformations(['a1', 'b1'], ['a2', 'b2'])
       );
-      rules.addRuleTransformation(new ModuleUrlsModifier.RuleTransformation('c1', 'c2'));
+      rules.addRule(getRule('c1', 'c2'));
       assert.equal(
         rules.ruleTransformationsToUseStringRepresentation,
         new ModuleUrlsModifier.RuleTransformations(['a1', 'b1', 'c1'], ['a2', 'b2', 'c2']).stringRepresentation
       );
     });
-    it("Check function deleteRuleTransformation: ", function() {
+    it("Check function deleteRule: ", function() {
       rules.ruleType = ruleType;
       rules.addTypeAndRule(
         ruleType,
         new ModuleUrlsModifier.RuleTransformations(['a1', 'b1', 'c1'], ['a2', 'b2', 'c2'])
       );
-      rules.deleteRuleTransformation(new ModuleUrlsModifier.RuleTransformation('b1', 'b2'));
+      rules.deleteRule(getRule('b1', 'b2'));
       assert.equal(
         rules.ruleTransformationsToUseStringRepresentation,
         new ModuleUrlsModifier.RuleTransformations(['a1', 'c1'], ['a2', 'c2']).stringRepresentation
       );
     });
-    it("Check function updateRuleTransformation: ", function() {
+    it("Check function updateRule: ", function() {
       rules.ruleType = ruleType;
       rules.addTypeAndRule(
         ruleType,
         new ModuleUrlsModifier.RuleTransformations(['a1', 'b1'], ['a2', 'b2'])
       );
-      rules.updateRuleTransformation(
-        new ModuleUrlsModifier.RuleTransformation('b1', 'b2'),
-        new ModuleUrlsModifier.RuleTransformation('c1', 'c2'),
+      rules.updateRule(
+        getRule('b1', 'b2'),
+        getRule('c1', 'c2'),
       )
       assert.equal(
         rules.ruleTransformationsToUseStringRepresentation,
@@ -248,7 +244,7 @@ describe("Check script urlsModifier.js: ", function() {
     it("Check get ruleTransformationsToUseStringRepresentation: ", function() {
       rules.ruleType = ruleType
       rules.addTypeAndRule(ruleType, ruleTransformations);
-      assert.equal(rules.ruleTransformationsToUseStringRepresentation, mockRuleTransformationValueOld + '\n' + mockRuleTransformationValueNew)
+      assert.equal(rules.ruleTransformationsToUseStringRepresentation, mockRuleValueOld + '\n' + mockRuleValueNew)
     });
   });
   describe("Check function getUrlsWithPaths: ", function() {

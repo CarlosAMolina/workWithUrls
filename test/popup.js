@@ -42,8 +42,6 @@ function storageMock() {
 
 describe("Check script popup.js: ", function() {
   const inputUrlsTest = 'test1.com\ntest2.com';
-  const mockRuleTransformationValueOld = 'test'
-  const mockRuleTransformationValueNew = 'changed'
   mockBrowserStorageLocal();
   describe("Check function popupMain: ", function() {
     ModulePopup.popupMain(); // Functon instance, required to access inner functions.
