@@ -89,6 +89,19 @@ class ButtonOpenRules extends ButtonOnOff {
     super(buttonIdHtml, buttonIdStorage);
   }
 
+  // TODO use ModuleStorageGeneral.isKeyStored()
+  showOrHideRuleOrRules() {
+    browser.storage.local.get(this.buttonIdStorage).then((result) => {
+      if (result[this.buttonIdStorage]){
+	ModuleDom.setHiddenElementById('divInputRule');
+	ModuleDom.setUnhiddenElementById('divInputRules');
+      } else {
+	ModuleDom.setUnhiddenElementById('divInputRule');
+	ModuleDom.setHiddenElementById('divInputRules');
+      }
+    }, console.error);
+  }
+
 }
 
 

@@ -30,17 +30,6 @@ function modifyText(urlsModifier){
 }
 
 
-function showOrHideRuleOrRules() {
-  browser.storage.local.get(ModuleButtonsFactory.getButton("openRules").buttonIdStorage).then((result) => {
-    if (result[ModuleButtonsFactory.getButton("openRules").buttonIdStorage]){
-      ModuleDom.setHiddenElementById('divInputRule');
-      ModuleDom.setUnhiddenElementById('divInputRules');
-    } else {
-      ModuleDom.setUnhiddenElementById('divInputRule');
-      ModuleDom.setHiddenElementById('divInputRules');
-    }
-  }, console.error);
-}
 
 
 function reportError(error) {
@@ -617,7 +606,7 @@ async function popupMain() {
     const buttonClicked = createClickedButton(buttonIdHtml)
     if (buttonClicked){
       buttonClicked.run;
-      showOrHideRuleOrRules();
+      ModuleButtonsFactory.getButton("openRules").showOrHideRuleOrRules();
     }// else { //TODO logs only for development
     //  console.error("Invalid clicked button:");
     //  console.error(e.target);
