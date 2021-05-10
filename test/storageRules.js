@@ -70,7 +70,7 @@ function storageMockRemove() {
   return {
     remove: function(keys) {
       return new Promise(function(resolve, reject) {
-        for (let key in keys) {
+        for (let key of keys) {
           delete browser.storage[key];
         }
         return resolve('done');

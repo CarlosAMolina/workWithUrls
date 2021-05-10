@@ -88,6 +88,14 @@ class ElementClearFix {
 
 function showStoredInfo(rule) {
 
+  async function storageRemoveRule(rule, ruleType) {
+    await ModuleStorageRules.removeRule(rule, ruleType);
+  }
+
+  async function storageSaveRuleIfNew(rule, ruleType) {
+    await ModuleStorageRules.saveRuleIfNew(rule, ruleType);
+  }
+
   // Display box.
   let deleteBtn = ModuleButtonsFactory.getButton("delete");
   let editBtn = ModuleButtonsFactory.getButton("edit");
@@ -119,16 +127,10 @@ function showStoredInfo(rule) {
   entryEditInputValueOld.value = rule.valueOld;
   entryEditInputValueNew.value = rule.valueNew;
 
-  // set up listener for the delete functionality
   deleteBtn.addEventListener('click',(e) => {
     const evtTgt = e.target;
     evtTgt.parentNode.parentNode.parentNode.removeChild(evtTgt.parentNode.parentNode);
-    browser.storage.local.remove(
-      [
-        rules.ruleType+'_old_'+rule.valueOld,
-        rules.ruleType+'_new_'+rule.valueOld
-      ]
-    );
+    storageRemoveRule(rule, rules.ruleType);
     rules.deleteRule(rule)
   })
 
@@ -150,29 +152,28 @@ function showStoredInfo(rule) {
   })
 
   updateBtn.addEventListener('click',() => {
-    let eKeys2change = [rules.ruleType + '_old_' + rule.valueOld, rules.ruleType + '_new_' + rule.valueOld];
-    let values2save = [entryEditInputValueOld.value, entryEditInputValueNew.value];
-    let ids2save = [rules.ruleType + '_old_' + values2save[0], rules.ruleType + '_new_' + values2save[0]];
-    let gettingItem = browser.storage.local.get(ids2save[0]);
-    const ruleNew = new ModuleRule.Rule(values2save[0], values2save[1]);
+    const ruleNew = new ModuleRule.Rule(
+      entryEditInputValueOld.value,
+      entryEditInputValueNew.value
+    );
+    let gettingItem = browser.storage.local.get(`${rules.ruleType}_old_${ruleNew.valueOld}`);
     gettingItem.then((storedItem) => { // result: empty object if the searched value is not stored
       let searchInStorage = Object.keys(storedItem); // array with the searched value if it is stored
-      if( (searchInStorage.length < 1) || ( (eKeys2change[0] == ids2save[0]) && (rule.valueNew != values2save[1]) ) ) { // searchInStorage.length < 1 -> no stored
-        updateValue(eKeys2change, ids2save, values2save);
+      // searchInStorage.length < 1 -> no stored
+      if(
+        (searchInStorage.length < 1)
+        || (
+          (rule.valueOld == ruleNew.valueOld)
+          && (rule.valueNew != ruleNew.valueNew)
+        ) 
+      ) {
+        storageRemoveRule(rule, rules.ruleType);
+        storageSaveRuleIfNew(ruleNew, rules.ruleType);
         rules.updateRule(rule, ruleNew);
         entry.parentNode.removeChild(entry);
         showStoredInfo(ruleNew);
       }
     });
-
-    function updateValue(ids2change, ids2save, values2save) {
-      for (let i = 0; i < 2; i++) {
-        browser.storage.local.remove(ids2change[i]);
-        let storingInfo = browser.storage.local.set({ [ids2save[i]] : values2save[i] });
-        storingInfo.then(() => {
-        }, reportError);
-      }
-    }
   });
 
 }
@@ -349,23 +350,13 @@ async function saveRules(){
 }
 
 
-// clear display/storage
+// Clear display/storage.
 async function clearStorageInfo() {
-
-  var gettingAllStoredItems = browser.storage.local.get(null);
-  gettingAllStoredItems.then((storedItems) => {
-    deleteAllRulesType(storedItems);
-  }, reportError);
-  rules = await ModuleStorageRules.getRules(rules);
-
-  function deleteAllRulesType(storedItems){
-    var keysUrl = Object.keys(storedItems).filter(key => key.includes(rules.ruleType+'_')); //array
-    for (const keyUrl of keysUrl) {
-      browser.storage.local.remove(keyUrl);
-    }
-    notShowRules();
+  for (let rule of rules.ruleTransformationsToUse) {
+    await ModuleStorageRules.removeRule(rule, rules.ruleType);
   }
-
+  notShowRules();
+  rules = await ModuleStorageRules.getRules(rules);
 }
 
 
