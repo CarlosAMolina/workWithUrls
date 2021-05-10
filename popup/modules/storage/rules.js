@@ -69,8 +69,25 @@ async function saveRuleIfNew(rule, ruleType){
 
 }
 
+/*
+:param rule: Rule.
+:param ruleType: str.
+*/
+async function removeRule(rule, ruleType){
+  console.log(`Init removeRule(): ${rule.stringRepresentation}`);
+  let removing = browser.storage.local.remove(
+      [
+        ruleType+'_old_'+rule.valueOld,
+        ruleType+'_new_'+rule.valueOld
+      ]
+  );
+  removing.then(() => {
+  }, console.error);
+}
+
 
 export {
   getRules,
+  removeRule,
   saveRuleIfNew
 };

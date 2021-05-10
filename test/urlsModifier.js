@@ -9,7 +9,6 @@ const ruleTransformations = new ModuleUrlsModifier.RuleTransformations([mockRule
 
 function getRule(valueOld, valueNew) {
   return new ModuleRule.Rule(valueOld, valueNew);
-
 }
 
 describe("Check script urlsModifier.js: ", function() {
