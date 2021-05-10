@@ -29,9 +29,6 @@ function modifyText(urlsModifier){
   ModuleDom.setValueToElementById(urls, 'inputUrls');
 }
 
-
-
-
 function reportError(error) {
   console.error(`Error: ${error}`);
 }
