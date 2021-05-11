@@ -270,7 +270,7 @@ async function saveRules(){
     rules = await ModuleStorageRules.getRules(rules);
   }
 
-  ModuleStorageRules.saveRulesNewFormat(valuesRules, rules.ruleTypeNew); // TODO replace saveRuleIfNew() with this function.
+  //ModuleStorageRules.saveRulesNewFormat(valuesRules, rules.ruleTypeNew); // TODO replace saveRuleIfNew() with this function.
 
 }
 
