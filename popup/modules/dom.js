@@ -93,9 +93,11 @@ class DocumentModifier {
   */
   createElement(config){
     let element = document.createElement(config.tag);
-    element.innerHTML = config.innerHTML;
     element.setAttribute('title', config.attributes.title);
     element.setAttribute('class', config.attributes.class);
+    element.style.width = config.style.width;
+    element.style.height = config.style.height;
+    element.style.background = config.style.background;
     return element;
   }
 }

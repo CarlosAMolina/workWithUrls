@@ -9,15 +9,19 @@ describe("Check script dom.js: ", function() {
     it("Check function createElement: ", function() {
       const config = {
         'tag': 'button',
-        'innerHTML': '<img src="/icons/ok.png"/>',
         'attributes': {
           'title': 'Update',
           'class': 'floatLeft button'
+        },
+        'style': {
+          'width': '30px',
+          'height': '30px',
+          'background': "url('/icons/ok.png') no-repeat center"
         }
       }
       const result = new ModuleDom.DocumentModifier().createElement(config);
       chai.expect(result.title).to.equal('Update');
-      chai.expect(result.innerHTML).to.equal('<img src="/icons/ok.png">');
+      chai.expect(result.style.background).to.equal('url(/icons/ok.png) no-repeat center');
     });
   });
   describe("Check class Dom: ", function() {

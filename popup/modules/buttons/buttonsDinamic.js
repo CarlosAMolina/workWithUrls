@@ -6,10 +6,14 @@ class ButtonInterface {
   constructor(config) {
     this._configDefault = {
       'tag': 'button',
-      'innerHTML': undefined,
       'attributes': {
         'title': undefined,
         'class': 'floatLeft button'
+      },
+      'style': {
+        'width': '30px',
+        'height': '30px',
+        'background': undefined
       }
     }
     this._config = this._updateConfig(config);
@@ -21,8 +25,8 @@ class ButtonInterface {
 
   _updateConfig(config) {
     let result = this._configDefault;
-    result.innerHTML = config.innerHTML;
     result.attributes.title = config.attributes.title;
+    result.style.background = `url('${config.style.backgroundUrlSrc}') no-repeat center`
     return result;
   }
 
@@ -33,10 +37,13 @@ class ButtonCancel extends ButtonInterface {
 
   constructor() {
     const config = {
-      'innerHTML': '<img src="/icons/cancel.png"/>',
       'attributes': {
         'title': 'Cancel update',
+      },
+      'style': {
+        'backgroundUrlSrc': '/icons/cancel.png'
       }
+
     }
     super(config);
   }
@@ -47,9 +54,11 @@ class ButtonDelete extends ButtonInterface{
 
   constructor() {
     const config = {
-      'innerHTML': '<img src="/icons/trash.png"/>',
       'attributes': {
         'title': 'Delete',
+      },
+      'style': {
+        'backgroundUrlSrc': '/icons/trash.png'
       }
     }
     super(config);
@@ -61,9 +70,11 @@ class ButtonEdit extends ButtonInterface{
 
   constructor() {
     const config = {
-      'innerHTML': '<img src="/icons/edit.png"/>',
       'attributes': {
         'title': 'Edit',
+      },
+      'style': {
+        'backgroundUrlSrc': '/icons/edit.png'
       }
     }
     super(config);
@@ -75,9 +86,11 @@ class ButtonUpdate extends ButtonInterface {
 
   constructor() {
     const config = {
-      'innerHTML': '<img src="/icons/ok.png"/>',
       'attributes': {
         'title': 'Update',
+      },
+      'style': {
+        'backgroundUrlSrc': '/icons/ok.png'
       }
     }
     super(config);
