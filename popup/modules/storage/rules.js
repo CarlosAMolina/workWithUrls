@@ -10,6 +10,8 @@ async function getRules(rules){
   let storedItems = {};
   try {
     storedItems = await browser.storage.local.get(null);
+    console.log('All stored items:');
+    console.log(storedItems);
   } catch(e) {
     console.error(e)
     return {};
@@ -85,9 +87,34 @@ async function removeRule(rule, ruleType){
   }, console.error);
 }
 
+// TODO test, use async and use this function when the new rules format is implemented
+/*
+:param valuesRules.
+:param ruleType: str.
+*/
+function saveRulesNewFormat(valuesRules, ruleType) {
+  var gettingRulesType = browser.storage.local.get(ruleType);
+  gettingRulesType.then((storedRulesType) => {
+    console.log("Init get rulesNewFormat: ");
+    let rulesNew = storedRulesType[ruleType];
+    if (typeof rulesNew === 'undefined'){
+      rulesNew = new Map();
+    }
+    console.log(rulesNew);
+    for (let [valueOld, valueNew] of valuesRules.entries()) {
+      rulesNew.set(valueOld, valueNew);
+    }
+    console.log(`Init saveInfoNewFormat(). Key: ${ruleType}. Values:`)
+    console.log(rulesNew)
+    var storingInfo = browser.storage.local.set({[ruleType]:rulesNew});
+    storingInfo.then(() => {
+    }, console.error);
+  }, console.error);
+}
 
 export {
   getRules,
   removeRule,
-  saveRuleIfNew
+  saveRuleIfNew,
+  saveRulesNewFormat
 };

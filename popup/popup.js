@@ -11,6 +11,7 @@ import * as ModuleRule from '../popup/modules/rules/rule.js';
 import * as ModuleRulesInputParser from '../popup/modules/rules/inputParser.js';
 import * as ModuleRulesInputReader from '../popup/modules/rules/inputReader.js';
 import * as ModuleSleep from '../popup/modules/sleep.js';
+import * as ModuleStorageGeneral from '../popup/modules/storage/general.js';
 import * as ModuleStorageLazyLoading from '../popup/modules/storage/lazyLoading.js';
 import * as ModuleStorageRules from '../popup/modules/storage/rules.js';
 import * as ModuleUrlsModifier from './modules/urlsModifier.js';
@@ -74,14 +75,6 @@ class ElementClearFix {
 
 function showStoredInfo(rule) {
 
-  async function storageRemoveRule(rule, ruleType) {
-    await ModuleStorageRules.removeRule(rule, ruleType);
-  }
-
-  async function storageSaveRuleIfNew(rule, ruleType) {
-    await ModuleStorageRules.saveRuleIfNew(rule, ruleType);
-  }
-
   // Display box.
   let deleteBtn = ModuleButtonsFactory.getButton("delete");
   let editBtn = ModuleButtonsFactory.getButton("edit");
@@ -138,29 +131,33 @@ function showStoredInfo(rule) {
   })
 
   updateBtn.addEventListener('click',() => {
-    const ruleNew = new ModuleRule.Rule(
-      entryEditInputValueOld.value,
-      entryEditInputValueNew.value
-    );
-    let gettingItem = browser.storage.local.get(`${rules.ruleType}_old_${ruleNew.valueOld}`);
-    gettingItem.then((storedItem) => { // result: empty object if the searched value is not stored
-      let searchInStorage = Object.keys(storedItem); // array with the searched value if it is stored
-      // searchInStorage.length < 1 -> no stored
-      if(
-        (searchInStorage.length < 1)
-        || (
-          (rule.valueOld == ruleNew.valueOld)
-          && (rule.valueNew != ruleNew.valueNew)
-        ) 
-      ) {
+    updateRule();
+  });
+
+  async function updateRule() {
+    const ruleNew = new ModuleRule.Rule(entryEditInputValueOld.value, entryEditInputValueNew.value);
+    if (
+      (await ModuleStorageGeneral.isKeyStored(`${rules.ruleType}_old_${ruleNew.valueOld}`) === false)
+      || (
+        (rule.valueOld == ruleNew.valueOld)
+        && (rule.valueNew != ruleNew.valueNew)
+      )
+    ) {
         storageRemoveRule(rule, rules.ruleType);
         storageSaveRuleIfNew(ruleNew, rules.ruleType);
         rules.updateRule(rule, ruleNew);
         entry.parentNode.removeChild(entry);
         showStoredInfo(ruleNew);
       }
-    });
-  });
+  }
+
+  async function storageRemoveRule(rule, ruleType) {
+    await ModuleStorageRules.removeRule(rule, ruleType);
+  }
+
+  async function storageSaveRuleIfNew(rule, ruleType) {
+    await ModuleStorageRules.saveRuleIfNew(rule, ruleType);
+  }
 
 }
 
@@ -168,38 +165,15 @@ function showStoredInfo(rule) {
 /*
 :param rules: Rules.
 */
-function showStoredRulesType(rules){
-  console.log('Init showStoredRulesType()')
-  var gettingAllStoredItems = browser.storage.local.get(null);
-  gettingAllStoredItems.then((storedItems) => {
-    console.log('storedItems:')
-    console.log(storedItems)
-    // Get keys of the dictionary for the current rule type
-    // (ofuscation or deofuscation) with the terms 
-    // (last part of each key) that must be replaced.
-    var keysRuleTypeOld = Object.keys(storedItems).filter(key => key.includes(rules.ruleType+'_old')); //array
-    console.log('keysRuleTypeOld:')
-    console.log(keysRuleTypeOld)
-    // Get values of the dictionary to replace last term 
-    // of the previous keys.
-    var valuesRuleTypeOld = keysRuleTypeOld.map(keysRuleTypeOld => storedItems[keysRuleTypeOld]); // array
-    console.log('valuesRuleTypeOld:')
-    console.log(valuesRuleTypeOld)
-    for (var i = 0; i < valuesRuleTypeOld.length; i+=1) {
-      var values2show = [valuesRuleTypeOld[i], storedItems[rules.ruleType+'_new_'+valuesRuleTypeOld[i]]];
-      let rule = new ModuleRule.Rule(
-        valuesRuleTypeOld[i],
-        storedItems[rules.ruleType+'_new_'+valuesRuleTypeOld[i]]
-      )
-      console.log('values2show:')
-      console.log(rule)
-      showStoredInfo(rule);
-    }
-    console.log('valuesRuleNewFormat:')
-    console.log(storedItems[rules.ruleTypeNew]);
-  }, reportError);
+async function showStoredRulesType(rules){
+  console.log(`Init showStoredRulesType() of type ${rules.ruleType}`);
+  rules = await ModuleStorageRules.getRules(rules);
+  console.log(`Rules of type ${rules.ruleType}:`);
+  console.log(rules.ruleTransformationsToUseStringRepresentation);
+  for (let rule of rules.ruleTransformationsToUse){
+    showStoredInfo(rule);
+  }
 }
-
 
 /* Open an url and catches possible exception.
 https://developer.mozilla.org/en-US/docs/Web/API/Window/open
@@ -243,9 +217,9 @@ async function openUrls(){
       url = ModuleUrlsModifier.getUrlWithProtocol(url);
       // Only wait between URLs.
       if (i != 0){
-        console.log('Init. Wait miliseconds: ' + lazyLoadingTime);
+        console.log('Init. Wait milliseconds: ' + lazyLoadingTime);
         await ModuleSleep.sleepMs(lazyLoadingTime);
-        console.log('Done. Wait miliseconds: ' + lazyLoadingTime);
+        console.log('Done. Wait milliseconds: ' + lazyLoadingTime);
       }
       console.log(url);
       openUrl(url);
@@ -279,21 +253,6 @@ function getValidLazyLoadingTimeToSaveAndNotifyBadValue(){
 }
 
 
-/*Get and save Lazy Loading wait time.
-:param lazyLoadingTimeToSave.
-:return false: bool, function not done correctly.
-        true: bool, function done correctly.
-*/
-function saveLazyLoading(lazyLoadingTimeToSave){
-  console.log('Saving loading time: \'' + lazyLoadingTimeToSave + '\'');
-  // Save value to the local storage.
-  var storingInfo = browser.storage.local.set({['idLazyLoadingTime']:lazyLoadingTimeToSave});
-  storingInfo.then(() => {
-  }, reportError);
-  return true;
-}
-
-
 // Save input boxes info.
 async function saveRules(){
 
@@ -311,30 +270,9 @@ async function saveRules(){
     rules = await ModuleStorageRules.getRules(rules);
   }
 
-  saveRulesNewFormat(valuesRules); // TODO replace saveRuleIfNew() with this function.
-
-  function saveRulesNewFormat(valuesRules) {
-    var gettingRulesType = browser.storage.local.get(rules.ruleTypeNew);
-    gettingRulesType.then((storedRulesType) => {
-      console.log("Init get rulesNewFormat: ");
-      let rulesNew = storedRulesType[rules.ruleTypeNew];
-      if (typeof rulesNew === 'undefined'){
-        rulesNew = new Map();
-      }
-      console.log(rulesNew);
-      for (let [valueOld, valueNew] of valuesRules.entries()) {
-        rulesNew.set(valueOld, valueNew);
-      }
-      console.log(`Init saveInfoNewFormat(). Key: ${rules.ruleTypeNew}. Values:`)
-      console.log(rules)
-      var storingInfo = browser.storage.local.set({[rules.ruleTypeNew]:rulesNew});
-      storingInfo.then(() => {
-      }, reportError);
-    }, reportError);
-  }
+  ModuleStorageRules.saveRulesNewFormat(valuesRules, rules.ruleTypeNew); // TODO replace saveRuleIfNew() with this function.
 
 }
-
 
 // Clear display/storage.
 async function clearStorageInfo() {
@@ -520,7 +458,7 @@ class ButtonAddLazyLoading extends ModuleButtonsInterface.ButtonClicked {
   get run() {
     const lazyLoadingTimeToSave = getValidLazyLoadingTimeToSaveAndNotifyBadValue();
     if (lazyLoadingTimeToSave !== false) {
-      saveLazyLoading(lazyLoadingTimeToSave);
+      ModuleStorageLazyLoading.setStorageLazyLoading(lazyLoadingTimeToSave);
     }
   }
 

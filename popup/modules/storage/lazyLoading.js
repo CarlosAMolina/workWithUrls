@@ -15,11 +15,24 @@ async function getStorageLazyLoading(){
   } else{
     lazyLoadingTime = resultGetStorage.idLazyLoadingTime;
   }
-  console.log('Lazy loading time to use: ' + lazyLoadingTime);
+  console.log(`Lazy loading time to use: ${lazyLoadingTime}`);
   return lazyLoadingTime;
+}
+
+/*Save Lazy Loading wait time.
+:param lazyLoadingTimeToSave: int, milliseconds.
+:return true: bool, function done correctly.
+*/
+function setStorageLazyLoading(lazyLoadingTimeToSave){
+  console.log(`Saving loading time: '${lazyLoadingTimeToSave}'`);
+  var storingInfo = browser.storage.local.set({['idLazyLoadingTime']:lazyLoadingTimeToSave});
+  storingInfo.then(() => {
+  }, console.error);
+  return true;
 }
 
 
 export {
-  getStorageLazyLoading
+  getStorageLazyLoading,
+  setStorageLazyLoading
 };
