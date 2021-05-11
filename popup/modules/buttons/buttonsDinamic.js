@@ -43,7 +43,6 @@ class ButtonCancel extends ButtonInterface {
       'style': {
         'backgroundUrlSrc': '/icons/cancel.png'
       }
-
     }
     super(config);
   }
