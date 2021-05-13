@@ -126,5 +126,29 @@ describe("Check script storage/rules.js:", function() {
       //TODO assert not done
     });
   });
+  describe("Check class StorageKeysRule:", function() {
+    let storageKeysRule;
+    beforeEach(function() {
+      storageKeysRule = new ModuleStorageRules.StorageKeysRule(
+        getRule('http', 'hXXp'),
+        'ro',
+      );
+    });
+    it("Check keyOldPrefix:", async function() {
+      chai.expect(storageKeysRule.keyOldPrefix).to.equal('ro_old_');
+    });
+    it("Check keyNewPrefix:", async function() {
+      chai.expect(storageKeysRule.keyNewPrefix).to.equal('ro_new_');
+    });
+    it("Check keyOld:", async function() {
+      chai.expect(storageKeysRule.keyOld).to.equal('ro_old_http');
+    });
+    it("Check keyNew:", async function() {
+      chai.expect(storageKeysRule.keyNew).to.equal('ro_new_http');
+    });
+    it("Check keysStringRepresentation:", async function() {
+      chai.expect(storageKeysRule.keysStringRepresentation).to.equal("'ro_old_http', 'ro_new_http'");
+    });
+  });
 });
 

@@ -1,6 +1,39 @@
 import * as ModuleUrlsModifier from '../urlsModifier.js';
 
 
+class StorageKeysRule {
+
+  /*
+  :param rule: Rule.
+  :return ruleType: str.
+  */
+  constructor(rule, ruleType) {
+    this._rule = rule;
+    this._ruleType = ruleType;
+  }
+
+  get keyOldPrefix() {
+    return `${this._ruleType}_old_`
+  }
+
+  get keyNewPrefix() {
+    return `${this._ruleType}_new_`
+  }
+
+  get keyOld() {
+    return `${this._ruleType}_old_${this._rule.valueOld}`
+  }
+
+  get keyNew() {
+    return `${this._ruleType}_new_${this._rule.valueOld}`
+  }
+
+  get keysStringRepresentation() {
+    return `'${this.keyOld}', '${this.keyNew}'`;
+  }
+
+}
+
 /*
 :param rules: Rules.
 :return rules: Rules.
@@ -18,11 +51,12 @@ async function getRules(rules){
   }
   rules.initializeRules();
   for (const ruleType of rules.ruleTypes) {
-    var keysRuleOld = Object.keys(storedItems).filter(key => key.includes(ruleType+'_old_')); //array
-    var rules2SaveOld = keysRuleOld.map(keysRuleOld => storedItems[keysRuleOld]); // array
-    var keysRuleNew = Object.keys(storedItems).filter(key => key.includes(ruleType+'_new_')); //array
-    var rules2SaveNew = keysRuleNew.map(keysRuleNew => storedItems[keysRuleNew]); // array
-    let ruleTransformations = new ModuleUrlsModifier.RuleTransformations(rules2SaveOld, rules2SaveNew); 
+    const storageKeysRule = new StorageKeysRule(undefined, ruleType);
+    const keysRuleOld = Object.keys(storedItems).filter(key => key.includes(storageKeysRule.keyOldPrefix)); //array
+    const rules2SaveOld = keysRuleOld.map(keysRuleOld => storedItems[keysRuleOld]); // array
+    const keysRuleNew = Object.keys(storedItems).filter(key => key.includes(storageKeysRule.keyNewPrefix)); //array
+    const rules2SaveNew = keysRuleNew.map(keysRuleNew => storedItems[keysRuleNew]); // array
+    const ruleTransformations = new ModuleUrlsModifier.RuleTransformations(rules2SaveOld, rules2SaveNew); 
     rules.addTypeAndRule(ruleType, ruleTransformations);
   }
     console.log('Rules:')
@@ -37,32 +71,31 @@ async function getRules(rules){
 */
 async function saveRuleIfNew(rule, ruleType){
 
-  const ids2save = [
-    `${ruleType}_old_${rule.valueOld}`,
-    `${ruleType}_new_${rule.valueOld}`
-  ];
+  const storageKeysRule = new StorageKeysRule(rule, ruleType);
   
   let storedItem;
   try {
     // Empty object if the searched value is not stored.
-    storedItem = await browser.storage.local.get(ids2save[0]);
+    storedItem = await browser.storage.local.get(storageKeysRule.keyOld);
   } catch(e) {
     console.error(e)
     return false;
   }
   const searchInStorage = Object.keys(storedItem); // array with the searched value if it is stored
   if(searchInStorage.length < 1) { // searchInStorage.length < 1 -> no stored
-    saveInfo(ids2save, rule);
+    _saveInfo(rule, storageKeysRule);
     return true;
   }
   return false;
 
-  function saveInfo(ids2save, rule) {
-    console.log(`Init saveInfo(). ids2save: '${ids2save}'. rule: ${rule.stringRepresentation}`);
+  function _saveInfo(rule, storageKeysRule) {
+    console.log(
+      `Init saveInfo(). Keys to save: ${storageKeysRule.keysStringRepresentation}. rule: ${rule.stringRepresentation}`
+    );
     var storingInfo = browser.storage.local.set(
       {
-        [ids2save[0]]: rule.valueOld,
-        [ids2save[1]]: rule.valueNew
+        [storageKeysRule.keyOld]: rule.valueOld,
+        [storageKeysRule.keyNew]: rule.valueNew
       }
     );
     storingInfo.then(() => {
@@ -77,11 +110,12 @@ async function saveRuleIfNew(rule, ruleType){
 */
 async function removeRule(rule, ruleType){
   console.log(`Init removeRule(): ${rule.stringRepresentation}, type ${ruleType}`);
+  const storageKeysRule = new StorageKeysRule(rule, ruleType);
   let removing = browser.storage.local.remove(
-      [
-        ruleType+'_old_'+rule.valueOld,
-        ruleType+'_new_'+rule.valueOld
-      ]
+    [
+      storageKeysRule.keyOld,
+      storageKeysRule.keyNew
+    ]
   );
   removing.then(() => {
   }, console.error);
@@ -116,5 +150,6 @@ export {
   getRules,
   removeRule,
   saveRuleIfNew,
-  saveRulesNewFormat
+  saveRulesNewFormat,
+  StorageKeysRule
 };

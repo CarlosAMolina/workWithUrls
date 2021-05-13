@@ -3,7 +3,7 @@
 :return bool.
 */
 async function isKeyStored(key){
-  console.log(`Init isKeyStored(): ${key}`);
+  console.log(`Init isKeyStored('${key}')`);
   let storedItems = {};
   try {
     storedItems = await browser.storage.local.get(key);
@@ -12,10 +12,10 @@ async function isKeyStored(key){
     return false;
   }
   if (storedItems[key] === undefined){
-    console.log('Not stored');
+    console.log(`isKeyStored('${key}'): no`);
     return false;
   } else {
-    console.log('Stored');
+    console.log(`isKeyStored('${key}'): yes`);
     return true;
   }
 }

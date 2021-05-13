@@ -131,20 +131,21 @@ function showStoredInfo(rule) {
   })
 
   updateBtn.addEventListener('click',() => {
-    updateRule();
+    const ruleNew = new ModuleRule.Rule(entryEditInputValueOld.value, entryEditInputValueNew.value);
+    _updateRule(rule, ruleNew, rules.ruleType);
   });
 
-  async function updateRule() {
-    const ruleNew = new ModuleRule.Rule(entryEditInputValueOld.value, entryEditInputValueNew.value);
+  async function _updateRule(rule, ruleNew, ruleType) {
+    const storageKeysRuleNew = new ModuleStorageRules.StorageKeysRule(ruleNew, ruleType);
     if (
-      (await ModuleStorageGeneral.isKeyStored(`${rules.ruleType}_old_${ruleNew.valueOld}`) === false)
+      (await ModuleStorageGeneral.isKeyStored(storageKeysRuleNew.keyOld) === false)
       || (
         (rule.valueOld == ruleNew.valueOld)
         && (rule.valueNew != ruleNew.valueNew)
       )
     ) {
-        storageRemoveRule(rule, rules.ruleType);
-        storageSaveRuleIfNew(ruleNew, rules.ruleType);
+        storageRemoveRule(rule, ruleType);
+        storageSaveRuleIfNew(ruleNew, ruleType);
         rules.updateRule(rule, ruleNew);
         entry.parentNode.removeChild(entry);
         showStoredInfo(ruleNew);
