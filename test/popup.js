@@ -80,18 +80,5 @@ describe("Check script popup.js: ", function() {
       chai.expect(result).to.equal(undefined);
     });
   });
-  describe("Check function showStoredInfo: ", function() {
-    // TODO incorrect test.
-    it("Check function runs without exceptions: ", function() {
-      const rule = new ModuleRule.Rule('http', 'hXXp');
-      const result = ModulePopup.showStoredInfo(rule);
-      chai.expect(typeof result).to.equal('undefined');
-    });
-    describe("Check function updateValue: ", function() {
-      it("Check function runs without exceptions: ", function() {
-        console.log("Not checked") // TODO
-      });
-    });
-  });
 });
 

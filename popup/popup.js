@@ -7,6 +7,7 @@ https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/stora
 import * as ModuleButtonsFactory from '../popup/modules/buttons/buttonsFactory.js';
 import * as ModuleButtonsInterface from '../popup/modules/buttons/buttonsInterface.js';
 import * as ModuleDom from '../popup/modules/dom.js';
+import * as ModuleMenuStoredRule from '../popup/modules/menus/menuStoredRule.js';
 import * as ModuleRule from '../popup/modules/rules/rule.js';
 import * as ModuleRulesInputParser from '../popup/modules/rules/inputParser.js';
 import * as ModuleRulesInputReader from '../popup/modules/rules/inputReader.js';
@@ -14,7 +15,7 @@ import * as ModuleSleep from '../popup/modules/sleep.js';
 import * as ModuleStorageGeneral from '../popup/modules/storage/general.js';
 import * as ModuleStorageLazyLoading from '../popup/modules/storage/lazyLoading.js';
 import * as ModuleStorageRules from '../popup/modules/storage/rules.js';
-import * as ModuleUrlsModifier from './modules/urlsModifier.js';
+import * as ModuleUrlsModifier from '../popup/modules/urlsModifier.js';
 
 
 // Global constants or variables.
@@ -34,134 +35,6 @@ function reportError(error) {
   console.error(`Error: ${error}`);
 }
 
-class EntryValue {
-
-  /*
-  :param rule: Rule.
-  */
-  constructor(rule) {
-    this._rule = rule;
-  }
-
-
-  get entry() {
-    let entry = document.createElement('p');
-    entry.setAttribute('style','margin-left: 75px');
-    entry.textContent = this._rule.valueOld + ' ---> ' + this._rule.valueNew;
-    return entry;
-  }
-}
-
-class InputEntryValue {
-  get entry() {
-    let entry = document.createElement('input');
-    entry.setAttribute('class','input');
-    entry.setAttribute('style','width:30%');
-    return entry;
-  }
-}
-
-class ElementClearFix {
-  get element() {
-    let element = document.createElement('div'); // for background color and correct position
-    element.setAttribute('class','clearfix');
-    return element;
-  }
-}
-
-/* Display info.
-:param rule: Rule.
-*/
-
-function showStoredInfo(rule) {
-
-  // Display box.
-  let deleteBtn = ModuleButtonsFactory.getButton("delete");
-  let editBtn = ModuleButtonsFactory.getButton("edit");
-  let entryValue = new EntryValue(rule).entry;
-  let entry = document.createElement('div');
-  let entryDisplay = document.createElement('div');
-  entryDisplay.appendChild(deleteBtn);
-  entryDisplay.appendChild(editBtn);
-  entryDisplay.appendChild(entryValue);
-  entryDisplay.appendChild(new ElementClearFix().element);
-  entry.appendChild(entryDisplay);
-
-  ModuleDom.getInfoContainer().appendChild(entry);
-
-  // edit box
-  let cancelBtn = ModuleButtonsFactory.getButton("cancel");
-  let entryEdit = document.createElement('div');
-  let entryEditInputValueOld = new InputEntryValue().entry;
-  let entryEditInputValueNew = new InputEntryValue().entry; 
-  let updateBtn = ModuleButtonsFactory.getButton("update");
-  entryEdit.appendChild(entryEditInputValueOld);
-  entryEdit.appendChild(entryEditInputValueNew);
-  entryEdit.appendChild(updateBtn);
-  entryEdit.appendChild(cancelBtn);
-  entryEdit.appendChild(new ElementClearFix().element);
-  entry.appendChild(entryEdit);
-
-  entryEdit.style.display = 'none';
-  entryEditInputValueOld.value = rule.valueOld;
-  entryEditInputValueNew.value = rule.valueNew;
-
-  deleteBtn.addEventListener('click',(e) => {
-    const evtTgt = e.target;
-    evtTgt.parentNode.parentNode.parentNode.removeChild(evtTgt.parentNode.parentNode);
-    storageRemoveRule(rule, rules.ruleType);
-    rules.deleteRule(rule)
-  })
-
-  // set up listeners for the buttons
-
-  entryValue.addEventListener('click',() => {
-    entryDisplay.style.display = 'none';
-    entryEdit.style.display = 'block';
-  })
-
-  editBtn.addEventListener('click',() => {
-    entryDisplay.style.display = 'none';
-    entryEdit.style.display = 'block';
-  })
-
-  cancelBtn.addEventListener('click',() => {
-    entryDisplay.style.display = 'block';
-    entryEdit.style.display = 'none';
-  })
-
-  updateBtn.addEventListener('click',() => {
-    const ruleNew = new ModuleRule.Rule(entryEditInputValueOld.value, entryEditInputValueNew.value);
-    _updateRule(rule, ruleNew, rules.ruleType);
-  });
-
-  async function _updateRule(rule, ruleNew, ruleType) {
-    const storageKeysRuleNew = new ModuleStorageRules.StorageKeysRule(ruleNew, ruleType);
-    if (
-      (await ModuleStorageGeneral.isKeyStored(storageKeysRuleNew.keyOld) === false)
-      || (
-        (rule.valueOld == ruleNew.valueOld)
-        && (rule.valueNew != ruleNew.valueNew)
-      )
-    ) {
-        storageRemoveRule(rule, ruleType);
-        storageSaveRuleIfNew(ruleNew, ruleType);
-        rules.updateRule(rule, ruleNew);
-        entry.parentNode.removeChild(entry);
-        showStoredInfo(ruleNew);
-      }
-  }
-
-  async function storageRemoveRule(rule, ruleType) {
-    await ModuleStorageRules.removeRule(rule, ruleType);
-  }
-
-  async function storageSaveRuleIfNew(rule, ruleType) {
-    await ModuleStorageRules.saveRuleIfNew(rule, ruleType);
-  }
-
-}
-
 
 /*
 :param rules: Rules.
@@ -172,7 +45,7 @@ async function showStoredRulesType(rules){
   console.log(`Rules of type ${rules.ruleType}:`);
   console.log(rules.ruleTransformationsToUseStringRepresentation);
   for (let rule of rules.ruleTransformationsToUse){
-    showStoredInfo(rule);
+    await ModuleMenuStoredRule.showMenuStoredRule(rule, rules);
   }
 }
 
@@ -266,7 +139,7 @@ async function saveRules(){
     if (
       await ModuleStorageRules.saveRuleIfNew(rule, rules.ruleType)
     ) {
-      showStoredInfo(rule);
+      ModuleMenuStoredRule.showMenuStoredRule(rule, rules);
     }
     rules = await ModuleStorageRules.getRules(rules);
   }
@@ -579,6 +452,5 @@ export {
   popupMain,
   reportError,
   reportExecuteScriptError,
-  showStoredInfo,
   showStoredRulesType
 };
