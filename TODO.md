@@ -1,3 +1,6 @@
+## dom.js
+Move to folder dom
+
 ## Private methods
 
 Try use private methods at:
@@ -30,3 +33,15 @@ Use always the same convention. Example:
 - fileName.js 
 - file-name.js
 - file_name.js
+
+## Not use local storage always 
+
+Avoid the following code that is repeated multiple times:
+
+```js
+ModuleUrlsModifier.Rules.setInstance(
+  await ModuleStorageRules.getRules(ModuleUrlsModifier.Rules.getInstance())
+);
+```
+
+Instead request the local storage, try to work with the rules attributes.

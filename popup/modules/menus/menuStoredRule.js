@@ -5,6 +5,20 @@ import * as ModuleStorageGeneral from '../../../popup/modules/storage/general.js
 import * as ModuleStorageRules from '../../../popup/modules/storage/rules.js';
 
 
+/*
+:param rules: Rules.
+*/
+async function showStoredRulesType(rules){
+  console.log(`Init showStoredRulesType() of type ${rules.ruleType}`);
+  rules = await ModuleStorageRules.getRules(rules);
+  console.log(`Rules of type ${rules.ruleType}:`);
+  console.log(rules.ruleTransformationsToUseStringRepresentation);
+  for (let rule of rules.ruleTransformationsToUse){
+    await showMenuStoredRule(rule, rules);
+  }
+}
+
+
 /* Display info.
 :param rule: Rule.
 :param rules: Rules.
@@ -158,4 +172,5 @@ class ElementClearFix {
 
 export {
   showMenuStoredRule,
+  showStoredRulesType,
 };

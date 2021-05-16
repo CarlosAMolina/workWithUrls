@@ -114,18 +114,6 @@ describe("Check script storage/rules.js:", function() {
       chai.expect(browser.storage['ro_new_http']).to.equal(undefined);
     });
   });
-  // TODO, move the function showStoredRulesType to the storage/rules.js file.
-  describe("Check function showStoredRulesType:", function() {
-    beforeEach(function() {
-      mockBrowserStorageLocalGet();
-    });
-    it("Check expected result:", async function() {
-      let rules = new ModuleUrlsModifier.Rules();
-      rules.setRuleTypeDeobfuscate()
-      ModulePopup.showStoredRulesType(rules);
-      //TODO assert not done
-    });
-  });
   describe("Check class StorageKeysRule:", function() {
     let storageKeysRule;
     beforeEach(function() {

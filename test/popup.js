@@ -58,22 +58,6 @@ describe("Check script popup.js: ", function() {
       });
     });
   });
-  describe("Check function modifyText: ", function() {
-    it("Check function runs without exceptions: ", function() {
-      mockDomInputUrls(inputUrlsTest);
-      class MockUrlsRuleApplicator { modifyUrls(){ return ['url1.com', 'url2.com'] } };
-      const mockUrlsRuleApplicator = new MockUrlsRuleApplicator();
-      const result = ModulePopup.modifyText(mockUrlsRuleApplicator);
-      chai.expect(result).to.equal(undefined);
-    });
-  });
-  describe("Check function reportError: ", function() {
-    it("Check function runs without exceptions: ", function() {
-      // TODO incorrect test.
-      const result = ModulePopup.reportError('Testing error');
-      chai.expect(result).to.equal(undefined);
-    });
-  });
   describe("Check function reportExecuteScriptError: ", function() {
     it("Check function runs without exceptions: ", function() {
       const result = ModulePopup.reportExecuteScriptError("Error message")

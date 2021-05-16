@@ -134,11 +134,25 @@ class RuleTransformations extends RuleTransformationsCreator {
 }
 
 
+/*Singleton.
+*/
 class Rules extends RuleConfigurator{
 
   constructor() {
     super();
     this._rules = {}; 
+    if (!Rules._instance) {
+      Rules._instance = this;
+    }
+    return Rules._instance;
+  }
+
+  static getInstance() {
+    return this._instance;
+  }
+
+  static setInstance(instance) {
+    Rules._instance = instance;
   }
 
   get rules() {return this._rules;}

@@ -1,3 +1,8 @@
+/* References.
+- Local storage:
+  https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/storage/local
+*/
+
 import * as ModuleUrlsModifier from '../urlsModifier.js';
 
 
