@@ -6,6 +6,7 @@ https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/stora
 
 import * as ModuleButtonsFactory from '../popup/modules/buttons/buttonsFactory.js';
 import * as ModuleButtonsInterface from '../popup/modules/buttons/buttonsInterface.js';
+import * as ModuleButtonsExceptions from '../popup/modules/buttons/buttonsExceptions.js';
 import * as ModuleDom from '../popup/modules/dom.js';
 import * as ModuleMenuStoredRule from '../popup/modules/menus/menuStoredRule.js';
 import * as ModuleRule from '../popup/modules/rules/rule.js';
@@ -74,7 +75,7 @@ async function openUrls(){
   // Get URLs at the input box.
   let urls = ModuleDom.getValueElementById('inputUrls').split('\n');
   console.log('URLs at the input box: ' + urls)
-  if (ModuleDom.isCheckedElementById(ModuleButtonsFactory.getButton("openPaths").buttonIdHtml)){
+  if (ModuleDom.isCheckedElementById(ModuleButtonsFactory.getButton("buttonOpenPaths").buttonIdHtml)){
     urls = ModuleUrlsModifier.getUrlsWithPaths(urls);
   }
   // Open URLs.
@@ -101,37 +102,12 @@ async function openUrls(){
   }
 }
 
-/*
-return number int or false.
-*/
-function getValidLazyLoadingTimeToSaveAndNotifyBadValue(){
-  let lazyLoadingTimeToSave = ModuleDom.getValueElementById('inputLazyLoading');
-  // Convert input to type number.
-  // Example: 1a -> 1, 1.1 -> 1, a1 -> Nan
-  lazyLoadingTimeToSave = parseInt(lazyLoadingTimeToSave);
-  // Check value is a number.
-  if (isNaN(lazyLoadingTimeToSave)) {
-    console.log('Error. Lazy loading time is not a number');
-    ModuleDom.setStyleBoxErrorToElementById('inputLazyLoading');
-    lazyLoadingTimeToSave = false;
-  }
-  else {
-    // Quit possible previous red error border.
-    ModuleDom.unsetStyleBoxErrorToElementById('inputLazyLoading');
-    // Set value >= 0. Type number.
-    lazyLoadingTimeToSave = Math.abs(lazyLoadingTimeToSave)
-    console.log('Lazy loading time to save: \'' + lazyLoadingTimeToSave + '\'');
-    ModuleDom.setValueToElementById(lazyLoadingTimeToSave, 'inputLazyLoading');
-  }
-  return lazyLoadingTimeToSave
-}
-
 
 // Save input boxes info.
 async function saveRules(){
 
   let valuesRules = ModuleRulesInputReader.getReader(
-    ModuleDom.isCheckedElementById(ModuleButtonsFactory.getButton("openRules").buttonIdHtml)
+    ModuleDom.isCheckedElementById(ModuleButtonsFactory.getButton("buttonOpenRules").buttonIdHtml)
   ).rules;
   valuesRules = new ModuleRulesInputParser.RulesParser().getValuesRulesWithCorrectFormat(valuesRules);
   for (let [valueOld, valueNew] of valuesRules.entries()) {
@@ -172,59 +148,13 @@ function copy2clipboard (idWithInfo){
 
 
 function copyRules(){
-  if(!ModuleDom.isCheckedElementById(ModuleButtonsFactory.getButton("openRules").buttonIdHtml)){
-    ModuleButtonsFactory.getButton("openRules").switchStyleAndStorageOnOff();
+  if(!ModuleDom.isCheckedElementById(ModuleButtonsFactory.getButton("buttonOpenRules").buttonIdHtml)){
+    ModuleButtonsFactory.getButton("buttonOpenRules").switchStyleAndStorageOnOff();
   }
   ModuleDom.setValueToElementById(rules.ruleTransformationsToUseStringRepresentation, 'inputRules');
   copy2clipboard ('inputRules');
 }
 
-
-class ButtonConfigurationLazyLoading extends ModuleButtonsInterface.ButtonClicked {
-
-  constructor() {
-    super('buttonConfigLazyLoading');
-  } 
-
-  get run() {
-    this.runAsync();
-  }
-
-  async runAsync(){
-    const lazyLoadingTime = await ModuleStorageLazyLoading.getStorageLazyLoading();
-    ModuleDom.showOrHideArrayElementsById(['menuLazyLoading']);
-    ModuleDom.setValueToElementById(lazyLoadingTime, 'inputLazyLoading');
-  }
-
-}
-
-class ButtonConfigurationRules extends ModuleButtonsInterface.ButtonClicked {
-
-  constructor() {
-    super('buttonConfigRules');
-  } 
-
-  get run() {
-    ModuleDom.showOrHideArrayElementsById(['menuRules']);
-  }
-
-}
-
-class ButtonConfiguration extends ModuleButtonsInterface.ButtonClicked {
-
-  constructor() {
-    super('buttonShowConfig');
-  } 
-
-  get run() {
-    this.logButtonName;
-    ModuleDom.showOrHideArrayElementsById(['menuConfig']);
-    if (!ModuleDom.isHiddenElementById('menuRules')) {
-      ModuleDom.setHiddenElementById('menuRules');
-    }
-  }
-
-}
 
 class ButtonCopy extends ModuleButtonsInterface.ButtonClicked {
 
@@ -253,7 +183,7 @@ class ButtonCleanUrl extends ModuleButtonsInterface.ButtonClicked {
     this.logButtonName;
     let urlsModifier = null;
     rules.setRuleTypeDeobfuscate();
-    if (ModuleDom.isCheckedElementById(ModuleButtonsFactory.getButton("decodeUrls").buttonIdHtml)){
+    if (ModuleDom.isCheckedElementById(ModuleButtonsFactory.getButton("buttonDecodeUrls").buttonIdHtml)){
       console.log('Choosen option: decode')
       urlsModifier = ModuleUrlsModifier.urlsModifier();
     } else {
@@ -323,21 +253,6 @@ class ButtonInputDeobfuscation extends ModuleButtonsInterface.ButtonClicked {
 
 }
 
-class ButtonAddLazyLoading extends ModuleButtonsInterface.ButtonClicked {
-
-  constructor() {
-    super('buttonAddLazyLoading');
-  } 
-
-  get run() {
-    const lazyLoadingTimeToSave = getValidLazyLoadingTimeToSaveAndNotifyBadValue();
-    if (lazyLoadingTimeToSave !== false) {
-      ModuleStorageLazyLoading.setStorageLazyLoading(lazyLoadingTimeToSave);
-    }
-  }
-
-}
-
 class ButtonAddRule extends ModuleButtonsInterface.ButtonClicked {
 
   constructor() {
@@ -367,8 +282,6 @@ class ButtonClearAllRules extends ModuleButtonsInterface.ButtonClicked {
 function createClickedButton(buttonIdHtml) {
   //console.log('ID HTML: ' + buttonIdHtml) //TODO only for development
   switch (buttonIdHtml) {
-    case new ButtonConfiguration().buttonIdHtml:
-      return new ButtonConfiguration();
     case new ButtonCopy().buttonIdHtml:
       return new ButtonCopy();
     case new ButtonCleanUrl().buttonIdHtml:
@@ -377,28 +290,24 @@ function createClickedButton(buttonIdHtml) {
       return new ButtonOpenUrls();
     case new ButtonObfuscate().buttonIdHtml:
       return new ButtonObfuscate();
-    case ModuleButtonsFactory.getButton("openPaths").buttonIdHtml:
-      return ModuleButtonsFactory.getButton("openPaths");
-    case new ButtonConfigurationLazyLoading().buttonIdHtml:
-      return new ButtonConfigurationLazyLoading();
-    case new ButtonAddLazyLoading().buttonIdHtml:
-      return new ButtonAddLazyLoading();
-    case new ButtonConfigurationRules().buttonIdHtml:
-      return new ButtonConfigurationRules();
     case new ButtonInputDeobfuscation().buttonIdHtml:
       return new ButtonInputDeobfuscation();
     case new ButtonInputObfuscation().buttonIdHtml:
       return new ButtonInputObfuscation();
-    case ModuleButtonsFactory.getButton("decodeUrls").buttonIdHtml:
-      return ModuleButtonsFactory.getButton("decodeUrls");
-    case ModuleButtonsFactory.getButton("openRules").buttonIdHtml:
-      return ModuleButtonsFactory.getButton("openRules");
     case new ButtonAddRule().buttonIdHtml:
       return new ButtonAddRule();
     case new ButtonClearAllRules().buttonIdHtml:
       return new ButtonClearAllRules();    
     default:
-      return false;
+      try {
+        return ModuleButtonsFactory.getButton(buttonIdHtml);
+      } catch(exception) {
+        if (exception.name !== ModuleButtonsExceptions.ButtonNameInvalidException.name) {
+          throw exception;
+        } else {
+          console.log(`The clicked element is not a button: ${buttonIdHtml}`);
+        }
+      }
   }
 }
 
@@ -406,16 +315,16 @@ function createClickedButton(buttonIdHtml) {
 async function popupMain() {
 
   rules = await ModuleStorageRules.getRules(rules);
-  ModuleButtonsFactory.getButton("decodeUrls").setStylePrevious();
-  ModuleButtonsFactory.getButton("openPaths").setStylePrevious();
-  ModuleButtonsFactory.getButton("openRules").setStylePrevious();
+  ModuleButtonsFactory.getButton("buttonDecodeUrls").setStylePrevious();
+  ModuleButtonsFactory.getButton("buttonOpenPaths").setStylePrevious();
+  ModuleButtonsFactory.getButton("buttonOpenRules").setStylePrevious();
 
   document.addEventListener('click', (e) => {
     const buttonIdHtml = getIdHtmlOfClickedButtonOrImageFromEventClick(e);
     const buttonClicked = createClickedButton(buttonIdHtml)
     if (buttonClicked){
       buttonClicked.run;
-      ModuleButtonsFactory.getButton("openRules").showOrHideRuleOrRules();
+      ModuleButtonsFactory.getButton("buttonOpenRules").showOrHideRuleOrRules();
     }// else { //TODO logs only for development
     //  console.error("Invalid clicked button:");
     //  console.error(e.target);
