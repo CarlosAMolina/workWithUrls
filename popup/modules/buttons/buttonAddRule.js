@@ -26,7 +26,7 @@ class ButtonAddRule extends ModuleButtonsInterface.ButtonClicked {
 async function _saveRules(){
 
   let valuesRules = ModuleRulesInputReader.getReader(
-    ModuleDom.isCheckedElementById(ModuleButtonsFactory.getButton("buttonOpenRules").buttonIdHtml)
+    ModuleButtonsFactory.getButton("buttonOpenRules").isOn
   ).rules;
   valuesRules = new ModuleRulesInputParser.RulesParser().getValuesRulesWithCorrectFormat(valuesRules);
   for (let [valueOld, valueNew] of valuesRules.entries()) {

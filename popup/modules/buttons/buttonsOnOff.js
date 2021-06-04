@@ -11,6 +11,10 @@ class ButtonOnOff extends ModuleButtonsInterface.ButtonClicked {
   }
 
   get buttonIdStorage() { return this._buttonIdStorage; }
+
+  get isOn() {
+    return ModuleDom.isCheckedElementById(this.buttonIdHtml);
+  }
   
   get run() {
     this.switchStyleAndStorageOnOff();
@@ -27,17 +31,14 @@ class ButtonOnOff extends ModuleButtonsInterface.ButtonClicked {
   }
 
   switchStyleAndStorageOnOff() {
-    let buttonOn = false;
-    if(ModuleDom.isCheckedElementById(this.buttonIdHtml)) {
+    if(this.isOn) {
       this.setStyleOff();
-      buttonOn = false;
     } else {
       this.setStyleOn();
-      buttonOn = true;
     }
-    let storingInfo = browser.storage.local.set({[this.buttonIdStorage]:buttonOn});
+    let storingInfo = browser.storage.local.set({[this.buttonIdStorage]:this.isOn});
     storingInfo.then(() => {
-      console.log('Stored ' + this.buttonIdStorage + ': ' + buttonOn);
+      console.log(`Stored ${this.buttonIdStorage}: ${this.isOn}`);
     }, console.error);
   }
 

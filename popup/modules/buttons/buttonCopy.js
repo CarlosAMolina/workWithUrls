@@ -29,7 +29,7 @@ function _copyToClipboard (idWithInfo){
 
 
 function _copyRules(){
-  if(!ModuleDom.isCheckedElementById(ModuleButtonsFactory.getButton("buttonOpenRules").buttonIdHtml)){
+  if(!ModuleButtonsFactory.getButton("buttonOpenRules").isOn){
     ModuleButtonsFactory.getButton("buttonOpenRules").switchStyleAndStorageOnOff();
   }
   ModuleDom.setValueToElementById(

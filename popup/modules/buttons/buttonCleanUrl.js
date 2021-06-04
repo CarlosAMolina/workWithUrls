@@ -15,7 +15,7 @@ class ButtonCleanUrl extends ModuleButtonsInterface.ButtonClicked {
     this.logButtonName;
     let urlsModifier = null;
     ModuleUrlsModifier.Rules.getInstance().setRuleTypeDeobfuscate();
-    if (ModuleDom.isCheckedElementById(ModuleButtonsFactory.getButton("buttonDecodeUrls").buttonIdHtml)){
+    if (ModuleButtonsFactory.getButton("buttonDecodeUrls").isOn){
       console.log('Choosen option: decode')
       urlsModifier = ModuleUrlsModifier.urlsModifier();
     } else {

@@ -11,7 +11,7 @@ async function openUrls(){
   // Get URLs at the input box.
   let urls = ModuleDom.getValueElementById('inputUrls').split('\n');
   console.log(`URLs at the input box: ${urls}`)
-  if (ModuleDom.isCheckedElementById(ModuleButtonsFactory.getButton("buttonOpenPaths").buttonIdHtml)){
+  if (ModuleButtonsFactory.getButton("buttonOpenPaths").isOn){
     urls = ModuleUrlsModifier.getUrlsWithPaths(urls);
   }
   // Open URLs.
