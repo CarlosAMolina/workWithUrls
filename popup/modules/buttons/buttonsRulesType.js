@@ -10,9 +10,7 @@ const _elementsIdToEnable = ['pInputOld','pInputNew','inputValueOld','inputValue
 
 class ButtonInputDeobfuscation extends ModuleButtonsInterface.ButtonClicked {
 
-  constructor() {
-    super('buttonInputDeobfuscation');
-  } 
+  static _buttonIdHtml = 'buttonInputDeobfuscation';
 
   get run() {
     ModuleUrlsModifier.Rules.getInstance().setRuleTypeDeobfuscate();
@@ -26,9 +24,7 @@ class ButtonInputDeobfuscation extends ModuleButtonsInterface.ButtonClicked {
 
 class ButtonInputObfuscation extends ModuleButtonsInterface.ButtonClicked {
 
-  constructor() {
-    super('buttonInputObfuscation');
-  } 
+  static _buttonIdHtml = 'buttonInputObfuscation';
 
   get run() {
     ModuleUrlsModifier.Rules.getInstance().setRuleTypeObfuscate();

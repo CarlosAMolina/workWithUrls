@@ -6,9 +6,7 @@ import * as ModuleUrlsModifier from '../../modules/urlsModifier.js';
 
 class ButtonCopy extends ModuleButtonsInterface.ButtonClicked {
 
-  constructor() {
-    super('buttonCopy');
-  } 
+  static _buttonIdHtml = 'buttonCopy';
 
   get run() {
     this.logButtonName;

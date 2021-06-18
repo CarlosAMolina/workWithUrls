@@ -27,35 +27,35 @@ function getButton(buttonId) {
       return new ModuleButtonsDinamic.ButtonEdit().button;
     case "update":
       return new ModuleButtonsDinamic.ButtonUpdate().button;
-    case new ModuleButtonAddRule.ButtonAddRule().buttonIdHtml:
+    case ModuleButtonAddRule.ButtonAddRule.buttonIdHtml:
       return new ModuleButtonAddRule.ButtonAddRule();
-    case new ModuleButtonCleanUrl.ButtonCleanUrl().buttonIdHtml:
+    case ModuleButtonCleanUrl.ButtonCleanUrl.buttonIdHtml:
       return new ModuleButtonCleanUrl.ButtonCleanUrl();
-    case new ModuleButtonClearAllRules.ButtonClearAllRules().buttonIdHtml:
+    case ModuleButtonClearAllRules.ButtonClearAllRules.buttonIdHtml:
       return new ModuleButtonClearAllRules.ButtonClearAllRules();    
-    case new ModuleButtonCopy.ButtonCopy().buttonIdHtml:
+    case ModuleButtonCopy.ButtonCopy.buttonIdHtml:
       return new ModuleButtonCopy.ButtonCopy();
-    case new ModuleButtonConfiguration.ButtonConfiguration().buttonIdHtml:
+    case ModuleButtonConfiguration.ButtonConfiguration.buttonIdHtml:
       return new ModuleButtonConfiguration.ButtonConfiguration();
-    case new ModuleButtonConfigurationRules.ButtonConfigurationRules().buttonIdHtml:
+    case ModuleButtonConfigurationRules.ButtonConfigurationRules.buttonIdHtml:
       return new ModuleButtonConfigurationRules.ButtonConfigurationRules();
-    case new ModuleButtonObfuscate.ButtonObfuscate().buttonIdHtml:
+    case ModuleButtonObfuscate.ButtonObfuscate.buttonIdHtml:
       return new ModuleButtonObfuscate.ButtonObfuscate();
-    case new ModuleButtonOpenUrls.ButtonOpenUrls().buttonIdHtml:
+    case ModuleButtonOpenUrls.ButtonOpenUrls.buttonIdHtml:
       return new ModuleButtonOpenUrls.ButtonOpenUrls();
-    case new ModuleButtonsLazyLoading.ButtonAddLazyLoading().buttonIdHtml:
+    case ModuleButtonsLazyLoading.ButtonAddLazyLoading.buttonIdHtml:
       return new ModuleButtonsLazyLoading.ButtonAddLazyLoading();
-    case new ModuleButtonsLazyLoading.ButtonConfigurationLazyLoading().buttonIdHtml:
+    case ModuleButtonsLazyLoading.ButtonConfigurationLazyLoading.buttonIdHtml:
       return new ModuleButtonsLazyLoading.ButtonConfigurationLazyLoading();
-    case new ModuleButtonsOnOff.ButtonDecodeUrls().buttonIdHtml:
+    case ModuleButtonsOnOff.ButtonDecodeUrls.buttonIdHtml:
       return new ModuleButtonsOnOff.ButtonDecodeUrls();
-    case new ModuleButtonsOnOff.ButtonOpenPaths().buttonIdHtml:
+    case ModuleButtonsOnOff.ButtonOpenPaths.buttonIdHtml:
       return new ModuleButtonsOnOff.ButtonOpenPaths();
-    case new ModuleButtonsOnOff.ButtonOpenRules().buttonIdHtml:
+    case ModuleButtonsOnOff.ButtonOpenRules.buttonIdHtml:
       return new ModuleButtonsOnOff.ButtonOpenRules();
-    case new ModuleButtonsRulesType.ButtonInputDeobfuscation().buttonIdHtml:
+    case ModuleButtonsRulesType.ButtonInputDeobfuscation.buttonIdHtml:
       return new ModuleButtonsRulesType.ButtonInputDeobfuscation();
-    case new ModuleButtonsRulesType.ButtonInputObfuscation().buttonIdHtml:
+    case ModuleButtonsRulesType.ButtonInputObfuscation.buttonIdHtml:
       return new ModuleButtonsRulesType.ButtonInputObfuscation();
     default:
       throw new ModuleButtonsExceptions.ButtonNameInvalidException(`Invalid buttonId: ${buttonId}`);

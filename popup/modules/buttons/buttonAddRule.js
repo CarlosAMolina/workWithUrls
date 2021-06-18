@@ -11,9 +11,7 @@ import * as ModuleUrlsModifier from '../../modules/urlsModifier.js';
 
 class ButtonAddRule extends ModuleButtonsInterface.ButtonClicked {
 
-  constructor() {
-    super('buttonAddRule');
-  } 
+  static _buttonIdHtml = 'buttonAddRule';
 
   get run() {
     _saveRules();

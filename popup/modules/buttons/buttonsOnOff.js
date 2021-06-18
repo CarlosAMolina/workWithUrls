@@ -5,15 +5,12 @@ import * as ModuleButtonsInterface from './buttonsInterface.js';
 // https://www.scriptol.com/html5/button-on-off.php
 class ButtonOnOff extends ModuleButtonsInterface.ButtonClicked {
 
-  constructor(buttonIdHtml, buttonIdStorage) {
-    super(buttonIdHtml);
-    this._buttonIdStorage = buttonIdStorage;
-  }
+  static _buttonIdStorage;
 
-  get buttonIdStorage() { return this._buttonIdStorage; }
+  static get buttonIdStorage() { return this._buttonIdStorage };
 
   get isOn() {
-    return ModuleDom.isCheckedElementById(this.buttonIdHtml);
+    return ModuleDom.isCheckedElementById(this.constructor.buttonIdHtml);
   }
   
   get run() {
@@ -21,8 +18,8 @@ class ButtonOnOff extends ModuleButtonsInterface.ButtonClicked {
   }
 
   setStylePrevious() {
-    browser.storage.local.get(this.buttonIdStorage).then((result) => {
-      if (result[this.buttonIdStorage]){
+    browser.storage.local.get(this.constructor.buttonIdStorage).then((result) => {
+      if (result[this.constructor.buttonIdStorage]){
         this.setStyleOn();
       } else {
         this.setStyleOff();
@@ -36,9 +33,9 @@ class ButtonOnOff extends ModuleButtonsInterface.ButtonClicked {
     } else {
       this.setStyleOn();
     }
-    let storingInfo = browser.storage.local.set({[this.buttonIdStorage]:this.isOn});
+    let storingInfo = browser.storage.local.set({[this.constructor.buttonIdStorage]:this.isOn});
     storingInfo.then(() => {
-      console.log(`Stored ${this.buttonIdStorage}: ${this.isOn}`);
+      console.log(`Stored ${this.constructor.buttonIdStorage}: ${this.isOn}`);
     }, console.error);
   }
 
@@ -51,10 +48,10 @@ class ButtonOnOff extends ModuleButtonsInterface.ButtonClicked {
   }
 
   setStyleColorLabelChecked(style, color, label, checked) {
-    ModuleDom.getElementById(this.buttonIdHtml).style.background = style;
-    ModuleDom.getElementById(this.buttonIdHtml).style.color = color;
-    ModuleDom.getElementById(this.buttonIdHtml).textContent = label;
-    ModuleDom.getElementById(this.buttonIdHtml).checked = checked;
+    ModuleDom.getElementById(this.constructor.buttonIdHtml).style.background = style;
+    ModuleDom.getElementById(this.constructor.buttonIdHtml).style.color = color;
+    ModuleDom.getElementById(this.constructor.buttonIdHtml).textContent = label;
+    ModuleDom.getElementById(this.constructor.buttonIdHtml).checked = checked;
   }
 
 }
@@ -62,38 +59,30 @@ class ButtonOnOff extends ModuleButtonsInterface.ButtonClicked {
 
 class ButtonDecodeUrls extends ButtonOnOff {
 
-  constructor() {
-    const buttonIdHtml = 'buttonDecodeUrls';
-    const buttonIdStorage = 'buttonDecodeUrlsIsOn';
-    super(buttonIdHtml, buttonIdStorage);
-  }
+  static _buttonIdHtml = 'buttonDecodeUrls';
+  static _buttonIdStorage = 'buttonDecodeUrlsIsOn';
 
 }
 
 
 class ButtonOpenPaths extends ButtonOnOff {
 
-  constructor() {
-    const buttonIdHtml = 'buttonOpenPaths';
-    const buttonIdStorage = 'buttonOpenPathsIsOn';
-    super(buttonIdHtml, buttonIdStorage);
-  }
+  static _buttonIdHtml = 'buttonOpenPaths';
+  static _buttonIdStorage = 'buttonOpenPathsIsOn';
 
 }
 
 
 class ButtonOpenRules extends ButtonOnOff {
 
-  constructor() {
-    const buttonIdHtml = 'buttonOpenRules';
-    const buttonIdStorage = 'buttonOpenRulesIsOn';
-    super(buttonIdHtml, buttonIdStorage);
-  }
+  static _buttonIdHtml = 'buttonOpenRules';
+  static _buttonIdStorage = 'buttonOpenRulesIsOn';
+
 
   // TODO use ModuleStorageGeneral.isKeyStored()
   showOrHideRuleOrRules() {
-    browser.storage.local.get(this.buttonIdStorage).then((result) => {
-      if (result[this.buttonIdStorage]){
+    browser.storage.local.get(this.constructor.buttonIdStorage).then((result) => {
+      if (result[this.constructor.buttonIdStorage]){
 	ModuleDom.setHiddenElementById('divInputRule');
 	ModuleDom.setUnhiddenElementById('divInputRules');
       } else {

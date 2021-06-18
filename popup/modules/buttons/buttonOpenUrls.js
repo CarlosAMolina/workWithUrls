@@ -4,9 +4,7 @@ import * as ModuleOpenUrls from '../../modules/openUrls.js';
 
 class ButtonOpenUrls extends ModuleButtonsInterface.ButtonClicked {
 
-  constructor() {
-    super('buttonOpenUrls');
-  } 
+  static _buttonIdHtml = 'buttonOpenUrls';
 
   get run() {
     this.logButtonName;

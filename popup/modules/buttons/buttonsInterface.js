@@ -1,19 +1,15 @@
 class ButtonClicked {
 
-  constructor(buttonIdHtml) {
-    this._buttonIdHtml = buttonIdHtml;
-  }
+  static _buttonIdHtml;
 
-  get buttonIdHtml() {
-    return this._buttonIdHtml;
-  }
+  static get buttonIdHtml() { return this._buttonIdHtml };
 
   get run() {
     throw TypeError("Not implemented: method run")
   }
 
   get logButtonName() {
-    console.log('Clicked button ID Html: ' + this.buttonIdHtml);
+    console.log(`Clicked button ID Html: ${this.constructor.buttonIdHtml}`);
   }
 
 }

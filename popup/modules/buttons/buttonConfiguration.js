@@ -3,9 +3,7 @@ import * as ModuleDom from '../../modules/dom.js';
 
 class ButtonConfiguration extends ModuleButtonsInterface.ButtonClicked {
 
-  constructor() {
-    super('buttonShowConfig');
-  } 
+  static _buttonIdHtml = 'buttonShowConfig';
 
   get run() {
     this.logButtonName;

@@ -5,9 +5,7 @@ import * as ModuleStorageLazyLoading from '../../modules/storage/lazyLoading.js'
 
 class ButtonConfigurationLazyLoading extends ModuleButtonsInterface.ButtonClicked {
 
-  constructor() {
-    super('buttonConfigLazyLoading');
-  } 
+  static _buttonIdHtml = 'buttonConfigLazyLoading';
 
   get run() {
     this.runAsync();
@@ -24,9 +22,7 @@ class ButtonConfigurationLazyLoading extends ModuleButtonsInterface.ButtonClicke
 
 class ButtonAddLazyLoading extends ModuleButtonsInterface.ButtonClicked {
 
-  constructor() {
-    super('buttonAddLazyLoading');
-  } 
+  static _buttonIdHtml = 'buttonAddLazyLoading';
 
   get run() {
     const lazyLoadingTimeToSave = _getValidLazyLoadingTimeToSaveAndNotifyBadValue();

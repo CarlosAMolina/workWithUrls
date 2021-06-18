@@ -7,9 +7,7 @@ import * as ModuleUrlsModifier from '../../modules/urlsModifier.js';
 
 class ButtonCleanUrl extends ModuleButtonsInterface.ButtonClicked {
   
-  constructor() {
-    super('buttonCleanUrl');
-  } 
+  static _buttonIdHtml = 'buttonCleanUrl';
 
   get run() {
     this.logButtonName;

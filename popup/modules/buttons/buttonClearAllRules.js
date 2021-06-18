@@ -6,9 +6,7 @@ import * as ModuleUrlsModifier from '../../modules/urlsModifier.js';
 
 class ButtonClearAllRules extends ModuleButtonsInterface.ButtonClicked {
 
-  constructor() {
-    super('buttonClearAllRules');
-  } 
+  static _buttonIdHtml = 'buttonClearAllRules';
 
   get run() {
     browser.tabs.query({active: true, currentWindow: true})

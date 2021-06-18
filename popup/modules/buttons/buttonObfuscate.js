@@ -5,9 +5,7 @@ import * as ModuleUrlsModifier from '../../modules/urlsModifier.js';
 
 class ButtonObfuscate extends ModuleButtonsInterface.ButtonClicked {
   
-  constructor() {
-    super('buttonObfuscate');
-  } 
+  static _buttonIdHtml = 'buttonObfuscate';
 
   get run() {
     this.logButtonName;
