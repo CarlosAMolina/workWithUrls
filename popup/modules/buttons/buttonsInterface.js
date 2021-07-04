@@ -1,8 +1,8 @@
 class ButtonClicked {
 
-  static _buttonIdHtml;
+  static get _buttonIdHtml() { throw TypeError("Not implemented"); }
 
-  static get buttonIdHtml() { return this._buttonIdHtml };
+  static get buttonIdHtml() { return this._buttonIdHtml; }
 
   get run() {
     throw TypeError("Not implemented: method run")

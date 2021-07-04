@@ -5,9 +5,9 @@ import * as ModuleButtonsInterface from './buttonsInterface.js';
 // https://www.scriptol.com/html5/button-on-off.php
 class ButtonOnOff extends ModuleButtonsInterface.ButtonClicked {
 
-  static _buttonIdStorage;
+  static get _buttonIdStorage() { throw TypeError("Not implemented"); }
 
-  static get buttonIdStorage() { return this._buttonIdStorage };
+  static get buttonIdStorage() { return this._buttonIdStorage; }
 
   get isOn() {
     return ModuleDom.isCheckedElementById(this.constructor.buttonIdHtml);
@@ -59,24 +59,24 @@ class ButtonOnOff extends ModuleButtonsInterface.ButtonClicked {
 
 class ButtonDecodeUrls extends ButtonOnOff {
 
-  static _buttonIdHtml = 'buttonDecodeUrls';
-  static _buttonIdStorage = 'buttonDecodeUrlsIsOn';
+  static get _buttonIdHtml() { return 'buttonDecodeUrls'; }
+  static get _buttonIdStorage() { return 'buttonDecodeUrlsIsOn'; }
 
 }
 
 
 class ButtonOpenPaths extends ButtonOnOff {
 
-  static _buttonIdHtml = 'buttonOpenPaths';
-  static _buttonIdStorage = 'buttonOpenPathsIsOn';
+  static get _buttonIdHtml() { return 'buttonOpenPaths'; }
+  static get _buttonIdStorage() { return 'buttonOpenPathsIsOn'; }
 
 }
 
 
 class ButtonOpenRules extends ButtonOnOff {
 
-  static _buttonIdHtml = 'buttonOpenRules';
-  static _buttonIdStorage = 'buttonOpenRulesIsOn';
+  static get _buttonIdHtml() { return "buttonOpenRules"; }
+  static get _buttonIdStorage() { return 'buttonOpenRulesIsOn'; }
 
 
   // TODO use ModuleStorageGeneral.isKeyStored()

@@ -3,7 +3,7 @@ import * as ModuleDom from '../../modules/dom.js';
 
 class ButtonConfigurationRules extends ModuleButtonsInterface.ButtonClicked {
 
-  static _buttonIdHtml = 'buttonConfigRules';
+  static get _buttonIdHtml() { return 'buttonConfigRules'; }
 
   get run() {
     ModuleDom.showOrHideArrayElementsById(['menuRules']);
