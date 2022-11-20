@@ -19,5 +19,4 @@ You can install the Firefox add-on at:
 
 Please, read the docs to know how to configure the addon, work with it and more information:
 
-<https://carlosamolina.github.io/projects/work-with-urls/introduction.html>
-
+<https://cmoli.es/projects/work-with-urls/introduction.html>
