@@ -46,6 +46,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - Code improved. Example: classes for buttons, rules, etc.
   - Use HTML button's ID classes instead names.
   - Delete global variables.
+- Update docs.
+- Update requirements versions.
 
 ## [1.4.1] - 2020-04-20
 ### Fixed
