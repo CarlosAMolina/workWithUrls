@@ -18,6 +18,7 @@ textarea {
   flex-direction: row;
   justify-content: space-between;
   gap: 5px;
+  padding-top: 10px;
 }
 
 .button, .mainButton {
