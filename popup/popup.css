@@ -37,6 +37,11 @@ textarea {
   flex-grow: 1;
   padding-bottom: 4px;
   padding-top: 4px;
+  border-width: 2px;
+  border-color: #e8e8e8;
+  border-right-color: #979797;
+  border-bottom-color: #979797;
+  border-style: solid;
 }
 
 .button:hover, .mainButton:hover {
