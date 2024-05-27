@@ -8,6 +8,11 @@ body {
   margin: 25px;
 }
 
+/* https://stackoverflow.com/questions/271067/how-can-i-make-a-textarea-100-width-without-overflowing-when-padding-is-present */
+textarea {
+  box-sizing: border-box;
+}
+
 .mainButtons {
   display: flex;
   flex-direction: row;
