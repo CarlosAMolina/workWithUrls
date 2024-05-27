@@ -20,3 +20,12 @@ You can install the Firefox add-on at:
 Please, read the docs to know how to configure the addon, work with it and more information:
 
 <https://cmoli.es/projects/work-with-urls/introduction.html>
+
+### Front
+
+To open the popup in the browser:
+
+```bash
+npm exec http-server
+firefox http://127.0.0.1:8080/popup/popup.html
+```
