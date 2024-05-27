@@ -8,14 +8,29 @@ body {
   margin: 25px;
 }
 
+.mainButtons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 5px;
+}
+
+.button, .mainButton {
+  cursor: pointer;
+  background-color: #E5F2F2;
+}
+
 .button {
   text-align: center;
   margin: 3% auto; /* upper and lower space */
   padding: 4px; /* padding area on all four sides of an element */
-  cursor: pointer;
-  background-color: #E5F2F2;
 }
-.button:hover {
+
+.mainButton {
+  flex-grow: 1;
+}
+
+.button:hover, .mainButton:hover {
   background-color: #CFF2F2;
 }
 
