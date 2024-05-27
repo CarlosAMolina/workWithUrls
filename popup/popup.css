@@ -4,6 +4,10 @@ html, body {
   background-color: white;
 }
 
+body {
+  margin: 25px;
+}
+
 .button {
   text-align: center;
   margin: 3% auto; /* upper and lower space */
