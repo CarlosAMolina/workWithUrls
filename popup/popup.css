@@ -1,5 +1,9 @@
 /* pop-up box */
 
+:root {
+  --PADDING-BETWEEN-SECTIONS: 10px;
+}
+
 html, body {
   background-color: white;
 }
@@ -19,12 +23,12 @@ textarea {
   flex-direction: row;
   justify-content: space-between;
   gap: 5px;
-  padding-top: 10px;
+  padding-top: var(--PADDING-BETWEEN-SECTIONS);
   max-height: 30px;
 }
 
 .menuConfig {
-  padding-top: 10px;
+  padding-top: var(--PADDING-BETWEEN-SECTIONS);
 }
 
 .button, .mainButton {
