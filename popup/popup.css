@@ -28,11 +28,16 @@ textarea {
   max-height: 30px;
 }
 
-.menuConfig 
-.configOpenAllPaths
-.configDecodeUrls
-{
+.menuConfig,
+.configDecodeUrls,
+.configOpenAllPaths {
   padding-top: var(--PADDING-BETWEEN-SECTIONS);
+}
+
+.configDecodeUrls,
+.configOpenAllPaths {
+  display: flex;
+  flex-direction: row;
 }
 
 .menuConfigContent {
