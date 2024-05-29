@@ -35,6 +35,10 @@ textarea {
   padding-top: var(--PADDING-BETWEEN-SECTIONS);
 }
 
+.configDecodeUrls {
+  padding-top: var(--PADDING-BETWEEN-SECTIONS);
+}
+
 .button, .mainButton {
   cursor: pointer;
   background-color: #E5F2F2;
