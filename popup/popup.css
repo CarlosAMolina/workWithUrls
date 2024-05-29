@@ -2,6 +2,7 @@
 
 :root {
   --PADDING-BETWEEN-SECTIONS: 10px;
+  --PADDING-LEFT-SECTIONS: 10px;
 }
 
 html, body {
@@ -37,6 +38,10 @@ textarea {
 
 .configDecodeUrls {
   padding-top: var(--PADDING-BETWEEN-SECTIONS);
+}
+
+.menuConfigContent {
+  padding-left: var(--PADDING-LEFT-SECTIONS);
 }
 
 .button, .mainButton {
