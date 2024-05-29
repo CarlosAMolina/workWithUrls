@@ -28,15 +28,10 @@ textarea {
   max-height: 30px;
 }
 
-.menuConfig {
-  padding-top: var(--PADDING-BETWEEN-SECTIONS);
-}
-
-.configOpenAllPaths {
-  padding-top: var(--PADDING-BETWEEN-SECTIONS);
-}
-
-.configDecodeUrls {
+.menuConfig 
+.configOpenAllPaths
+.configDecodeUrls
+{
   padding-top: var(--PADDING-BETWEEN-SECTIONS);
 }
 
