@@ -13,6 +13,7 @@ textarea {
   box-sizing: border-box;
 }
 
+/*TODO refactor unify mainButton with button*/
 .mainButtons {
   display: flex;
   flex-direction: row;
