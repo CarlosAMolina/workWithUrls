@@ -23,6 +23,10 @@ textarea {
   max-height: 30px;
 }
 
+.menuConfig {
+  padding-top: 10px;
+}
+
 .button, .mainButton {
   cursor: pointer;
   background-color: #E5F2F2;
