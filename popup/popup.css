@@ -46,9 +46,15 @@ textarea {
   padding-left: var(--PADDING-LEFT-SECTIONS);
 }
 
-.button, .mainButton {
+/* TODO replace buttonNew with button */
+.button, .buttonNew, .mainButton {
   cursor: pointer;
   background-color: #E5F2F2;
+}
+
+.buttonNew {
+  text-align: center;
+  padding: 5px; /* padding area on all four sides of an element */
 }
 
 .button {
