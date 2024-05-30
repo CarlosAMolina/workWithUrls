@@ -25,7 +25,7 @@ textarea {
   flex-direction: row;
   justify-content: space-between;
   gap: 5px;
-  padding-top: var(--PADDING-BETWEEN-SECTIONS);
+  margin-top: var(--PADDING-BETWEEN-SECTIONS);
   max-height: 30px;
 }
 
