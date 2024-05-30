@@ -55,6 +55,7 @@ textarea {
 .buttonNew {
   text-align: center;
   padding: 5px; /* padding area on all four sides of an element */
+  width: 100%;
 }
 
 .button {
