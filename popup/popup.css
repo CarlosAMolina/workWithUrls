@@ -18,6 +18,10 @@ textarea {
   box-sizing: border-box;
 }
 
+.section {
+  margin-top: var(--SPACE-BETWEEN-SECTIONS);
+}
+
 /*TODO refactor unify mainButton with button*/
 .mainButtons {
   display: flex;
