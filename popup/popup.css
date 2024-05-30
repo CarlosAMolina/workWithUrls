@@ -39,7 +39,7 @@ textarea {
   gap: var(--SPACE-BETWEEN-SECTIONS);
 }
 
-.menuConfigContent {
+.menuConfig{
   padding: var(--PADDING);
 }
 
