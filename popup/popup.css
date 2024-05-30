@@ -1,7 +1,7 @@
 /* pop-up box */
 
 :root {
-  --PADDING-BETWEEN-SECTIONS: 10px;
+  --SPACE-BETWEEN-SECTIONS: 10px;
   --PADDING-LEFT-SECTIONS: 10px;
   --PADDING-RIGHT-SECTIONS: 10px;
 }
@@ -25,14 +25,14 @@ textarea {
   flex-direction: row;
   justify-content: space-between;
   gap: 5px;
-  margin-top: var(--PADDING-BETWEEN-SECTIONS);
+  margin-top: var(--SPACE-BETWEEN-SECTIONS);
   max-height: 30px;
 }
 
 .menuConfig,
 .configDecodeUrls,
 .configOpenAllPaths {
-  padding-top: var(--PADDING-BETWEEN-SECTIONS);
+  padding-top: var(--SPACE-BETWEEN-SECTIONS);
 }
 
 .configDecodeUrls,
@@ -40,7 +40,7 @@ textarea {
   display: flex;
   flex-direction: row;
   align-items: baseline;
-  gap: var(--PADDING-BETWEEN-SECTIONS);
+  gap: var(--SPACE-BETWEEN-SECTIONS);
 }
 
 .menuConfigContent {
@@ -58,7 +58,7 @@ textarea {
   text-align: center;
   padding: 5px; /* padding area on all four sides of an element */
   width: 100%;
-  margin-top: var(--PADDING-BETWEEN-SECTIONS);
+  margin-top: var(--SPACE-BETWEEN-SECTIONS);
 }
 
 .button {
