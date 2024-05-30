@@ -2,8 +2,6 @@
 
 :root {
   --PADDING: 10px;
-  --PADDING-LEFT-SECTIONS: 10px;
-  --PADDING-RIGHT-SECTIONS: 10px;
   --SPACE-BETWEEN-SECTIONS: 10px;
 }
 
@@ -26,7 +24,6 @@ textarea {
   flex-direction: row;
   justify-content: space-between;
   gap: 5px;
-  margin-top: var(--SPACE-BETWEEN-SECTIONS);
   max-height: 30px;
 }
 
