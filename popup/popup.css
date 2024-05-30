@@ -3,6 +3,7 @@
 :root {
   --PADDING-BETWEEN-SECTIONS: 10px;
   --PADDING-LEFT-SECTIONS: 10px;
+  --PADDING-RIGHT-SECTIONS: 10px;
 }
 
 html, body {
@@ -44,6 +45,7 @@ textarea {
 
 .menuConfigContent {
   padding-left: var(--PADDING-LEFT-SECTIONS);
+  padding-right: var(--PADDING-RIGHT-SECTIONS);
 }
 
 /* TODO replace buttonNew with button */
