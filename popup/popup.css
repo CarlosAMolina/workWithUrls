@@ -1,9 +1,9 @@
 /* pop-up box */
 
 :root {
-  --SPACE-BETWEEN-SECTIONS: 10px;
   --PADDING-LEFT-SECTIONS: 10px;
   --PADDING-RIGHT-SECTIONS: 10px;
+  --SPACE-BETWEEN-SECTIONS: 10px;
 }
 
 html, body {
