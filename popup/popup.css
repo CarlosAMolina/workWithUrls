@@ -1,6 +1,7 @@
 /* pop-up box */
 
 :root {
+  --PADDING: 10px;
   --PADDING-LEFT-SECTIONS: 10px;
   --PADDING-RIGHT-SECTIONS: 10px;
   --SPACE-BETWEEN-SECTIONS: 10px;
@@ -30,8 +31,7 @@ textarea {
 }
 
 .menuConfig,
-.configDecodeUrls,
-.configOpenAllPaths {
+.configDecodeUrls {
   padding-top: var(--SPACE-BETWEEN-SECTIONS);
 }
 
@@ -44,9 +44,7 @@ textarea {
 }
 
 .menuConfigContent {
-  padding-bottom: var(--PADDING-LEFT-SECTIONS);
-  padding-left: var(--PADDING-LEFT-SECTIONS);
-  padding-right: var(--PADDING-RIGHT-SECTIONS);
+  padding: var(--PADDING);
 }
 
 /* TODO replace buttonNew with button */
@@ -59,7 +57,6 @@ textarea {
   text-align: center;
   padding: 5px; /* padding area on all four sides of an element */
   width: 100%;
-  margin-top: var(--SPACE-BETWEEN-SECTIONS);
 }
 
 .button {
