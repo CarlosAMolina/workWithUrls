@@ -27,10 +27,6 @@ textarea {
   max-height: 30px;
 }
 
-.configDecodeUrls {
-  padding-top: var(--SPACE-BETWEEN-SECTIONS);
-}
-
 .configDecodeUrls,
 .configOpenAllPaths {
   display: flex;
