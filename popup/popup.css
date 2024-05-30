@@ -44,6 +44,7 @@ textarea {
 }
 
 .menuConfigContent {
+  padding-bottom: var(--PADDING-LEFT-SECTIONS);
   padding-left: var(--PADDING-LEFT-SECTIONS);
   padding-right: var(--PADDING-RIGHT-SECTIONS);
 }
