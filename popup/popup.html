@@ -23,53 +23,51 @@
       <input id="buttonOpenUrls" title="Open Urls" type="image" class="mainButton"src="/icons/globe.svg"/>
     </div>
     <!-- TODO <div id="menuConfig" class="backGroundGrey hidden"> -->
-    <div>
-      <div class="menuConfigContent section backGroundGrey">
-        <div id="menuConfig">
-          <div class="configOpenAllPaths">
-            <button id="buttonOpenPaths" class="buttonOnOff"><div>off</div></button>
-            <p>Open all paths</p>
-          </div>
-          <div class="configDecodeUrls">
-            <button id="buttonDecodeUrls" class="buttonOnOff"><div>off</div></button>
-            <p>Decode URLs</p>
-          </div>
-          <button id="buttonConfigLazyLoading" class="buttonNew">Lazy loading configuration</button>
-          <div id="menuLazyLoading" class="backGroundGrey hidden">
-            <p>Wait time between opening each tab (milliseconds, integer)</p>
-            <div id="divInputLazyLoading">
-              <input id="inputLazyLoading" class="input" type="text" style="width:82%" rows="1"></input>
-              <button id="buttonAddLazyLoading" title="Update" class="button" style="width:10%"><img src="/icons/ok.png"/></button>
-            </div>
-          </div>
-          <button id="buttonConfigRules" class="buttonNew">Rules configuration</button>
+    <div class="menuConfigContent section backGroundGrey">
+      <div id="menuConfig">
+        <div class="configOpenAllPaths">
+          <button id="buttonOpenPaths" class="buttonOnOff"><div>off</div></button>
+          <p>Open all paths</p>
         </div>
-        <div id="menuRules" class="hidden">
-          <p><u>Rules (regular expressions)</u></p>
-          <div>
-            <input id="buttonInputDeobfuscation" type="radio" name="ruleType"><label style="font-size:15px;">Deobfuscation</label>
+        <div class="configDecodeUrls">
+          <button id="buttonDecodeUrls" class="buttonOnOff"><div>off</div></button>
+          <p>Decode URLs</p>
+        </div>
+        <button id="buttonConfigLazyLoading" class="buttonNew">Lazy loading configuration</button>
+        <div id="menuLazyLoading" class="backGroundGrey hidden">
+          <p>Wait time between opening each tab (milliseconds, integer)</p>
+          <div id="divInputLazyLoading">
+            <input id="inputLazyLoading" class="input" type="text" style="width:82%" rows="1"></input>
+            <button id="buttonAddLazyLoading" title="Update" class="button" style="width:10%"><img src="/icons/ok.png"/></button>
           </div>
-          <input id="buttonInputObfuscation" type="radio" name="ruleType"><label style="font-size:15px;">Obfuscation</label>
-          <div>
-            <p>Save more than one rule</p>
-            <button id="buttonOpenRules" class="buttonOnOff"><div>off</div></button>
-          </div>
-          <div id="divInputRule">
-            <p id="pInputOld">Value to change</p>
-            <input id="inputValueOld" class="input" type="text" style="width:96%;resize:vertical" rows="1"   disabled></input>
-            <p id="pInputNew">New value</p>
-            <input id="inputValueNew" class="input" type="text" style="width:96%;resize:vertical" rows="1"   disabled></input>
-          </div>
-          <div id="divInputRules" class="backGroundGrey hidden">
-            <p id="pInputRules">Value to change (line i). New value (line i+1)</p>
-            <textarea id="inputRules" class="input" type="text" style="width:99%" rows="5" disabled></textarea>
-          </div>
-          <button id="buttonAddRule" class="button" style="width:49%" disabled>Add</button>
-          <button id="buttonClearAllRules" class="button" style="width:49%" disabled>Clear all</button>
-          <div class="clearfix">
-          </div>
-          <div class="info-container">
-          </div>
+        </div>
+        <button id="buttonConfigRules" class="buttonNew">Rules configuration</button>
+      </div>
+      <div id="menuRules" class="hidden">
+        <p><u>Rules (regular expressions)</u></p>
+        <div>
+          <input id="buttonInputDeobfuscation" type="radio" name="ruleType"><label style="font-size:15px;">Deobfuscation</label>
+        </div>
+        <input id="buttonInputObfuscation" type="radio" name="ruleType"><label style="font-size:15px;">Obfuscation</label>
+        <div>
+          <p>Save more than one rule</p>
+          <button id="buttonOpenRules" class="buttonOnOff"><div>off</div></button>
+        </div>
+        <div id="divInputRule">
+          <p id="pInputOld">Value to change</p>
+          <input id="inputValueOld" class="input" type="text" style="width:96%;resize:vertical" rows="1"   disabled></input>
+          <p id="pInputNew">New value</p>
+          <input id="inputValueNew" class="input" type="text" style="width:96%;resize:vertical" rows="1"   disabled></input>
+        </div>
+        <div id="divInputRules" class="backGroundGrey hidden">
+          <p id="pInputRules">Value to change (line i). New value (line i+1)</p>
+          <textarea id="inputRules" class="input" type="text" style="width:99%" rows="5" disabled></textarea>
+        </div>
+        <button id="buttonAddRule" class="button" style="width:49%" disabled>Add</button>
+        <button id="buttonClearAllRules" class="button" style="width:49%" disabled>Clear all</button>
+        <div class="clearfix">
+        </div>
+        <div class="info-container">
         </div>
       </div>
     </div>
