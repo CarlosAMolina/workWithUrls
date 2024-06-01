@@ -9,13 +9,13 @@ Firefox add-on to work with URLs:
 - Modify URLs: obfuscate, deobfuscate and decode.
 - Copy the modification results.
 
-## Add-on URL 
+## Add-on URL
 
 You can install the Firefox add-on at:
 
 <https://addons.mozilla.org/addon/workwithurls/>
 
-## Documentation 
+## Documentation
 
 Please, read the docs to know how to configure the addon, work with it and more information:
 

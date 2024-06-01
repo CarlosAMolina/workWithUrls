@@ -1,4 +1,5 @@
 ## dom.js
+
 Move to folder dom
 
 ## Private methods
@@ -18,6 +19,7 @@ Try use private methods at:
 ## Set default rules if no others stored.
 
 ## Fix HTML
+
 - Main menu buttons with different hight.
 
 ## Tests: use beforeEach
@@ -29,18 +31,20 @@ Try use private methods at:
 If no type of rule has been selected and the on-off button of save more than one rule is on, the box musn't be white.
 
 ## Filenames convention
+
 Use always the same convention. Example:
-- fileName.js 
+
+- fileName.js
 - file-name.js
 - file_name.js
 
-## Not use local storage always 
+## Not use local storage always
 
 Avoid the following code that is repeated multiple times:
 
 ```js
 ModuleUrlsModifier.Rules.setInstance(
-  await ModuleStorageRules.getRules(ModuleUrlsModifier.Rules.getInstance())
+  await ModuleStorageRules.getRules(ModuleUrlsModifier.Rules.getInstance()),
 );
 ```
 
