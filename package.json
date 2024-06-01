@@ -9,8 +9,11 @@
   "author": "Carlos A Molina",
   "license": "Mozilla Public License, version 2.0",
   "devDependencies": {
+    "@eslint/js": "^9.4.0",
     "chai": "^4.2.0",
+    "eslint": "^9.4.0",
     "esm": "^3.2.25",
+    "globals": "^15.3.0",
     "http-server": "^14.1.1",
     "jsdom": "^16.4.0",
     "mocha": "^10.2.0"
