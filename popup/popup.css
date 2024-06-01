@@ -112,9 +112,12 @@ https://www.scriptol.com/html5/button-on-off.php
 .lazyLoadingConfig {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   gap: 5px;
   max-height: var(--BUTTON-HEIGHT);
+}
+
+.inputLazyLoading {
+  flex-grow: 1;
 }
 
 /* other */
