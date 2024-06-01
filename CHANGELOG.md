@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Development:
   - Open the popup in the browser.
+  - eslint
+### Changed
+- Improve front.
 
 ## [2.2.1] - 2023-12-23
 ### Added
