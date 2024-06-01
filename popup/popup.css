@@ -2,6 +2,7 @@
 
 :root {
   --PADDING: 10px;
+  --FLEX-PADDING: 5px;
   --SPACE-BETWEEN-SECTIONS: 10px;
   --BUTTON-HEIGHT: 30px;
   --UPDATE-BUTTON-WIDTH: 30px;
@@ -29,7 +30,7 @@ textarea {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  gap: 5px;
+  gap: var(--FLEX-PADDING);
   max-height: var(--BUTTON-HEIGHT);
 }
 
@@ -112,7 +113,7 @@ https://www.scriptol.com/html5/button-on-off.php
 .lazyLoadingConfig {
   display: flex;
   flex-direction: row;
-  gap: 5px;
+  gap: var(--FLEX-PADDING);
   max-height: var(--BUTTON-HEIGHT);
 }
 
