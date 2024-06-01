@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Tests for the project",
   "scripts": {
+    "lint": "eslint .",
     "test": "./node_modules/.bin/mocha --require esm test",
     "web": "npm exec http-server & firefox http://127.0.0.1:8080/popup/popup.html"
   },
