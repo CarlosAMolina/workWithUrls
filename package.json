@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Tests for the project",
   "scripts": {
+    "format": "prettier . --write",
     "lint": "eslint .",
     "test": "./node_modules/.bin/mocha --require esm test",
     "web": "npm exec http-server & firefox http://127.0.0.1:8080/popup/popup.html"
@@ -17,7 +18,8 @@
     "globals": "^15.3.0",
     "http-server": "^14.1.1",
     "jsdom": "^16.4.0",
-    "mocha": "^10.2.0"
+    "mocha": "^10.2.0",
+    "prettier": "3.3.0"
   },
   "type": "module"
 }
