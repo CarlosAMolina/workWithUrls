@@ -34,11 +34,12 @@ textarea {
   max-height: var(--BUTTON-HEIGHT);
 }
 
+/* TODO rename all configs at beginning or end of names*/ 
 .configDecodeUrls,
 .configOpenAllPaths {
   display: flex;
   flex-direction: row;
-  align-items: baseline;
+  align-items: center;
   gap: var(--SPACE-BETWEEN-SECTIONS);
 }
 
