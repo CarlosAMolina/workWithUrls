@@ -1,84 +1,181 @@
-<!DOCTYPE html>
+<!doctype html>
 
 <html lang="en">
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <title>Work with URLs</title>
-    <meta name="author" content="Carlos A Molina">
-    <meta name="description" content="Pop-up of the addon.">
-    <link rel="stylesheet" href="popup.css"/>
+    <meta name="author" content="Carlos A Molina" />
+    <meta name="description" content="Pop-up of the addon." />
+    <link rel="stylesheet" href="popup.css" />
   </head>
 
-<body>
-  <div id="popup-content">
-    <div>
-      <p>URLs</p>
-      <textarea id="inputUrls" class="input" type="text" style="width:100%;min-width:305px" rows="4"></textarea>
-    </div>
-    <div class="mainButtons section">
-      <input id="buttonShowConfig" title="Configuration" type="image" class="mainButton" src="/icons/configuration.svg"/>
-      <input id="buttonCopy" title="Copy to clipboard" type="image" class="mainButton" src="/icons/copy.svg"/>
-      <input id="buttonCleanUrl" title="Clean URLs" type="image" class="mainButton" src="/icons/cleanUrl.svg"/>
-      <input id="buttonObfuscate" title="Obfuscate" type="image" class="mainButton" src="/icons/obfuscate.svg"/>
-      <input id="buttonOpenUrls" title="Open Urls" type="image" class="mainButton"src="/icons/globe.svg"/>
-    </div>
-    <!-- TODO add hidden -->
-    <div class="menuConfig section backGroundGrey">
-      <div id="menuConfig">
-        <div class="configOpenAllPaths">
-          <button id="buttonOpenPaths" class="buttonOnOff"><div>off</div></button>
-          <p>Open all paths</p>
-        </div>
-        <div class="configDecodeUrls section">
-          <button id="buttonDecodeUrls" class="buttonOnOff"><div>off</div></button>
-          <p>Decode URLs</p>
-        </div>
-        <div class="section">
-          <button id="buttonConfigLazyLoading" class="buttonNew">Lazy loading configuration</button>
-          <div id="menuLazyLoading" class="backGroundGrey hidden">
-            <p>Wait time between opening each tab (milliseconds, integer)</p>
-            <div id="divInputLazyLoading">
-              <input id="inputLazyLoading" class="input" type="text" style="width:82%" rows="1">
-              <button id="buttonAddLazyLoading" title="Update" class="button" style="width:10%"><img src="/icons/ok.png"/></button>
+  <body>
+    <div id="popup-content">
+      <div>
+        <p>URLs</p>
+        <textarea
+          id="inputUrls"
+          class="input"
+          type="text"
+          style="width: 100%; min-width: 305px"
+          rows="4"
+        ></textarea>
+      </div>
+      <div class="mainButtons section">
+        <input
+          id="buttonShowConfig"
+          title="Configuration"
+          type="image"
+          class="mainButton"
+          src="/icons/configuration.svg"
+        />
+        <input
+          id="buttonCopy"
+          title="Copy to clipboard"
+          type="image"
+          class="mainButton"
+          src="/icons/copy.svg"
+        />
+        <input
+          id="buttonCleanUrl"
+          title="Clean URLs"
+          type="image"
+          class="mainButton"
+          src="/icons/cleanUrl.svg"
+        />
+        <input
+          id="buttonObfuscate"
+          title="Obfuscate"
+          type="image"
+          class="mainButton"
+          src="/icons/obfuscate.svg"
+        />
+        <input
+          id="buttonOpenUrls"
+          title="Open Urls"
+          type="image"
+          class="mainButton"
+          src="/icons/globe.svg"
+        />
+      </div>
+      <!-- TODO add hidden -->
+      <div class="menuConfig section backGroundGrey">
+        <div id="menuConfig">
+          <div class="configOpenAllPaths">
+            <button id="buttonOpenPaths" class="buttonOnOff">
+              <div>off</div>
+            </button>
+            <p>Open all paths</p>
+          </div>
+          <div class="configDecodeUrls section">
+            <button id="buttonDecodeUrls" class="buttonOnOff">
+              <div>off</div>
+            </button>
+            <p>Decode URLs</p>
+          </div>
+          <div class="section">
+            <button id="buttonConfigLazyLoading" class="buttonNew">
+              Lazy loading configuration
+            </button>
+            <div id="menuLazyLoading" class="backGroundGrey hidden">
+              <p>Wait time between opening each tab (milliseconds, integer)</p>
+              <div id="divInputLazyLoading">
+                <input
+                  id="inputLazyLoading"
+                  class="input"
+                  type="text"
+                  style="width: 82%"
+                  rows="1"
+                />
+                <button
+                  id="buttonAddLazyLoading"
+                  title="Update"
+                  class="button"
+                  style="width: 10%"
+                >
+                  <img src="/icons/ok.png" />
+                </button>
+              </div>
             </div>
           </div>
+          <div class="section">
+            <button id="buttonConfigRules" class="buttonNew">
+              Rules configuration
+            </button>
+          </div>
         </div>
-        <div class="section">
-          <button id="buttonConfigRules" class="buttonNew">Rules configuration</button>
-        </div>
-      </div>
-      <div id="menuRules" class="hidden">
-        <p><u>Rules (regular expressions)</u></p>
-        <div>
-          <input id="buttonInputDeobfuscation" type="radio" name="ruleType"><label style="font-size:15px;">Deobfuscation</label>
-        </div>
-        <input id="buttonInputObfuscation" type="radio" name="ruleType"><label style="font-size:15px;">Obfuscation</label>
-        <div>
-          <p>Save more than one rule</p>
-          <button id="buttonOpenRules" class="buttonOnOff"><div>off</div></button>
-        </div>
-        <div id="divInputRule">
-          <p id="pInputOld">Value to change</p>
-          <input id="inputValueOld" class="input" type="text" style="width:96%;resize:vertical" rows="1"   disabled>
-          <p id="pInputNew">New value</p>
-          <input id="inputValueNew" class="input" type="text" style="width:96%;resize:vertical" rows="1"   disabled>
-        </div>
-        <div id="divInputRules" class="backGroundGrey hidden">
-          <p id="pInputRules">Value to change (line i). New value (line i+1)</p>
-          <textarea id="inputRules" class="input" type="text" style="width:99%" rows="5" disabled></textarea>
-        </div>
-        <button id="buttonAddRule" class="button" style="width:49%" disabled>Add</button>
-        <button id="buttonClearAllRules" class="button" style="width:49%" disabled>Clear all</button>
-        <div class="clearfix">
-        </div>
-        <div class="info-container">
+        <div id="menuRules" class="hidden">
+          <p><u>Rules (regular expressions)</u></p>
+          <div>
+            <input
+              id="buttonInputDeobfuscation"
+              type="radio"
+              name="ruleType"
+            /><label style="font-size: 15px">Deobfuscation</label>
+          </div>
+          <input
+            id="buttonInputObfuscation"
+            type="radio"
+            name="ruleType"
+          /><label style="font-size: 15px">Obfuscation</label>
+          <div>
+            <p>Save more than one rule</p>
+            <button id="buttonOpenRules" class="buttonOnOff">
+              <div>off</div>
+            </button>
+          </div>
+          <div id="divInputRule">
+            <p id="pInputOld">Value to change</p>
+            <input
+              id="inputValueOld"
+              class="input"
+              type="text"
+              style="width: 96%; resize: vertical"
+              rows="1"
+              disabled
+            />
+            <p id="pInputNew">New value</p>
+            <input
+              id="inputValueNew"
+              class="input"
+              type="text"
+              style="width: 96%; resize: vertical"
+              rows="1"
+              disabled
+            />
+          </div>
+          <div id="divInputRules" class="backGroundGrey hidden">
+            <p id="pInputRules">
+              Value to change (line i). New value (line i+1)
+            </p>
+            <textarea
+              id="inputRules"
+              class="input"
+              type="text"
+              style="width: 99%"
+              rows="5"
+              disabled
+            ></textarea>
+          </div>
+          <button id="buttonAddRule" class="button" style="width: 49%" disabled>
+            Add
+          </button>
+          <button
+            id="buttonClearAllRules"
+            class="button"
+            style="width: 49%"
+            disabled
+          >
+            Clear all
+          </button>
+          <div class="clearfix"></div>
+          <div class="info-container"></div>
         </div>
       </div>
     </div>
-  </div>
-  <div id="error-content" class="hidden">
-    <p>Cannot work on this web page.</p>
-  </div>
-  <script type="module" src="popup.js"></script>
-</body>
+    <div id="error-content" class="hidden">
+      <p>Cannot work on this web page.</p>
+    </div>
+    <script type="module" src="popup.js"></script>
+  </body>
 </html>
