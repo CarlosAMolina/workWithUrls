@@ -40,7 +40,8 @@ textarea {
 
 /* TODO rename all configs at beginning or end of names*/ 
 .configDecodeUrls,
-.configOpenAllPaths {
+.configOpenAllPaths,
+.configOpenRules {
   display: flex;
   flex-direction: row;
   align-items: center;
