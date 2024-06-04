@@ -21,6 +21,7 @@ label {
 }
 
 /* https://stackoverflow.com/questions/271067/how-can-i-make-a-textarea-100-width-without-overflowing-when-padding-is-present */
+input,
 textarea {
   box-sizing: border-box;
 }
