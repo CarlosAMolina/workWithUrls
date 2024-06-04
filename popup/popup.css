@@ -26,6 +26,10 @@ textarea {
   box-sizing: border-box;
 }
 
+input {
+  width: 100%;
+}
+
 .section {
   margin-top: var(--SPACE-BETWEEN-SECTIONS);
 }
