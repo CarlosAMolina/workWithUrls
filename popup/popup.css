@@ -16,6 +16,10 @@ body {
   margin: 25px;
 }
 
+label {
+  font-size: 15px;
+}
+
 /* https://stackoverflow.com/questions/271067/how-can-i-make-a-textarea-100-width-without-overflowing-when-padding-is-present */
 textarea {
   box-sizing: border-box;
