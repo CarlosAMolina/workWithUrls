@@ -2,6 +2,7 @@
 # https://extensionworkshop.com/documentation/publish/package-your-extension/
 zip -r -FS ../workWithUrls.zip * \
 -x 'create_zip' \
+-x 'eslint.config.js' \
 -x '*.git*' \
 -x '.gitignore' \
 -x 'node_modules/*' \
