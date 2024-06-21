@@ -48,7 +48,7 @@ input[type=radio] {
 }
 
 /*TODO refactor unify mainButton with button*/
-.mainButtons {
+.oneLineButtons {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
