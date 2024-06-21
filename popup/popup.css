@@ -1,6 +1,7 @@
 /* pop-up box */
 
 :root {
+  --INPUT-PADDING: 5px;
   --PADDING: 10px;
   --FLEX-PADDING: 5px;
   --SPACE-BETWEEN-SECTIONS: 10px;
@@ -28,6 +29,10 @@ textarea
 input,
 textarea {
   box-sizing: border-box;
+}
+
+input[type=text] {
+  padding: var(--INPUT-PADDING);
 }
 
 input:not([type=radio]) {
