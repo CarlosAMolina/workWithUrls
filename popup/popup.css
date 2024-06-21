@@ -59,8 +59,9 @@ input {
 
 /* TODO replace buttonNew with button */
 .button, .buttonNew, .mainButton {
-  cursor: pointer;
   background-color: #E5F2F2;
+  cursor: pointer;
+  font-size: 15px;
 }
 
 .buttonNew {
