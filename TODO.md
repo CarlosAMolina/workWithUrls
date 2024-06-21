@@ -49,3 +49,5 @@ ModuleUrlsModifier.Rules.setInstance(
 ```
 
 Instead request the local storage, try to work with the rules attributes.
+
+## Drop dead icons
