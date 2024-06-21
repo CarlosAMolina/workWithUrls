@@ -16,7 +16,7 @@ body {
   margin: 25px;
 }
 
-label {
+label, legend {
   font-size: 15px;
 }
 
@@ -28,6 +28,10 @@ textarea {
 
 input:not([type=radio]) {
   width: 100%;
+}
+
+input[type=radio] {
+  margin-top: var(--SPACE-BETWEEN-SECTIONS);
 }
 
 .section {

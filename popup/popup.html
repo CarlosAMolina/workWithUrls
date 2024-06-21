@@ -114,19 +114,25 @@
         </div>
         <!-- TODO add hidden -->
         <div id="menuRules" class="section">
-          <p>Select the type or rule (regular expressions) to configure:</p>
-          <div class="section">
-            <input
-              id="buttonInputDeobfuscation"
-              type="radio"
-              name="ruleType"
-            /><label>Deobfuscation</label>
-          </div>
-          <input
-            id="buttonInputObfuscation"
-            type="radio"
-            name="ruleType"
-          /><label>Obfuscation</label>
+          <fieldset>
+            <legend>Select the type or rule (regular expressions) to configure:</legend>
+            <div>
+              <input
+                id="buttonInputDeobfuscation"
+                type="radio"
+                name="ruleType"
+              />
+              <label>Deobfuscation</label>
+            </div>
+            <div>
+              <input
+                id="buttonInputObfuscation"
+                type="radio"
+                name="ruleType"
+              />
+              <label>Obfuscation</label>
+            </div>
+          </fieldset>
           <div class="configOpenRules section">
             <button id="buttonOpenRules" class="buttonOnOff">
               <div>off</div>
