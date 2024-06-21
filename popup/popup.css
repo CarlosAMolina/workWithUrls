@@ -62,16 +62,15 @@ input {
   background-color: #E5F2F2;
   cursor: pointer;
   font-size: 15px;
+  text-align: center;
 }
 
 .buttonNew {
-  text-align: center;
   padding: 5px; /* padding area on all four sides of an element */
   width: 100%;
 }
 
 .button {
-  text-align: center;
   margin: 3% auto; /* upper and lower space */
   padding: 4px; /* padding area on all four sides of an element */
 }
