@@ -16,7 +16,11 @@ body {
   margin: 25px;
 }
 
-label, legend {
+input,
+label,
+legend,
+textarea
+{
   font-size: 15px;
 }
 
