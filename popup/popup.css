@@ -26,7 +26,7 @@ textarea {
   box-sizing: border-box;
 }
 
-input {
+input:not([type=radio]) {
   width: 100%;
 }
 
