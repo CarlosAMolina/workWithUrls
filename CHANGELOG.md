@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [2.3.0] - TODO
+## [3.0.0] - TODO
 
 ### Added
 
@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 - Improve front.
-- manifes.json.
+- Update manifes.json to version 3.
 
 ## [2.2.1] - 2023-12-23
 
