@@ -5,6 +5,4 @@ function NotImplementedException() {
   this.name = "NotImplementedException";
 }
 
-export {
-  NotImplementedException
-};
+export { NotImplementedException };

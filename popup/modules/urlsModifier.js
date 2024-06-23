@@ -1,8 +1,8 @@
-import * as ModuleRule from './rules/rule.js';
+import * as ModuleRule from "./rules/rule.js";
 
-const PROTOCOL_DEFAULT = 'http://'
+const PROTOCOL_DEFAULT = "http://";
 
-const RuleTypeInvalidExceptionName = "RuleTypeInvalidException"
+const RuleTypeInvalidExceptionName = "RuleTypeInvalidException";
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/throw#Throw_an_object
 function RuleTypeInvalidException(message) {
@@ -10,25 +10,26 @@ function RuleTypeInvalidException(message) {
   this.name = RuleTypeInvalidExceptionName;
 }
 
-
 class RuleTypes {
-
-  constructor(){
-    this._ruleDeobfuscate = 'rd';
-    this._ruleObfuscate = 'ro';
+  constructor() {
+    this._ruleDeobfuscate = "rd";
+    this._ruleObfuscate = "ro";
     this._ruleTypes = [this._ruleDeobfuscate, this._ruleObfuscate];
   }
 
-  get ruleDeobfuscate() {return this._ruleDeobfuscate;}
-  get ruleObfuscate() {return this._ruleObfuscate;}
-  get ruleTypes() {return this._ruleTypes;}
-
+  get ruleDeobfuscate() {
+    return this._ruleDeobfuscate;
+  }
+  get ruleObfuscate() {
+    return this._ruleObfuscate;
+  }
+  get ruleTypes() {
+    return this._ruleTypes;
+  }
 }
 
-
-class RuleConfigurator extends RuleTypes{
-
-  constructor(){
+class RuleConfigurator extends RuleTypes {
+  constructor() {
     super();
     this._ruleType = null;
   }
@@ -41,16 +42,16 @@ class RuleConfigurator extends RuleTypes{
   // TODO delete old type and use this new rules type values
   get ruleTypeNew() {
     if (this._ruleType == this.ruleDeobfuscate) {
-      return 'rulesDeobfuscation'
+      return "rulesDeobfuscation";
     } else if (this._ruleType == this.ruleObfuscate) {
-      return 'rulesObfuscation'
+      return "rulesObfuscation";
     }
-    throw 'Invalid rule type'
+    throw "Invalid rule type";
   }
 
   set ruleType(ruleType) {
     this.assertRuleTypeAllowed(ruleType);
-    switch(ruleType) {
+    switch (ruleType) {
       case this._ruleDeobfuscate:
         this.setRuleTypeDeobfuscate();
         break;
@@ -60,10 +61,16 @@ class RuleConfigurator extends RuleTypes{
     }
   }
 
-  setRuleTypeObfuscate() {this._ruleType = this._ruleObfuscate;}
-  setRuleTypeDeobfuscate() {this._ruleType = this._ruleDeobfuscate;}
+  setRuleTypeObfuscate() {
+    this._ruleType = this._ruleObfuscate;
+  }
+  setRuleTypeDeobfuscate() {
+    this._ruleType = this._ruleDeobfuscate;
+  }
 
-  isRuleTypeConfigured() {return this._ruleType !== null;}
+  isRuleTypeConfigured() {
+    return this._ruleType !== null;
+  }
 
   assertRuleTypeConfigured() {
     if (!this.isRuleTypeConfigured()) {
@@ -73,22 +80,24 @@ class RuleConfigurator extends RuleTypes{
 
   assertRuleTypeAllowed(ruleType) {
     if (!this._ruleTypes.includes(ruleType)) {
-      throw new RuleTypeInvalidException("Incorrect rule type: " + ruleType + ". Allowed values: " + this._ruleTypes);
+      throw new RuleTypeInvalidException(
+        "Incorrect rule type: " +
+          ruleType +
+          ". Allowed values: " +
+          this._ruleTypes,
+      );
     }
   }
-
 }
 
-
 class RuleTransformationsCreator {
-
   /*
   param valuesOld: list of strings.
   param valuesNew: list of strings.
   return: list of Rule instances.
   */
   getRuleTransformations(valuesOld, valuesNew) {
-    let ruleTransformations = []
+    let ruleTransformations = [];
     if (valuesOld.length != valuesNew.length) {
       throw RangeError("Rule's values old length != values new length");
     }
@@ -97,50 +106,49 @@ class RuleTransformationsCreator {
     }
     return ruleTransformations;
   }
-
 }
 
-
 class RuleTransformations extends RuleTransformationsCreator {
-
   /*
   param ruleValuesOld: list of strings.
   param ruleValuesNew: list of strings.
   */
   constructor(ruleValuesOld, ruleValuesNew) {
     super();
-    this._ruleTransformations = this.getRuleTransformations(ruleValuesOld, ruleValuesNew);
+    this._ruleTransformations = this.getRuleTransformations(
+      ruleValuesOld,
+      ruleValuesNew,
+    );
   }
 
-  get ruleTransformations() {return this._ruleTransformations;}
+  get ruleTransformations() {
+    return this._ruleTransformations;
+  }
 
   get stringRepresentation() {
-    let result = '';
+    let result = "";
     for (const rule of this.ruleTransformations) {
       result += `${rule.valueOld}\n${rule.valueNew}\n`;
     }
-    result = this.removeTrailingNewLine(result)
-    return result
+    result = this.removeTrailingNewLine(result);
+    return result;
   }
 
-  isThereAnyRule(){
-    return this.ruleTransformations.length != 0
+  isThereAnyRule() {
+    return this.ruleTransformations.length != 0;
   }
 
-  removeTrailingNewLine(string){
+  removeTrailingNewLine(string) {
     return string.replace(/\n$/, "");
   }
-
 }
 
-
 /*Singleton.
-*/
-class Rules extends RuleConfigurator{
-
+ */
+class Rules extends RuleConfigurator {
   constructor() {
     super();
-    this._rules = {}; 
+    this._rules = {};
     if (!Rules._instance) {
       Rules._instance = this;
     }
@@ -155,7 +163,9 @@ class Rules extends RuleConfigurator{
     Rules._instance = instance;
   }
 
-  get rules() {return this._rules;}
+  get rules() {
+    return this._rules;
+  }
 
   get ruleTransformationsInstanceToUse() {
     return this._rules[this.ruleType];
@@ -194,8 +204,8 @@ class Rules extends RuleConfigurator{
     for (const ruleStored of this.ruleTransformationsToUse) {
       indexToDelete += 1;
       if (
-        ruleStored.valueOld === rule.valueOld
-        && ruleStored.valueNew === rule.valueNew
+        ruleStored.valueOld === rule.valueOld &&
+        ruleStored.valueNew === rule.valueNew
       ) {
         match = true;
         break;
@@ -211,32 +221,29 @@ class Rules extends RuleConfigurator{
   param ruleNew: Rule.
   */
   updateRule(ruleToChange, ruleNew) {
-    this.deleteRule(ruleToChange)
-    this.addRule(ruleNew)
+    this.deleteRule(ruleToChange);
+    this.addRule(ruleNew);
   }
 
   initializeRules() {
     this._rules = {};
   }
-
 }
 
-
 class RulesApplicator {
-
   /*
   param rule: RuleTransformations instance.
   */
   constructor(ruleTransformations) {
-    this._ruleTransformations = ruleTransformations; 
+    this._ruleTransformations = ruleTransformations;
   }
 
   /*
   param urls: list of strings.
   return: list of strings.
   */
-  modifyUrls(urls){
-    return urls.map(url => this.getUrlApplyRuleTransformationsToUrl(url));
+  modifyUrls(urls) {
+    return urls.map((url) => this.getUrlApplyRuleTransformationsToUrl(url));
   }
 
   getUrlApplyRuleTransformationsToUrl(url) {
@@ -246,47 +253,42 @@ class RulesApplicator {
     return url;
   }
 
-  getUrlApplyRuleToUrl(rule, url){
-      return url.replace(this.getRegex(rule.valueOld), rule.valueNew);
+  getUrlApplyRuleToUrl(rule, url) {
+    return url.replace(this.getRegex(rule.valueOld), rule.valueNew);
   }
 
-  getRegex(ruleValue){
-      return new RegExp(ruleValue, "g");
+  getRegex(ruleValue) {
+    return new RegExp(ruleValue, "g");
   }
-
 }
 
-
 class UrlsDecoder {
-
   /*
   param urls: list of strings.
   return: list of strings.
   */
   modifyUrls(urls) {
-    return urls.map(url => this.decodeUrl(url));
+    return urls.map((url) => this.decodeUrl(url));
   }
 
   decodeUrl(url) {
-    try{
+    try {
       url = decodeURIComponent(url);
-    } catch(e) { // URIError: malformed URI sequence
+    } catch (e) {
+      // URIError: malformed URI sequence
       console.error(e);
     }
     return url;
   }
-
 }
 
-
 function urlsModifier(rule) {
-  if (typeof rule !== 'undefined') {
+  if (typeof rule !== "undefined") {
     return new RulesApplicator(rule);
   } else {
     return new UrlsDecoder();
   }
 }
-
 
 /* Get all URLs quitting last part path until no more parts available.
 Example. For 'http://github.com/CarlosAMolina' two URLs will be 
@@ -295,44 +297,41 @@ created: 'http://github.com/CarlosAMolina' and 'http://github.com'.
 :return urls_paths: list of strings, all possible URLs omitting
   parts of the paths.
 */
-function getUrlsWithPaths(urls){
+function getUrlsWithPaths(urls) {
   // Variable with results.
-  let urls_paths = []
+  let urls_paths = [];
   for (let url of urls) {
     // Quit last slash.
-    if (url.slice(-1) == '/'){
-      url = url.substring(0, url.length -1);
+    if (url.slice(-1) == "/") {
+      url = url.substring(0, url.length - 1);
     }
     // Loop all parts of the path until no more parts.
-    while (url.slice(-1) != '/') {
-      url = getUrlWithProtocol(url)
-      urls_paths.push(url)
-      if ( url.indexOf('/') != -1 ){
+    while (url.slice(-1) != "/") {
+      url = getUrlWithProtocol(url);
+      urls_paths.push(url);
+      if (url.indexOf("/") != -1) {
         // Quit last path parth.
-        url = url.slice(0, url.lastIndexOf('/'));
-      }
-      else {
+        url = url.slice(0, url.lastIndexOf("/"));
+      } else {
         // Character to stop the while loop.
-        url = '/';
+        url = "/";
       }
     }
   }
-  console.log(`URLs with all paths: ${urls_paths}`)
+  console.log(`URLs with all paths: ${urls_paths}`);
   return urls_paths;
 }
-
 
 /* If the URL has not got protocol, add one.
 :param url: str, url to check.
 :return url: str, url with protocol.
 */
-function getUrlWithProtocol(url){
-  if (url.substring(0, 4).toLowerCase() != 'http'){
+function getUrlWithProtocol(url) {
+  if (url.substring(0, 4).toLowerCase() != "http") {
     return PROTOCOL_DEFAULT + url;
   }
   return url;
 }
-
 
 export {
   getUrlsWithPaths,
@@ -345,5 +344,5 @@ export {
   RuleTypeInvalidExceptionName,
   RuleTypes,
   UrlsDecoder,
-  urlsModifier
+  urlsModifier,
 };

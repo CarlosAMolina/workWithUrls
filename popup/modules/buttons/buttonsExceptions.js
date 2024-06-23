@@ -3,6 +3,4 @@ function ButtonNameInvalidException(message) {
   this.name = "ButtonNameInvalidException";
 }
 
-export {
-  ButtonNameInvalidException
-};
+export { ButtonNameInvalidException };

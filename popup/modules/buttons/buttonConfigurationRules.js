@@ -1,17 +1,14 @@
-import * as ModuleButtonsInterface from '../../modules/buttons/buttonsInterface.js';
-import * as ModuleDom from '../../modules/dom.js';
+import * as ModuleButtonsInterface from "../../modules/buttons/buttonsInterface.js";
+import * as ModuleDom from "../../modules/dom.js";
 
 class ButtonConfigurationRules extends ModuleButtonsInterface.ButtonClicked {
-
-  static get _buttonIdHtml() { return 'buttonConfigRules'; }
-
-  get run() {
-    ModuleDom.showOrHideArrayElementsById(['menuRules']);
+  static get _buttonIdHtml() {
+    return "buttonConfigRules";
   }
 
+  get run() {
+    ModuleDom.showOrHideArrayElementsById(["menuRules"]);
+  }
 }
 
-
-export {
-  ButtonConfigurationRules,
-}
+export { ButtonConfigurationRules };

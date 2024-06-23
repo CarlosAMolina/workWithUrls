@@ -1,11 +1,11 @@
-import * as ModuleDom from '../../modules/dom.js';
+import * as ModuleDom from "../../modules/dom.js";
 
-function notShowRules(){
+function notShowRules() {
   while (ModuleDom.getInfoContainer().firstChild) {
-    ModuleDom.getInfoContainer().removeChild(ModuleDom.getInfoContainer().firstChild);
-  }   
+    ModuleDom.getInfoContainer().removeChild(
+      ModuleDom.getInfoContainer().firstChild,
+    );
+  }
 }
 
-export {
-  notShowRules,
-}
+export { notShowRules };

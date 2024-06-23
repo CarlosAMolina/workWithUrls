@@ -9,7 +9,8 @@
   --UPDATE-BUTTON-WIDTH: 30px;
 }
 
-html, body {
+html,
+body {
   background-color: white;
 }
 
@@ -20,8 +21,7 @@ body {
 input,
 label,
 legend,
-textarea
-{
+textarea {
   font-size: 15px;
 }
 
@@ -31,15 +31,15 @@ textarea {
   box-sizing: border-box;
 }
 
-input[type=text] {
+input[type="text"] {
   padding: var(--INPUT-PADDING);
 }
 
-input:not([type=radio]) {
+input:not([type="radio"]) {
   width: 100%;
 }
 
-input[type=radio] {
+input[type="radio"] {
   margin-top: var(--SPACE-BETWEEN-SECTIONS);
 }
 
@@ -56,8 +56,8 @@ input[type=radio] {
   max-height: var(--BUTTON-HEIGHT);
 }
 
-/* TODO rename all configs at beginning or end of names*/ 
-/* TODO? rename and join with oneLineButtons to oneLine to join common code*/ 
+/* TODO rename all configs at beginning or end of names*/
+/* TODO? rename and join with oneLineButtons to oneLine to join common code*/
 .configDecodeUrls,
 .configOpenAllPaths,
 .configOpenRules,
@@ -68,13 +68,15 @@ input[type=radio] {
   gap: var(--SPACE-BETWEEN-SECTIONS);
 }
 
-.menuConfig{
+.menuConfig {
   padding: var(--PADDING);
 }
 
 /* TODO replace buttonNew with button */
-.button, .buttonNew, .mainButton {
-  background-color: #E5F2F2;
+.button,
+.buttonNew,
+.mainButton {
+  background-color: #e5f2f2;
   cursor: pointer;
   font-size: 15px;
   text-align: center;
@@ -112,8 +114,9 @@ input[type=radio] {
   width: 100%;
 }
 
-.button:hover, .mainButton:hover {
-  background-color: #CFF2F2;
+.button:hover,
+.mainButton:hover {
+  background-color: #cff2f2;
 }
 
 /* Button on off
@@ -121,26 +124,26 @@ input[type=radio] {
 https://www.scriptol.com/html5/button-on-off.php
 */
 .buttonOnOff {
-  width:32px;
-  height:32px;
-  padding:1px 2px 3px 3px;
-  font-size:12px;
-  background:lightgray;
-  text-align:center;
+  width: 32px;
+  height: 32px;
+  padding: 1px 2px 3px 3px;
+  font-size: 12px;
+  background: lightgray;
+  text-align: center;
   cursor: pointer;
 }
 .buttonOnOff div {
-  width:18px;
-  height:18px;
-  min-height:18px;
-  background:lightgray;
-  overflow:hidden;
-  border-top:1px solid gray;
-  border-right:1px solid white;
-  border-bottom:1px solid white;
-  border-left:1px solid gray;
-  margin:0 auto;
-  color:gray;
+  width: 18px;
+  height: 18px;
+  min-height: 18px;
+  background: lightgray;
+  overflow: hidden;
+  border-top: 1px solid gray;
+  border-right: 1px solid white;
+  border-bottom: 1px solid white;
+  border-left: 1px solid gray;
+  margin: 0 auto;
+  color: gray;
 }
 
 .lazyLoadingConfig {
@@ -161,7 +164,7 @@ https://www.scriptol.com/html5/button-on-off.php
 }
 
 .backGroundGrey {
-  background: rgb(240,240,240);
+  background: rgb(240, 240, 240);
 }
 
 .floatLeft {
@@ -171,10 +174,9 @@ https://www.scriptol.com/html5/button-on-off.php
 
 p {
   margin: 0;
-  font-size:15px;
+  font-size: 15px;
 }
 
 .clearfix {
   clear: both;
 }
-

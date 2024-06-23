@@ -1,36 +1,34 @@
-import * as ModuleButtonsInterface from '../../modules/buttons/buttonsInterface.js';
-import * as ModuleDomRules from '../../modules/dom/rules.js';
-import * as ModuleStorageRules from '../../modules/storage/rules.js';
-import * as ModuleUrlsModifier from '../../modules/urlsModifier.js';
-
+import * as ModuleButtonsInterface from "../../modules/buttons/buttonsInterface.js";
+import * as ModuleDomRules from "../../modules/dom/rules.js";
+import * as ModuleStorageRules from "../../modules/storage/rules.js";
+import * as ModuleUrlsModifier from "../../modules/urlsModifier.js";
 
 class ButtonClearAllRules extends ModuleButtonsInterface.ButtonClicked {
-
-  static get _buttonIdHtml() { return 'buttonClearAllRules'; }
+  static get _buttonIdHtml() {
+    return "buttonClearAllRules";
+  }
 
   get run() {
-    browser.tabs.query({active: true, currentWindow: true})
+    browser.tabs
+      .query({ active: true, currentWindow: true })
       .then(clearStorageInfo)
-      .catch(console.error)
-  } 
+      .catch(console.error);
+  }
 }
-
 
 // Clear display/storage.
 async function clearStorageInfo() {
-  for (let rule of ModuleUrlsModifier.Rules.getInstance().ruleTransformationsToUse) {
+  for (let rule of ModuleUrlsModifier.Rules.getInstance()
+    .ruleTransformationsToUse) {
     await ModuleStorageRules.removeRule(
       rule,
-      ModuleUrlsModifier.Rules.getInstance().ruleType
+      ModuleUrlsModifier.Rules.getInstance().ruleType,
     );
   }
   ModuleDomRules.notShowRules();
   ModuleUrlsModifier.Rules.setInstance(
-    await ModuleStorageRules.getRules(ModuleUrlsModifier.Rules.getInstance())
+    await ModuleStorageRules.getRules(ModuleUrlsModifier.Rules.getInstance()),
   );
 }
 
-
-export {
-  ButtonClearAllRules,
-}
+export { ButtonClearAllRules };
