@@ -92,6 +92,12 @@ input[type=radio] {
   width: var(--UPDATE-BUTTON-WIDTH);
 }
 
+/* TODO refactor join with updateButton */
+.squareButton {
+  height: var(--BUTTON-HEIGHT);
+  width: var(--UPDATE-BUTTON-WIDTH);
+}
+
 .mainButton {
   flex-grow: 1;
   padding-bottom: 4px;
