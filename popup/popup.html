@@ -117,7 +117,9 @@
         <!-- TODO add hidden -->
         <div id="menuRules" class="section">
           <fieldset>
-            <legend>Select the type or rule (regular expressions) to configure:</legend>
+            <legend>
+              Select the type or rule (regular expressions) to configure:
+            </legend>
             <div>
               <input
                 id="buttonInputDeobfuscation"
@@ -127,11 +129,7 @@
               <label>Deobfuscation</label>
             </div>
             <div>
-              <input
-                id="buttonInputObfuscation"
-                type="radio"
-                name="ruleType"
-              />
+              <input id="buttonInputObfuscation" type="radio" name="ruleType" />
               <label>Obfuscation</label>
             </div>
           </fieldset>
@@ -186,29 +184,219 @@
             </div>
           </div>
           <div class="oneLineButtons section">
-            <button
-              id="buttonAddRule"
-              class="buttonNew"
-              disabled
-            >
-              Add
-            </button>
-            <button
-              id="buttonClearAllRules"
-              class="buttonNew"
-              disabled
-            >
+            <button id="buttonAddRule" class="buttonNew" disabled>Add</button>
+            <button id="buttonClearAllRules" class="buttonNew" disabled>
               Clear all
             </button>
           </div>
           <div class="clearfix"></div>
           <div class="info-container"></div>
-<!-- TODO remove code below -->
-<div><button title="Delete" class="floatLeft button" style="width: 30px; height: 30px; background: url(&quot;/icons/trash.png&quot;) center center no-repeat;"></button><button title="Edit" class="floatLeft button" style="width: 30px; height: 30px; background: url(&quot;/icons/edit.png&quot;) center center no-repeat;"></button><p style="margin-left: 75px"> ---&gt; </p><div class="clearfix"></div></div><div style="display: none;"><input class="input" style="width:30%"><input class="input" style="width:30%"><button title="Update" class="floatLeft button" style="width: 30px; height: 30px; background: url(&quot;/icons/ok.png&quot;) center center no-repeat;"></button><button title="Cancel update" class="floatLeft button" style="width: 30px; height: 30px; background: url(&quot;/icons/cancel.png&quot;) center center no-repeat;"></button><div class="clearfix"></div></div>
-<div><div><button title="Delete" class="floatLeft button" style="width: 30px; height: 30px; background: url(&quot;/icons/trash.png&quot;) center center no-repeat;"></button><button title="Edit" class="floatLeft button" style="width: 30px; height: 30px; background: url(&quot;/icons/edit.png&quot;) center center no-repeat;"></button><p style="margin-left: 75px"> ---&gt; </p><div class="clearfix"></div></div><div style="display: none;"><input class="input" style="width:30%"><input class="input" style="width:30%"><button title="Update" class="floatLeft button" style="width: 30px; height: 30px; background: url(&quot;/icons/ok.png&quot;) center center no-repeat;"></button><button title="Cancel update" class="floatLeft button" style="width: 30px; height: 30px; background: url(&quot;/icons/cancel.png&quot;) center center no-repeat;"></button><div class="clearfix"></div></div></div>
-<div style="display: none;"><button title="Delete" class="floatLeft button" style="width: 30px; height: 30px; background: url(&quot;/icons/trash.png&quot;) center center no-repeat;"></button><button title="Edit" class="floatLeft button" style="width: 30px; height: 30px; background: url(&quot;/icons/edit.png&quot;) center center no-repeat;"></button><p style="margin-left: 75px">a ---&gt; b</p><div class="clearfix"></div></div><div style="display: block;"><input class="input" style="width:30%"><input class="input" style="width:30%"><button title="Update" class="floatLeft button" style="width: 30px; height: 30px; background: url(&quot;/icons/ok.png&quot;) center center no-repeat;"></button><button title="Cancel update" class="floatLeft button" style="width: 30px; height: 30px; background: url(&quot;/icons/cancel.png&quot;) center center no-repeat;"></button><div class="clearfix"></div></div>
-<div><div style="display: none;"><button title="Delete" class="floatLeft button" style="width: 30px; height: 30px; background: url(&quot;/icons/trash.png&quot;) center center no-repeat;"></button><button title="Edit" class="floatLeft button" style="width: 30px; height: 30px; background: url(&quot;/icons/edit.png&quot;) center center no-repeat;"></button><p style="margin-left: 75px">a ---&gt; b</p><div class="clearfix"></div></div><div style="display: block;"><input class="input" style="width:30%"><input class="input" style="width:30%"><button title="Update" class="floatLeft button" style="width: 30px; height: 30px; background: url(&quot;/icons/ok.png&quot;) center center no-repeat;"></button><button title="Cancel update" class="floatLeft button" style="width: 30px; height: 30px; background: url(&quot;/icons/cancel.png&quot;) center center no-repeat;"></button><div class="clearfix"></div></div></div>
-<!-- TODO remove code above -->
+          <!-- TODO remove code below -->
+          <div>
+            <button
+              title="Delete"
+              class="floatLeft button"
+              style="
+                width: 30px;
+                height: 30px;
+                background: url(&quot;/icons/trash.png&quot;) center center
+                  no-repeat;
+              "
+            ></button
+            ><button
+              title="Edit"
+              class="floatLeft button"
+              style="
+                width: 30px;
+                height: 30px;
+                background: url(&quot;/icons/edit.png&quot;) center center
+                  no-repeat;
+              "
+            ></button>
+            <p style="margin-left: 75px">---&gt;</p>
+            <div class="clearfix"></div>
+          </div>
+          <div style="display: none">
+            <input class="input" style="width: 30%" /><input
+              class="input"
+              style="width: 30%"
+            /><button
+              title="Update"
+              class="floatLeft button"
+              style="
+                width: 30px;
+                height: 30px;
+                background: url(&quot;/icons/ok.png&quot;) center center
+                  no-repeat;
+              "
+            ></button
+            ><button
+              title="Cancel update"
+              class="floatLeft button"
+              style="
+                width: 30px;
+                height: 30px;
+                background: url(&quot;/icons/cancel.png&quot;) center center
+                  no-repeat;
+              "
+            ></button>
+            <div class="clearfix"></div>
+          </div>
+          <div>
+            <div>
+              <button
+                title="Delete"
+                class="floatLeft button"
+                style="
+                  width: 30px;
+                  height: 30px;
+                  background: url(&quot;/icons/trash.png&quot;) center center
+                    no-repeat;
+                "
+              ></button
+              ><button
+                title="Edit"
+                class="floatLeft button"
+                style="
+                  width: 30px;
+                  height: 30px;
+                  background: url(&quot;/icons/edit.png&quot;) center center
+                    no-repeat;
+                "
+              ></button>
+              <p style="margin-left: 75px">---&gt;</p>
+              <div class="clearfix"></div>
+            </div>
+            <div style="display: none">
+              <input class="input" style="width: 30%" /><input
+                class="input"
+                style="width: 30%"
+              /><button
+                title="Update"
+                class="floatLeft button"
+                style="
+                  width: 30px;
+                  height: 30px;
+                  background: url(&quot;/icons/ok.png&quot;) center center
+                    no-repeat;
+                "
+              ></button
+              ><button
+                title="Cancel update"
+                class="floatLeft button"
+                style="
+                  width: 30px;
+                  height: 30px;
+                  background: url(&quot;/icons/cancel.png&quot;) center center
+                    no-repeat;
+                "
+              ></button>
+              <div class="clearfix"></div>
+            </div>
+          </div>
+          <div style="display: none">
+            <button
+              title="Delete"
+              class="floatLeft button"
+              style="
+                width: 30px;
+                height: 30px;
+                background: url(&quot;/icons/trash.png&quot;) center center
+                  no-repeat;
+              "
+            ></button
+            ><button
+              title="Edit"
+              class="floatLeft button"
+              style="
+                width: 30px;
+                height: 30px;
+                background: url(&quot;/icons/edit.png&quot;) center center
+                  no-repeat;
+              "
+            ></button>
+            <p style="margin-left: 75px">a ---&gt; b</p>
+            <div class="clearfix"></div>
+          </div>
+          <div style="display: block">
+            <input class="input" style="width: 30%" /><input
+              class="input"
+              style="width: 30%"
+            /><button
+              title="Update"
+              class="floatLeft button"
+              style="
+                width: 30px;
+                height: 30px;
+                background: url(&quot;/icons/ok.png&quot;) center center
+                  no-repeat;
+              "
+            ></button
+            ><button
+              title="Cancel update"
+              class="floatLeft button"
+              style="
+                width: 30px;
+                height: 30px;
+                background: url(&quot;/icons/cancel.png&quot;) center center
+                  no-repeat;
+              "
+            ></button>
+            <div class="clearfix"></div>
+          </div>
+          <div>
+            <div style="display: none">
+              <button
+                title="Delete"
+                class="floatLeft button"
+                style="
+                  width: 30px;
+                  height: 30px;
+                  background: url(&quot;/icons/trash.png&quot;) center center
+                    no-repeat;
+                "
+              ></button
+              ><button
+                title="Edit"
+                class="floatLeft button"
+                style="
+                  width: 30px;
+                  height: 30px;
+                  background: url(&quot;/icons/edit.png&quot;) center center
+                    no-repeat;
+                "
+              ></button>
+              <p style="margin-left: 75px">a ---&gt; b</p>
+              <div class="clearfix"></div>
+            </div>
+            <div style="display: block">
+              <input class="input" style="width: 30%" /><input
+                class="input"
+                style="width: 30%"
+              /><button
+                title="Update"
+                class="floatLeft button"
+                style="
+                  width: 30px;
+                  height: 30px;
+                  background: url(&quot;/icons/ok.png&quot;) center center
+                    no-repeat;
+                "
+              ></button
+              ><button
+                title="Cancel update"
+                class="floatLeft button"
+                style="
+                  width: 30px;
+                  height: 30px;
+                  background: url(&quot;/icons/cancel.png&quot;) center center
+                    no-repeat;
+                "
+              ></button>
+              <div class="clearfix"></div>
+            </div>
+          </div>
+          <!-- TODO remove code above -->
         </div>
       </div>
     </div>
