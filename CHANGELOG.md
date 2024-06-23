@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+- Format code using prettier.
 - Improve front.
 - Update manifes.json to version 3.
 
