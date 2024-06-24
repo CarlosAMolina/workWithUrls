@@ -139,8 +139,8 @@ function showMenuStoredRuleNew(rule, rules) {
 
   function _getRuleMenu(rule) {
     const buttons = _getButtons();
-    const menu = document.createElement('div');
-    menu.setAttribute("class","section configRule");
+    const menu = document.createElement("div");
+    menu.setAttribute("class", "section configRule");
     const menuSummary = document.createElement("div");
     const menuEdit = document.createElement("div");
     const ruleValue = new RuleValue(rule).entry;

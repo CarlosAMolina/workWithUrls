@@ -41,7 +41,8 @@ describe("Check script menuStoredRule.js: ", function () {
       let rules = new ModuleUrlsModifier.Rules();
       ModuleMenuStoredRule.showMenuStoredRuleNew(rule, rules);
       const newResult = ModuleDom.getInfoContainer().innerHTML;
-      const expectedNewResult = '<div class="section configRule"><button title="Delete" class="buttonNew squareButton"><img src="/icons/trash.png" /></button><button title="Edit" class="buttonNew squareButton"><img src="/icons/edit.png" /></button><p>old value ---&gt; new value</p>';
+      const expectedNewResult =
+        '<div class="section configRule"><button title="Delete" class="buttonNew squareButton"><img src="/icons/trash.png" /></button><button title="Edit" class="buttonNew squareButton"><img src="/icons/edit.png" /></button><p>old value ---&gt; new value</p>';
       chai.expect(expectedNewResult).to.equal(newResult);
     });
     describe("Check function updateValue: ", function () {
