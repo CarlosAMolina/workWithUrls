@@ -35,6 +35,7 @@ describe("Check script menuStoredRule.js: ", function () {
       const result = ModuleDom.getInfoContainer().innerHTML;
       const expectedResult =
         '<div><div><button title="Delete" class="floatLeft button" style="width: 30px; height: 30px; background: url(/icons/trash.png) no-repeat center;"></button><button title="Edit" class="floatLeft button" style="width: 30px; height: 30px; background: url(/icons/edit.png) no-repeat center;"></button><p style="margin-left: 75px">http ---&gt; hXXp</p><div class="clearfix"></div></div><div style="display: none;"><input class="input" style="width:30%"><input class="input" style="width:30%"><button title="Update" class="floatLeft button" style="width: 30px; height: 30px; background: url(/icons/ok.png) no-repeat center;"></button><button title="Cancel update" class="floatLeft button" style="width: 30px; height: 30px; background: url(/icons/cancel.png) no-repeat center;"></button><div class="clearfix"></div></div></div>';
+      // TODO const expectedNewResult = '<div class="section configRule"><button title="Delete" class="buttonNew squareButton"><img src="/icons/trash.png" /></button><button title="Edit" class="buttonNew squareButton"><img src="/icons/edit.png" /></button><p>old value ---&gt; new value</p>';
       chai.expect(expectedResult).to.equal(result);
     });
     describe("Check function updateValue: ", function () {
