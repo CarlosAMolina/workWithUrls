@@ -164,4 +164,4 @@ class ElementClearFix {
   }
 }
 
-export { showMenuStoredRule, showMenuStoredRuleNew, showStoredRulesType };
+export { showMenuStoredRule, showStoredRulesType };

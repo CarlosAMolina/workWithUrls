@@ -1,6 +1,7 @@
 import * as ModuleDom from "../popup/modules/dom.js";
 import * as ModuleMockDom from "./mockDom.js"; // Global mocks.
 import * as ModuleMenuStoredRule from "../popup/modules/menus/menuStoredRule.js";
+import * as ModuleMenuStoredRuleNew from "../popup/modules/menus/menuStoredRuleNew.js";
 import * as ModuleRule from "../popup/modules/rules/rule.js";
 import * as ModuleUrlsModifier from "../popup/modules/urlsModifier.js";
 
@@ -26,6 +27,7 @@ function storageMockGet() {
 
 describe("Check script menuStoredRule.js: ", function () {
   describe("Check function showMenuStoredRule: ", function () {
+    // TODO deprecate with the new version
     it("Check function runs without exceptions: ", function () {
       const rule = new ModuleRule.Rule("http", "hXXp");
       let rules = new ModuleUrlsModifier.Rules();
@@ -39,7 +41,7 @@ describe("Check script menuStoredRule.js: ", function () {
     it.only("Check function runs without exceptions: ", function () {
       const rule = new ModuleRule.Rule("http", "hXXp");
       let rules = new ModuleUrlsModifier.Rules();
-      ModuleMenuStoredRule.showMenuStoredRuleNew(rule, rules);
+      ModuleMenuStoredRuleNew.showMenuStoredRule(rule, rules);
       const newResult = ModuleDom.getInfoContainer().innerHTML;
       const expectedNewResult =
         '<div class="section configRule"><button title="Delete" class="buttonNew squareButton"><img src="/icons/trash.png" /></button><button title="Edit" class="buttonNew squareButton"><img src="/icons/edit.png" /></button><p>old value ---&gt; new value</p>';
