@@ -93,9 +93,9 @@ class DocumentModifier {
     let element = document.createElement(config.tag);
     element.setAttribute("title", config.attributes.title);
     element.setAttribute("class", config.attributes.class);
-    element.style.width = config.style.width;
-    element.style.height = config.style.height;
-    element.style.background = config.style.background;
+    // TODO derop unrequired values from config
+    // TODO use config image value
+    element.innerHTML = '<img src="images\ok.png" />';
     return element;
   }
 }
