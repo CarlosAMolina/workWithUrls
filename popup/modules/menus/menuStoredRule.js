@@ -146,7 +146,7 @@ function showMenuStoredRuleNew(rule, rules) {
     const ruleValue = new RuleValue(rule).entry;
     const editInputValueOld = new EditInputValue().entry;
     const editInputValueNew = new EditInputValue().entry;
-    menuSummary.appendChild(buttons.delete);
+    menu.appendChild(buttons.delete);
     menuSummary.appendChild(buttons.edit);
     menuSummary.appendChild(ruleValue);
     menuSummary.appendChild(new ElementClearFix().element);
