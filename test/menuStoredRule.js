@@ -1,3 +1,5 @@
+import * as ModuleDom from "../popup/modules/dom.js";
+import * as ModuleMockDom from "./mockDom.js"; // Global mocks.
 import * as ModuleMenuStoredRule from "../popup/modules/menus/menuStoredRule.js";
 import * as ModuleRule from "../popup/modules/rules/rule.js";
 import * as ModuleUrlsModifier from "../popup/modules/urlsModifier.js";
@@ -29,8 +31,11 @@ describe("Check script menuStoredRule.js: ", function () {
     it.only("Check function runs without exceptions: ", function () {
       const rule = new ModuleRule.Rule("http", "hXXp");
       let rules = new ModuleUrlsModifier.Rules();
-      const result = ModuleMenuStoredRule.showMenuStoredRule(rule, rules);
-      chai.expect(typeof result).to.equal("undefined");
+      ModuleMenuStoredRule.showMenuStoredRule(rule, rules);
+      const result = ModuleDom.getInfoContainer().innerHTML;
+      const expectedResult =
+        '<div><div><button title="Delete" class="floatLeft button" style="width: 30px; height: 30px; background: url(/icons/trash.png) no-repeat center;"></button><button title="Edit" class="floatLeft button" style="width: 30px; height: 30px; background: url(/icons/edit.png) no-repeat center;"></button><p style="margin-left: 75px">http ---&gt; hXXp</p><div class="clearfix"></div></div><div style="display: none;"><input class="input" style="width:30%"><input class="input" style="width:30%"><button title="Update" class="floatLeft button" style="width: 30px; height: 30px; background: url(/icons/ok.png) no-repeat center;"></button><button title="Cancel update" class="floatLeft button" style="width: 30px; height: 30px; background: url(/icons/cancel.png) no-repeat center;"></button><div class="clearfix"></div></div></div>';
+      chai.expect(expectedResult).to.equal(result);
     });
     describe("Check function updateValue: ", function () {
       it("Check function runs without exceptions: ", function () {
