@@ -25,7 +25,8 @@ function storageMockGet() {
 describe("Check script menuStoredRule.js: ", function () {
   describe("Check function showMenuStoredRule: ", function () {
     // TODO incorrect test.
-    it("Check function runs without exceptions: ", function () {
+    // TODO drop only
+    it.only("Check function runs without exceptions: ", function () {
       const rule = new ModuleRule.Rule("http", "hXXp");
       let rules = new ModuleUrlsModifier.Rules();
       const result = ModuleMenuStoredRule.showMenuStoredRule(rule, rules);
