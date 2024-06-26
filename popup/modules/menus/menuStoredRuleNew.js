@@ -139,7 +139,6 @@ class RuleValue {
 
   get entry() {
     let entry = document.createElement("p");
-    entry.setAttribute("style", "margin-left: 75px");
     entry.textContent = this._rule.valueOld + " ---> " + this._rule.valueNew;
     return entry;
   }
