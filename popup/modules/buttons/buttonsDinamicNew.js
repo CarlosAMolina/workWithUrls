@@ -10,8 +10,6 @@ class ButtonInterface {
         class: "buttonNew squareButton",
       },
       style: {
-        width: "30px",
-        height: "30px",
         background: undefined,
       },
     };
