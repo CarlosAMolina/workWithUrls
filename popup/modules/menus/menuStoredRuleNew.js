@@ -29,11 +29,11 @@ function showMenuStoredRule(rule, rules) {
     menu.setAttribute("class", "section configRule");
     const menuSummary = document.createElement("div");
     const menuEdit = document.createElement("div");
-    const ruleValue = new RuleValue(rule).entry;
     const editInputValueOld = new EditInputValue().entry;
     const editInputValueNew = new EditInputValue().entry;
     menu.appendChild(buttons.delete);
     menu.appendChild(buttons.edit);
+    const ruleValue = new RuleValue(rule).entry;
     menu.appendChild(ruleValue);
     menuSummary.appendChild(new ElementClearFix().element);
     menuEdit.appendChild(editInputValueOld);
