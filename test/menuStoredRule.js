@@ -39,7 +39,7 @@ describe("Check script menuStoredRule.js: ", function () {
     });
     // TODO drop only
     it.only("Check function runs without exceptions: ", function () {
-      const rule = new ModuleRule.Rule("http", "hXXp");
+      const rule = new ModuleRule.Rule("old value", "new value");
       let rules = new ModuleUrlsModifier.Rules();
       ModuleMenuStoredRuleNew.showMenuStoredRule(rule, rules);
       const newResult = ModuleDom.getInfoContainer().innerHTML;
