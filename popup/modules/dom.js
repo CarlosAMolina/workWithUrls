@@ -94,8 +94,8 @@ class DocumentModifier {
     element.setAttribute("title", config.attributes.title);
     element.setAttribute("class", config.attributes.class);
     // TODO derop unrequired values from config
-    // TODO use config image value
-    element.innerHTML = '<img src="images\ok.png" />';
+    // TODO the result does not have the `/>`, only `>`, check if the addon runs ok.
+    element.innerHTML = `<img src="${config.style.background}" />`;
     return element;
   }
 }

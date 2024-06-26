@@ -25,7 +25,7 @@ class ButtonInterface {
   _updateConfig(config) {
     let result = this._configDefault;
     result.attributes.title = config.attributes.title;
-    result.style.background = `url('${config.style.backgroundUrlSrc}') no-repeat center`;
+    result.style.background = config.style.backgroundUrlSrc;
     return result;
   }
 }
