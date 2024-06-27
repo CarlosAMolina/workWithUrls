@@ -40,7 +40,6 @@ function showMenuStoredRule(rule, rules) {
     editInputValueNew.value = rule.valueNew;
     menuEdit.appendChild(buttons.update);
     menuEdit.appendChild(buttons.cancel);
-    menuEdit.appendChild(new ElementClearFix().element);
     menuEdit.style.display = "none";
     menu.appendChild(menuEdit);
     // TODO? drop menuSummary
