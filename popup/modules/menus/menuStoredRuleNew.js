@@ -147,7 +147,6 @@ class EditInputValue {
   get entry() {
     let entry = document.createElement("input");
     entry.setAttribute("class", "input");
-    entry.setAttribute("style", "width:30%");
     return entry;
   }
 }
