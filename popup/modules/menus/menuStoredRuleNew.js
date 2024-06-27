@@ -36,7 +36,6 @@ function showMenuStoredRule(rule, rules) {
     menu.appendChild(buttons.edit);
     const ruleValue = new RuleValue(rule).entry;
     menu.appendChild(ruleValue);
-    menuSummary.appendChild(new ElementClearFix().element);
     menuEdit.appendChild(editInputValueOld);
     menuEdit.appendChild(editInputValueNew);
     menuEdit.appendChild(buttons.update);
