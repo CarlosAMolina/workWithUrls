@@ -44,7 +44,6 @@ function showMenuStoredRule(rule, rules) {
     menuEdit.style.display = "none";
     editInputValueOld.value = rule.valueOld;
     editInputValueNew.value = rule.valueNew;
-    menu.appendChild(menuSummary);
     menu.appendChild(menuEdit);
     return {
       buttons: buttons,
