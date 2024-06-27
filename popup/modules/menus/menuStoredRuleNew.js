@@ -145,7 +145,7 @@ class RuleValue {
 class EditInputValue {
   get entry() {
     let entry = document.createElement("input");
-    entry.setAttribute("class", "input");
+    entry.setAttribute("type", "text");
     return entry;
   }
 }
