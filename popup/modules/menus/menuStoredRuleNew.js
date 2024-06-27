@@ -26,8 +26,6 @@ function showMenuStoredRule(rule, rules) {
   function _getRuleMenu(rule) {
     const menu = document.createElement("div");
     menu.setAttribute("class", "section configRule");
-    // TODO? drop menuSummary
-    const menuSummary = document.createElement("div");
     const buttons = _getButtons();
     const menuEdit = document.createElement("div");
     menu.appendChild(buttons.delete);
@@ -45,6 +43,8 @@ function showMenuStoredRule(rule, rules) {
     editInputValueOld.value = rule.valueOld;
     editInputValueNew.value = rule.valueNew;
     menu.appendChild(menuEdit);
+    // TODO? drop menuSummary
+    const menuSummary = document.createElement("div");
     return {
       buttons: buttons,
       element: menu,
