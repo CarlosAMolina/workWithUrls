@@ -36,12 +36,12 @@ function showMenuStoredRule(rule, rules) {
     menuEdit.appendChild(editInputValueOld);
     const editInputValueNew = new EditInputValue().entry;
     menuEdit.appendChild(editInputValueNew);
+    editInputValueNew.value = rule.valueNew;
     menuEdit.appendChild(buttons.update);
     menuEdit.appendChild(buttons.cancel);
     menuEdit.appendChild(new ElementClearFix().element);
     menuEdit.style.display = "none";
     editInputValueOld.value = rule.valueOld;
-    editInputValueNew.value = rule.valueNew;
     menu.appendChild(menuEdit);
     // TODO? drop menuSummary
     const menuSummary = document.createElement("div");
