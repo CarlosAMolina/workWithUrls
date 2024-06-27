@@ -151,12 +151,4 @@ class EditInputValue {
   }
 }
 
-class ElementClearFix {
-  get element() {
-    let element = document.createElement("div"); // for background color and correct position
-    element.setAttribute("class", "clearfix");
-    return element;
-  }
-}
-
 export { showMenuStoredRule, showStoredRulesType };
