@@ -24,11 +24,11 @@ function showMenuStoredRule(rule, rules) {
   ModuleDom.getInfoContainer().appendChild(ruleMenu.element);
 
   function _getRuleMenu(rule) {
-    const buttons = _getButtons();
     const menu = document.createElement("div");
     menu.setAttribute("class", "section configRule");
     // TODO? drop menuSummary
     const menuSummary = document.createElement("div");
+    const buttons = _getButtons();
     const menuEdit = document.createElement("div");
     menu.appendChild(buttons.delete);
     menu.appendChild(buttons.edit);
