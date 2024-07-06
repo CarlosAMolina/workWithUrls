@@ -7,7 +7,7 @@ import * as ModuleButtonConfigurationRules from "./buttonConfigurationRules.js";
 import * as ModuleButtonCopy from "./buttonCopy.js";
 import * as ModuleButtonObfuscate from "./buttonObfuscate.js";
 import * as ModuleButtonOpenUrls from "./buttonOpenUrls.js";
-import * as ModuleButtonsDinamic from "./buttonsDinamicNew.js";
+import * as ModuleButtonsDinamic from "./buttonsDinamic.js";
 import * as ModuleButtonsExceptions from "./buttonsExceptions.js";
 import * as ModuleButtonsLazyLoading from "./buttonsLazyLoading.js";
 import * as ModuleButtonsOnOff from "./buttonsOnOff.js";

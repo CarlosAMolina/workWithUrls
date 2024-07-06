@@ -6,11 +6,9 @@ class ButtonInterface {
       tag: "button",
       attributes: {
         title: undefined,
-        class: "floatLeft button",
+        class: "buttonNew squareButton",
       },
       style: {
-        width: "30px",
-        height: "30px",
         background: undefined,
       },
     };
@@ -24,7 +22,7 @@ class ButtonInterface {
   _updateConfig(config) {
     let result = this._configDefault;
     result.attributes.title = config.attributes.title;
-    result.style.background = `url('${config.style.backgroundUrlSrc}') no-repeat center`;
+    result.style.background = config.style.backgroundUrlSrc;
     return result;
   }
 }
