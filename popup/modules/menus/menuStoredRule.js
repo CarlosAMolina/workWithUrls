@@ -1,4 +1,5 @@
-import * as ModuleButtonsFactory from "../../../popup/modules/buttons/buttonsFactory.js";
+// TODO rename this file drop New
+import * as ModuleButtonsFactory from "../../../popup/modules/buttons/buttonsFactoryNew.js";
 import * as ModuleDom from "../../../popup/modules/dom.js";
 import * as ModuleRule from "../../../popup/modules/rules/rule.js";
 import * as ModuleStorageGeneral from "../../../popup/modules/storage/general.js";
@@ -17,37 +18,32 @@ async function showStoredRulesType(rules) {
   }
 }
 
-/* Display info.
-:param rule: Rule.
-:param rules: Rules.
-*/
 function showMenuStoredRule(rule, rules) {
   console.log("Init showMenuStoredRule");
   const ruleMenu = _getRuleMenu(rule);
   ModuleDom.getInfoContainer().appendChild(ruleMenu.element);
 
   function _getRuleMenu(rule) {
-    const buttons = _getButtons();
     const menu = document.createElement("div");
-    const menuSummary = document.createElement("div");
-    const menuEdit = document.createElement("div");
+    menu.setAttribute("class", "section configRule");
+    const buttons = _getButtons();
+    menu.appendChild(buttons.delete);
+    menu.appendChild(buttons.edit);
     const ruleValue = new RuleValue(rule).entry;
-    const editInputValueOld = new EditInputValue().entry;
-    const editInputValueNew = new EditInputValue().entry;
-    menuSummary.appendChild(buttons.delete);
-    menuSummary.appendChild(buttons.edit);
-    menuSummary.appendChild(ruleValue);
-    menuSummary.appendChild(new ElementClearFix().element);
-    menuEdit.appendChild(editInputValueOld);
-    menuEdit.appendChild(editInputValueNew);
+    menu.appendChild(ruleValue);
+    const menuEdit = document.createElement("div");
+    menuEdit.style.display = "none";
     menuEdit.appendChild(buttons.update);
     menuEdit.appendChild(buttons.cancel);
-    menuEdit.appendChild(new ElementClearFix().element);
-    menuEdit.style.display = "none";
-    editInputValueOld.value = rule.valueOld;
-    editInputValueNew.value = rule.valueNew;
-    menu.appendChild(menuSummary);
     menu.appendChild(menuEdit);
+    const editInputValueOld = new EditInputValue().entry;
+    menuEdit.appendChild(editInputValueOld);
+    editInputValueOld.value = rule.valueOld;
+    const editInputValueNew = new EditInputValue().entry;
+    menuEdit.appendChild(editInputValueNew);
+    editInputValueNew.value = rule.valueNew;
+    // TODO? drop menuSummary
+    const menuSummary = document.createElement("div");
     return {
       buttons: buttons,
       element: menu,
@@ -141,7 +137,6 @@ class RuleValue {
 
   get entry() {
     let entry = document.createElement("p");
-    entry.setAttribute("style", "margin-left: 75px");
     entry.textContent = this._rule.valueOld + " ---> " + this._rule.valueNew;
     return entry;
   }
@@ -150,17 +145,8 @@ class RuleValue {
 class EditInputValue {
   get entry() {
     let entry = document.createElement("input");
-    entry.setAttribute("class", "input");
-    entry.setAttribute("style", "width:30%");
+    entry.setAttribute("type", "text");
     return entry;
-  }
-}
-
-class ElementClearFix {
-  get element() {
-    let element = document.createElement("div"); // for background color and correct position
-    element.setAttribute("class", "clearfix");
-    return element;
   }
 }
 
