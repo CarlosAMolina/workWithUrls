@@ -1,5 +1,5 @@
 // TODO rename this file drop New
-import * as ModuleButtonsFactory from "../../../popup/modules/buttons/buttonsFactoryNew.js";
+import * as ModuleButtonsFactory from "../../../popup/modules/buttons/buttonsFactory.js";
 import * as ModuleDom from "../../../popup/modules/dom.js";
 import * as ModuleRule from "../../../popup/modules/rules/rule.js";
 import * as ModuleStorageGeneral from "../../../popup/modules/storage/general.js";
