@@ -25,14 +25,14 @@ function showMenuStoredRule(rule, rules) {
 
   function _getRuleMenu(rule) {
     const menuSummary = document.createElement("div");
-    menuSummary.setAttribute("class", "section configRule");
+    _showRuleElement(menuSummary)
     const buttons = _getButtons();
     menuSummary.appendChild(buttons.delete);
     menuSummary.appendChild(buttons.edit);
     const ruleValue = new RuleValue(rule).entry;
     menuSummary.appendChild(ruleValue);
     const menuEdit = document.createElement("div");
-    menuEdit.setAttribute("class", "section configRule hidden");
+    _hideRuleElement(menuEdit)
     menuEdit.appendChild(buttons.update);
     menuEdit.appendChild(buttons.cancel);
     const menu = document.createElement("div");
