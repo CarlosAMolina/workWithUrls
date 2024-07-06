@@ -32,7 +32,7 @@ function showMenuStoredRule(rule, rules) {
     const ruleValue = new RuleValue(rule).entry;
     menuSummary.appendChild(ruleValue);
     const menuEdit = document.createElement("div");
-    menuEdit.setAttribute("class", "hidden");
+    menuEdit.setAttribute("class", "section configRule hidden");
     menuEdit.appendChild(buttons.update);
     menuEdit.appendChild(buttons.cancel);
     const menu = document.createElement("div");
@@ -78,18 +78,18 @@ function showMenuStoredRule(rule, rules) {
   });
 
   ruleMenu.summary.ruleValue.addEventListener("click", () => {
-    ruleMenu.summary.element.style.display = "none";
-    ruleMenu.edit.element.style.display = "block";
+    ruleMenu.summary.element.setAttribute("class", "section configRule hidden");
+    ruleMenu.edit.element.setAttribute("class", "section configRule");
   });
 
   ruleMenu.buttons.edit.addEventListener("click", () => {
-    ruleMenu.summary.element.style.display = "none";
-    ruleMenu.edit.element.style.display = "block";
+    ruleMenu.summary.element.setAttribute("class", "section configRule hidden");
+    ruleMenu.edit.element.setAttribute("class", "section configRule");
   });
 
   ruleMenu.buttons.cancel.addEventListener("click", () => {
-    ruleMenu.summary.element.style.display = "block";
-    ruleMenu.edit.element.style.display = "none";
+    ruleMenu.summary.element.setAttribute("class", "section configRule");
+    ruleMenu.edit.element.setAttribute("class", "section configRule hidden");
   });
 
   ruleMenu.buttons.update.addEventListener("click", () => {
