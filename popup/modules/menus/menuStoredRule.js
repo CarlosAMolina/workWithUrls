@@ -25,14 +25,14 @@ function showMenuStoredRule(rule, rules) {
 
   function _getRuleMenu(rule) {
     const menuSummary = document.createElement("div");
-    _showRuleElement(menuSummary)
+    menuSummary.setAttribute("class", "section configRule");
     const buttons = _getButtons();
     menuSummary.appendChild(buttons.delete);
     menuSummary.appendChild(buttons.edit);
     const ruleValue = new RuleValue(rule).entry;
     menuSummary.appendChild(ruleValue);
     const menuEdit = document.createElement("div");
-    _hideRuleElement(menuEdit)
+    menuEdit.setAttribute("class", "section configRule hidden");
     menuEdit.appendChild(buttons.update);
     menuEdit.appendChild(buttons.cancel);
     const menu = document.createElement("div");
@@ -93,11 +93,11 @@ function showMenuStoredRule(rule, rules) {
   });
 
   function _hideRuleElement(element) {
-    element.setAttribute("class", "section configRule hidden");
+    element.classList.add("hidden");
   }
 
   function _showRuleElement(element) {
-    element.setAttribute("class", "section configRule");
+    element.classList.remove("hidden");
   }
 
   ruleMenu.buttons.update.addEventListener("click", () => {
