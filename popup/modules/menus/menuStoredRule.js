@@ -31,10 +31,12 @@ function showMenuStoredRule(rule, rules) {
     menu.appendChild(buttons.edit);
     const ruleValue = new RuleValue(rule).entry;
     menu.appendChild(ruleValue);
+    const menuSummary = document.createElement("div");
     const menuEdit = document.createElement("div");
     menuEdit.setAttribute("class", "hidden");
     menuEdit.appendChild(buttons.update);
     menuEdit.appendChild(buttons.cancel);
+    menu.appendChild(menuSummary);
     menu.appendChild(menuEdit);
     const editInputValueOld = new EditInputValue().entry;
     menuEdit.appendChild(editInputValueOld);
@@ -42,8 +44,6 @@ function showMenuStoredRule(rule, rules) {
     const editInputValueNew = new EditInputValue().entry;
     menuEdit.appendChild(editInputValueNew);
     editInputValueNew.value = rule.valueNew;
-    // TODO? drop menuSummary
-    const menuSummary = document.createElement("div");
     return {
       buttons: buttons,
       element: menu,
