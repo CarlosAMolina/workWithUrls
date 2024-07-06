@@ -32,9 +32,8 @@ describe("Check script menuStoredRule.js: ", function () {
       let rules = new ModuleUrlsModifier.Rules();
       ModuleMenuStoredRule.showMenuStoredRule(rule, rules);
       const newResult = ModuleDom.getInfoContainer().innerHTML;
-      // TODO drop final </div></div>
       const expectedResult =
-        '<div class="section configRule"><button title="Delete" class="buttonNew squareButton"><img src="/icons/trash.png"></button><button title="Edit" class="buttonNew squareButton"><img src="/icons/edit.png"></button><p>old value ---&gt; new value</p><div style="display: none;"><button title="Update" class="buttonNew squareButton"><img src="/icons/ok.png"></button><button title="Cancel update" class="buttonNew squareButton"><img src="/icons/cancel.png"></button><input type="text"><input type="text"></div></div>';
+        '<div><div class="section configRule"><button title="Delete" class="buttonNew squareButton"><img src="/icons/trash.png"></button><button title="Edit" class="buttonNew squareButton"><img src="/icons/edit.png"></button><p>old value ---&gt; new value</p></div><div class="section configRule hidden"><button title="Update" class="buttonNew squareButton"><img src="/icons/ok.png"></button><button title="Cancel update" class="buttonNew squareButton"><img src="/icons/cancel.png"></button><input type="text"><input type="text"></div></div>'
       chai.expect(expectedResult).to.equal(newResult);
     });
     describe("Check function updateValue: ", function () {
