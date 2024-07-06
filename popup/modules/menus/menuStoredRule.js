@@ -24,13 +24,9 @@ function showMenuStoredRule(rule, rules) {
   ModuleDom.getInfoContainer().appendChild(ruleMenu.element);
 
   function _getRuleMenu(rule) {
-    const menuSummary = document.createElement("div");
-    menuSummary.setAttribute("class", "section configRule");
     const buttons = _getButtons();
-    menuSummary.appendChild(buttons.delete);
-    menuSummary.appendChild(buttons.edit);
     const ruleValue = new RuleValue(rule).entry;
-    menuSummary.appendChild(ruleValue);
+    const menuSummary = _getMenuSummary(buttons, ruleValue);
     const menuEdit = document.createElement("div");
     menuEdit.setAttribute("class", "section configRule hidden");
     menuEdit.appendChild(buttons.update);
@@ -57,6 +53,15 @@ function showMenuStoredRule(rule, rules) {
         inputValueNew: editInputValueNew,
       },
     };
+  }
+
+  function _getMenuSummary(buttons, ruleValue) {
+    const menuSummary = document.createElement("div");
+    menuSummary.setAttribute("class", "section configRule");
+    menuSummary.appendChild(buttons.delete);
+    menuSummary.appendChild(buttons.edit);
+    menuSummary.appendChild(ruleValue);
+    return menuSummary;
   }
 
   function _getButtons() {
