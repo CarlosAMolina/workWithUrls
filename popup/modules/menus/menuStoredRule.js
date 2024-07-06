@@ -24,18 +24,18 @@ function showMenuStoredRule(rule, rules) {
   ModuleDom.getInfoContainer().appendChild(ruleMenu.element);
 
   function _getRuleMenu(rule) {
-    const menu = document.createElement("div");
-    menu.setAttribute("class", "section configRule");
-    const buttons = _getButtons();
-    menu.appendChild(buttons.delete);
-    menu.appendChild(buttons.edit);
-    const ruleValue = new RuleValue(rule).entry;
-    menu.appendChild(ruleValue);
     const menuSummary = document.createElement("div");
+    menuSummary.setAttribute("class", "section configRule");
+    const buttons = _getButtons();
+    menuSummary.appendChild(buttons.delete);
+    menuSummary.appendChild(buttons.edit);
+    const ruleValue = new RuleValue(rule).entry;
+    menuSummary.appendChild(ruleValue);
     const menuEdit = document.createElement("div");
     menuEdit.setAttribute("class", "hidden");
     menuEdit.appendChild(buttons.update);
     menuEdit.appendChild(buttons.cancel);
+    const menu = document.createElement("div");
     menu.appendChild(menuSummary);
     menu.appendChild(menuEdit);
     const editInputValueOld = new EditInputValue().entry;
