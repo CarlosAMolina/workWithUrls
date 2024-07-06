@@ -27,19 +27,14 @@ function showMenuStoredRule(rule, rules) {
     const buttons = _getButtons();
     const ruleValue = new RuleValue(rule).entry;
     const menuSummary = _getMenuSummary(buttons, ruleValue);
-    const menuEdit = document.createElement("div");
-    menuEdit.setAttribute("class", "section configRule hidden");
-    menuEdit.appendChild(buttons.update);
-    menuEdit.appendChild(buttons.cancel);
+    const editInputValueNew = new EditInputValue().entry;
+    editInputValueNew.value = rule.valueNew;
+    const editInputValueOld = new EditInputValue().entry;
+    editInputValueOld.value = rule.valueOld;
+    const menuEdit = _getMenuEdit(buttons, editInputValueNew, editInputValueOld);
     const menu = document.createElement("div");
     menu.appendChild(menuSummary);
     menu.appendChild(menuEdit);
-    const editInputValueOld = new EditInputValue().entry;
-    menuEdit.appendChild(editInputValueOld);
-    editInputValueOld.value = rule.valueOld;
-    const editInputValueNew = new EditInputValue().entry;
-    menuEdit.appendChild(editInputValueNew);
-    editInputValueNew.value = rule.valueNew;
     return {
       buttons: buttons,
       element: menu,
@@ -62,6 +57,16 @@ function showMenuStoredRule(rule, rules) {
     menuSummary.appendChild(buttons.edit);
     menuSummary.appendChild(ruleValue);
     return menuSummary;
+  }
+
+  function _getMenuEdit(buttons, editInputValueNew, editInputValueOld) {
+    const menuEdit = document.createElement("div");
+    menuEdit.setAttribute("class", "section configRule hidden");
+    menuEdit.appendChild(buttons.update);
+    menuEdit.appendChild(buttons.cancel);
+    menuEdit.appendChild(editInputValueOld);
+    menuEdit.appendChild(editInputValueNew);
+    return menuEdit;
   }
 
   function _getButtons() {
