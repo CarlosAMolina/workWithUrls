@@ -79,21 +79,25 @@ function showMenuStoredRule(rule, rules) {
 
   ruleMenu.summary.ruleValue.addEventListener("click", () => {
     _hideRuleElement(ruleMenu.summary.element);
-    ruleMenu.edit.element.setAttribute("class", "section configRule");
+    _showRuleElement(ruleMenu.edit.element);
   });
 
   ruleMenu.buttons.edit.addEventListener("click", () => {
     _hideRuleElement(ruleMenu.summary.element);
-    ruleMenu.edit.element.setAttribute("class", "section configRule");
+    _showRuleElement(ruleMenu.edit.element);
   });
 
   ruleMenu.buttons.cancel.addEventListener("click", () => {
-    ruleMenu.summary.element.setAttribute("class", "section configRule");
+    _showRuleElement(ruleMenu.summary.element);
     _hideRuleElement(ruleMenu.edit.element);
   });
 
   function _hideRuleElement(element) {
     element.setAttribute("class", "section configRule hidden");
+  }
+
+  function _showRuleElement(element) {
+    element.setAttribute("class", "section configRule");
   }
 
   ruleMenu.buttons.update.addEventListener("click", () => {
