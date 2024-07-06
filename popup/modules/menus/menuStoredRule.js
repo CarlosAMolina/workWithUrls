@@ -32,7 +32,7 @@ function showMenuStoredRule(rule, rules) {
     const ruleValue = new RuleValue(rule).entry;
     menu.appendChild(ruleValue);
     const menuEdit = document.createElement("div");
-    menuEdit.style.display = "none";
+    menuEdit.setAttribute("class", "hidden");
     menuEdit.appendChild(buttons.update);
     menuEdit.appendChild(buttons.cancel);
     menu.appendChild(menuEdit);
