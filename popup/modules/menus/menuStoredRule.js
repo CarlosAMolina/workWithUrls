@@ -31,7 +31,11 @@ function showMenuStoredRule(rule, rules) {
     editInputValueNew.value = rule.valueNew;
     const editInputValueOld = new EditInputValue().entry;
     editInputValueOld.value = rule.valueOld;
-    const menuEdit = _getMenuEdit(buttons, editInputValueNew, editInputValueOld);
+    const menuEdit = _getMenuEdit(
+      buttons,
+      editInputValueNew,
+      editInputValueOld,
+    );
     const menu = document.createElement("div");
     menu.appendChild(menuSummary);
     menu.appendChild(menuEdit);

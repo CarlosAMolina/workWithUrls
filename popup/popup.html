@@ -86,9 +86,7 @@
               Lazy loading configuration
             </button>
             <div id="menuLazyLoading" class="section hidden">
-              <p>
-                Wait time between opening each tab (milliseconds, integer)
-              </p>
+              <p>Wait time between opening each tab (milliseconds, integer)</p>
               <div class="lazyLoadingConfig section">
                 <input
                   id="inputLazyLoading"
@@ -132,64 +130,64 @@
           </fieldset>
           <!-- TODO add hidden if no type of rule selected -->
           <div id="menuRulesConfiguration" class="hidden">
-          <div class="configOpenRules section">
-            <button id="buttonOpenRules" class="buttonOnOff">
-              <div>off</div>
-            </button>
-            <p>Save more than one rule</p>
-          </div>
-          <div id="divInputRule">
-            <div class="section">
-              <p id="pInputOld">Value to change</p>
+            <div class="configOpenRules section">
+              <button id="buttonOpenRules" class="buttonOnOff">
+                <div>off</div>
+              </button>
+              <p>Save more than one rule</p>
             </div>
-            <div class="section">
-              <input
-                id="inputValueOld"
-                class="input"
-                type="text"
-                rows="1"
-                disabled
-              />
+            <div id="divInputRule">
+              <div class="section">
+                <p id="pInputOld">Value to change</p>
+              </div>
+              <div class="section">
+                <input
+                  id="inputValueOld"
+                  class="input"
+                  type="text"
+                  rows="1"
+                  disabled
+                />
+              </div>
+              <div class="section">
+                <p id="pInputNew">New value</p>
+              </div>
+              <div class="section">
+                <input
+                  id="inputValueNew"
+                  class="input"
+                  type="text"
+                  rows="1"
+                  disabled
+                />
+              </div>
             </div>
-            <div class="section">
-              <p id="pInputNew">New value</p>
+            <!-- TODO add hidden -->
+            <!-- TODO? rm backGroundGrey -->
+            <div id="divInputRules" class="backGroundGrey">
+              <div class="section">
+                <p id="pInputRules">
+                  Value to change (line i). New value (line i+1)
+                </p>
+              </div>
+              <div class="section">
+                <textarea
+                  id="inputRules"
+                  class="input"
+                  type="text"
+                  style="width: 100%; min-width: 305px"
+                  rows="5"
+                  disabled
+                ></textarea>
+              </div>
             </div>
-            <div class="section">
-              <input
-                id="inputValueNew"
-                class="input"
-                type="text"
-                rows="1"
-                disabled
-              />
+            <div class="oneLineButtons section">
+              <button id="buttonAddRule" class="buttonNew" disabled>Add</button>
+              <button id="buttonClearAllRules" class="buttonNew" disabled>
+                Clear all
+              </button>
             </div>
-          </div>
-          <!-- TODO add hidden -->
-          <!-- TODO? rm backGroundGrey -->
-          <div id="divInputRules" class="backGroundGrey">
-            <div class="section">
-              <p id="pInputRules">
-                Value to change (line i). New value (line i+1)
-              </p>
-            </div>
-            <div class="section">
-              <textarea
-                id="inputRules"
-                class="input"
-                type="text"
-                style="width: 100%; min-width: 305px"
-                rows="5"
-                disabled
-              ></textarea>
-            </div>
-          </div>
-          <div class="oneLineButtons section">
-            <button id="buttonAddRule" class="buttonNew" disabled>Add</button>
-            <button id="buttonClearAllRules" class="buttonNew" disabled>
-              Clear all
-            </button>
-          </div>
-          <div class="info-container"></div>
+            <div class="info-container"></div>
           </div>
         </div>
       </div>
