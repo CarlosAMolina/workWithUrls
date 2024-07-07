@@ -34,7 +34,7 @@ class ButtonCancel extends ButtonInterface {
         title: "Cancel update",
       },
       style: {
-        backgroundUrlSrc: "/icons/cancel.png",
+        backgroundUrlSrc: "/icons/cancel.svg",
       },
     };
     super(config);
@@ -76,7 +76,7 @@ class ButtonUpdate extends ButtonInterface {
         title: "Update",
       },
       style: {
-        backgroundUrlSrc: "/icons/ok.png",
+        backgroundUrlSrc: "/icons/ok.svg",
       },
     };
     super(config);
