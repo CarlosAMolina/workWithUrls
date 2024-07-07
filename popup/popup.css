@@ -26,7 +26,8 @@ textarea {
 }
 
 /* https://stackoverflow.com/questions/5235142/how-do-i-disable-the-resizable-property-of-a-textarea*/
-#inputUrls {
+#inputUrls,
+#inputRules {
   resize: none;
 }
 
