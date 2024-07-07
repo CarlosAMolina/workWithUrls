@@ -25,6 +25,10 @@ textarea {
   font-size: 15px;
 }
 
+#popup-content {
+  width: 500px;
+}
+
 /* https://stackoverflow.com/questions/5235142/how-do-i-disable-the-resizable-property-of-a-textarea*/
 #inputUrls,
 #inputRules {
