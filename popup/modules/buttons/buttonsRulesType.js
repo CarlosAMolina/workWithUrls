@@ -26,6 +26,7 @@ class ButtonInputDeobfuscation extends ModuleButtonsInterface.ButtonClicked {
       ModuleUrlsModifier.Rules.getInstance(),
     );
     ModuleDom.setEnabledArrayElementsById(_elementsIdToEnable);
+    ModuleDom.setUnhiddenElementById("menuRulesConfiguration");
   }
 }
 
@@ -41,6 +42,7 @@ class ButtonInputObfuscation extends ModuleButtonsInterface.ButtonClicked {
       ModuleUrlsModifier.Rules.getInstance(),
     );
     ModuleDom.setEnabledArrayElementsById(_elementsIdToEnable);
+    ModuleDom.setUnhiddenElementById("menuRulesConfiguration");
   }
 }
 
