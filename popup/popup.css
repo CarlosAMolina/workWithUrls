@@ -25,6 +25,11 @@ textarea {
   font-size: 15px;
 }
 
+/* https://stackoverflow.com/questions/5235142/how-do-i-disable-the-resizable-property-of-a-textarea*/
+#inputUrls {
+  resize: none;
+}
+
 /* https://stackoverflow.com/questions/271067/how-can-i-make-a-textarea-100-width-without-overflowing-when-padding-is-present */
 input,
 textarea {
