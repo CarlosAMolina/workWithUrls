@@ -48,7 +48,7 @@ class ButtonDelete extends ButtonInterface {
         title: "Delete",
       },
       style: {
-        backgroundUrlSrc: "/icons/trash.png",
+        backgroundUrlSrc: "/icons/trash.svg",
       },
     };
     super(config);
