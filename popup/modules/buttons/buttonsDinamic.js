@@ -62,7 +62,7 @@ class ButtonEdit extends ButtonInterface {
         title: "Edit",
       },
       style: {
-        backgroundUrlSrc: "/icons/edit.png",
+        backgroundUrlSrc: "/icons/edit.svg",
       },
     };
     super(config);
