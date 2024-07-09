@@ -127,7 +127,7 @@ input[type="radio"] {
 
 https://www.scriptol.com/html5/button-on-off.php
 */
-.buttonOnOff {
+.onOffButton {
   width: 32px;
   height: 32px;
   padding: 1px 2px 3px 3px;
@@ -136,7 +136,7 @@ https://www.scriptol.com/html5/button-on-off.php
   text-align: center;
   cursor: pointer;
 }
-.buttonOnOff div {
+.onOffButton div {
   width: 18px;
   height: 18px;
   min-height: 18px;
