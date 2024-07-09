@@ -26,6 +26,11 @@ textarea {
   font-size: var(--FONT-SIZE);
 }
 
+p {
+  margin: 0;
+  font-size: var(--FONT-SIZE);
+}
+
 #popup-content {
   width: 500px;
 }
@@ -171,9 +176,4 @@ https://www.scriptol.com/html5/button-on-off.php
 .floatLeft {
   float: left;
   margin: 0% auto;
-}
-
-p {
-  margin: 0;
-  font-size: var(--FONT-SIZE);
 }
