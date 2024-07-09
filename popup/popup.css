@@ -72,7 +72,6 @@ input[type="radio"] {
   max-height: var(--BUTTON-HEIGHT);
 }
 
-/* TODO rename all configs at beginning or end of names*/
 .decodeUrlsConfig,
 .openAllPathsConfig,
 .openRulesConfig,
