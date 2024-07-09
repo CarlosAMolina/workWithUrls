@@ -74,7 +74,7 @@ input[type="radio"] {
 
 /* TODO rename all configs at beginning or end of names*/
 .decodeUrlsConfig,
-.configOpenAllPaths,
+.openAllPathsConfig,
 .configOpenRules,
 .configRule {
   display: flex;
