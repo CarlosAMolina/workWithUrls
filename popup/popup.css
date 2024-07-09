@@ -1,11 +1,11 @@
 /* pop-up box */
 
 :root {
+  --BUTTON-HEIGHT: 30px;
+  --FLEX-PADDING: 5px;
   --INPUT-PADDING: 5px;
   --PADDING: 10px;
-  --FLEX-PADDING: 5px;
   --SPACE-BETWEEN-SECTIONS: 10px;
-  --BUTTON-HEIGHT: 30px;
   --SQUARE-BUTTON-WIDTH: 30px;
 }
 
