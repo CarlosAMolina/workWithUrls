@@ -95,11 +95,6 @@ input[type="radio"] {
   width: 100%;
 }
 
-.updateButton {
-  width: var(--UPDATE-BUTTON-WIDTH);
-}
-
-/* TODO refactor join with updateButton */
 /* flex-shrink: to respect width https://stackoverflow.com/questions/21406397/width-ignored-on-flexbox-items */
 .squareButton {
   height: var(--BUTTON-HEIGHT);
