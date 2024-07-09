@@ -22,13 +22,13 @@ body {
 input,
 label,
 legend,
+p,
 textarea {
   font-size: var(--FONT-SIZE);
 }
 
 p {
   margin: 0;
-  font-size: var(--FONT-SIZE);
 }
 
 #popup-content {
