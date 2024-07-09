@@ -10,8 +10,8 @@ class ButtonCopy extends ModuleButtonsInterface.ButtonClicked {
 
   get run() {
     this.logButtonName;
-    if (ModuleDom.getValueElementById("inputUrls") !== "") {
-      _copyToClipboard("inputUrls");
+    if (ModuleDom.getValueElementById("urlsInput") !== "") {
+      _copyToClipboard("urlsInput");
     } else if (ModuleUrlsModifier.Rules.getInstance().isRuleTypeConfigured()) {
       _copyRules();
     }

@@ -4,9 +4,9 @@ import * as ModuleDom from "./dom.js";
 param urlsModifier: module urlsModifier class urlsModifier instance.
 */
 function modifyText(urlsModifier) {
-  let urls = ModuleDom.getValueElementById("inputUrls").split("\n");
+  let urls = ModuleDom.getValueElementById("urlsInput").split("\n");
   urls = urlsModifier.modifyUrls(urls).join("\n");
-  ModuleDom.setValueToElementById(urls, "inputUrls");
+  ModuleDom.setValueToElementById(urls, "urlsInput");
 }
 
 export { modifyText };

@@ -10,7 +10,7 @@ async function openUrls() {
   const lazyLoadingTime =
     await ModuleStorageLazyLoading.getStorageLazyLoading();
   // Get URLs at the input box.
-  let urls = ModuleDom.getValueElementById("inputUrls").split("\n");
+  let urls = ModuleDom.getValueElementById("urlsInput").split("\n");
   console.log(`URLs at the input box: ${urls}`);
   if (ModuleButtonsFactory.getButton("buttonOpenPaths").isOn) {
     urls = ModuleUrlsModifier.getUrlsWithPaths(urls);

@@ -27,10 +27,10 @@ describe("Check script dom.js: ", function () {
   });
   describe("Check class Dom: ", function () {
     it("Check function getValueElementById and setValueToElementById: ", function () {
-      const elementId = "inputUrls";
-      const inputUrlsNew = "new1.com\nnew2.com";
-      ModuleDom.setValueToElementById(inputUrlsNew, elementId);
-      assert.equal(ModuleDom.getValueElementById(elementId), inputUrlsNew);
+      const elementId = "urlsInput";
+      const urlsInputNew = "new1.com\nnew2.com";
+      ModuleDom.setValueToElementById(urlsInputNew, elementId);
+      assert.equal(ModuleDom.getValueElementById(elementId), urlsInputNew);
     });
     it("Check function setCheckedElementById, setUncheckedElementById and isCheckedElementById: ", function () {
       const elementId = "buttonDecodeUrls";

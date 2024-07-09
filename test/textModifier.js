@@ -3,14 +3,14 @@ import * as ModuleTextModifier from "../popup/modules/textModifier.js";
 import chai from "chai";
 
 function mockDomInputUrls(valueToMock) {
-  document.getElementById("inputUrls").value = valueToMock;
+  document.getElementById("urlsInput").value = valueToMock;
 }
 
 describe("Check script textModifier.js: ", function () {
-  const inputUrlsTest = "test1.com\ntest2.com";
+  const urlsInputTest = "test1.com\ntest2.com";
   describe("Check function modifyText: ", function () {
     it("Check function runs without exceptions: ", function () {
-      mockDomInputUrls(inputUrlsTest);
+      mockDomInputUrls(urlsInputTest);
       class MockUrlsRuleApplicator {
         modifyUrls() {
           return ["url1.com", "url2.com"];

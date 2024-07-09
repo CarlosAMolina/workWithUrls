@@ -4,7 +4,7 @@ import * as ModuleRule from "../popup/modules/rules/rule.js";
 import chai from "chai";
 
 function mockDomInputUrls(valueToMock) {
-  document.getElementById("inputUrls").value = valueToMock;
+  document.getElementById("urlsInput").value = valueToMock;
 }
 
 function mockBrowserStorageLocal() {
@@ -39,7 +39,7 @@ function storageMock() {
 }
 
 describe("Check script popup.js: ", function () {
-  const inputUrlsTest = "test1.com\ntest2.com";
+  const urlsInputTest = "test1.com\ntest2.com";
   mockBrowserStorageLocal();
   describe("Check function popupMain: ", function () {
     ModulePopup.popupMain(); // Functon instance, required to access inner functions.
