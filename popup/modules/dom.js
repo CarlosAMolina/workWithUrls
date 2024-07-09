@@ -75,15 +75,6 @@ function showOrHideArrayElementsById(idElements2Change) {
   }
 }
 
-/*
-param idElements2Change: array
-*/
-function setEnabledArrayElementsById(idElements2Change) {
-  for (const idElement2Change of idElements2Change) {
-    setEnabledElementById(idElement2Change);
-  }
-}
-
 class DocumentModifier {
   /*
   param config: json
@@ -111,7 +102,6 @@ export {
   isCheckedElementById,
   isHiddenElementById,
   setCheckedElementById,
-  setEnabledArrayElementsById,
   setEnabledElementById,
   setHiddenElementById,
   setStyleBoxErrorToElementById,

@@ -4,9 +4,6 @@ import * as ModuleDomRules from "../../modules/dom/rules.js";
 import * as ModuleMenuStoredRule from "../../modules/menus/menuStoredRule.js";
 import * as ModuleUrlsModifier from "../../modules/urlsModifier.js";
 
-const _elementsIdToEnable = [
-];
-
 class ButtonInputDeobfuscation extends ModuleButtonsInterface.ButtonClicked {
   static get _buttonIdHtml() {
     return "buttonInputDeobfuscation";
@@ -18,7 +15,6 @@ class ButtonInputDeobfuscation extends ModuleButtonsInterface.ButtonClicked {
     ModuleMenuStoredRule.showStoredRulesType(
       ModuleUrlsModifier.Rules.getInstance(),
     );
-    ModuleDom.setEnabledArrayElementsById(_elementsIdToEnable);
     ModuleDom.setUnhiddenElementById("menuRulesConfiguration");
   }
 }
@@ -34,7 +30,6 @@ class ButtonInputObfuscation extends ModuleButtonsInterface.ButtonClicked {
     ModuleMenuStoredRule.showStoredRulesType(
       ModuleUrlsModifier.Rules.getInstance(),
     );
-    ModuleDom.setEnabledArrayElementsById(_elementsIdToEnable);
     ModuleDom.setUnhiddenElementById("menuRulesConfiguration");
   }
 }

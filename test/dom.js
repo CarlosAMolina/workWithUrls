@@ -71,10 +71,5 @@ describe("Check script dom.js: ", function () {
       ModuleDom.showOrHideArrayElementsById([elementId]);
       assert.isFalse(ModuleDom.isHiddenElementById(elementId));
     });
-    it("Check function setEnabledArrayElementsById: ", function () {
-      const elementId = ["pInputOld"];
-      ModuleDom.setEnabledElementById([elementId]);
-      assert.isFalse(ModuleDom.getElementById(elementId).disabled);
-    });
   });
 });
