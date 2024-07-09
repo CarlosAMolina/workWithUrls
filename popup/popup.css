@@ -73,7 +73,7 @@ input[type="radio"] {
 }
 
 /* TODO rename all configs at beginning or end of names*/
-.configDecodeUrls,
+.decodeUrlsConfig,
 .configOpenAllPaths,
 .configOpenRules,
 .configRule {
