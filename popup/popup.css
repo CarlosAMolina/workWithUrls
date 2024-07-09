@@ -6,7 +6,7 @@
   --FLEX-PADDING: 5px;
   --SPACE-BETWEEN-SECTIONS: 10px;
   --BUTTON-HEIGHT: 30px;
-  --UPDATE-BUTTON-WIDTH: 30px;
+  --SQUARE-BUTTON-WIDTH: 30px;
 }
 
 html,
@@ -98,7 +98,7 @@ input[type="radio"] {
 /* flex-shrink: to respect width https://stackoverflow.com/questions/21406397/width-ignored-on-flexbox-items */
 .squareButton {
   height: var(--BUTTON-HEIGHT);
-  width: var(--UPDATE-BUTTON-WIDTH);
+  width: var(--SQUARE-BUTTON-WIDTH);
   flex-shrink: 0;
 }
 
