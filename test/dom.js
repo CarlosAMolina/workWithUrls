@@ -50,11 +50,6 @@ describe("Check script dom.js: ", function () {
       ModuleDom.setUnhiddenElementById(elementId);
       assert.isFalse(ModuleDom.isHiddenElementById(elementId));
     });
-    it("Check function setEnabledElementById: ", function () {
-      const elementId = "popup-content";
-      ModuleDom.setEnabledElementById(elementId);
-      assert.isFalse(ModuleDom.getElementById(elementId).disabled);
-    });
     it("Check function setErrorStyleBoxToElementById and unsetStyleBoxErrorToElementById: ", function () {
       const elementId = "inputLazyLoading";
       ModuleDom.setStyleBoxErrorToElementById(elementId);

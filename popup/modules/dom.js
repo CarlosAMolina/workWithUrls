@@ -50,10 +50,6 @@ function isHiddenElementById(elementId) {
   return getElementById(elementId).classList.contains("hidden");
 }
 
-function setEnabledElementById(elementId) {
-  getElementById(elementId).disabled = false;
-}
-
 function setStyleBoxErrorToElementById(elementId) {
   getElementById(elementId).style.boxShadow = STYLE_BOX_SHADOW_ERROR;
 }
@@ -102,7 +98,6 @@ export {
   isCheckedElementById,
   isHiddenElementById,
   setCheckedElementById,
-  setEnabledElementById,
   setHiddenElementById,
   setStyleBoxErrorToElementById,
   setUncheckedElementById,
