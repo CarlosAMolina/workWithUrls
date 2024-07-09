@@ -6,7 +6,7 @@ class ButtonInterface {
       tag: "button",
       attributes: {
         title: undefined,
-        class: "buttonNew squareButton",
+        class: "button squareButton",
       },
       style: {
         background: undefined,

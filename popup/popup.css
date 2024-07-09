@@ -82,8 +82,7 @@ input[type="radio"] {
   padding: var(--PADDING);
 }
 
-/* TODO replace buttonNew with button */
-.buttonNew,
+.button,
 .mainButton {
   background-color: #e5f2f2;
   cursor: pointer;
@@ -91,7 +90,7 @@ input[type="radio"] {
   text-align: center;
 }
 
-.buttonNew {
+.button {
   padding: 5px; /* padding area on all four sides of an element */
   width: 100%;
 }
@@ -120,7 +119,7 @@ input[type="radio"] {
   width: 100%;
 }
 
-.buttonNew:hover,
+.button:hover,
 .mainButton:hover {
   background-color: #cff2f2;
 }
