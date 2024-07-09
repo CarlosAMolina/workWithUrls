@@ -5,7 +5,6 @@ import * as ModuleMenuStoredRule from "../../modules/menus/menuStoredRule.js";
 import * as ModuleUrlsModifier from "../../modules/urlsModifier.js";
 
 const _elementsIdToEnable = [
-  "inputRules",
   "buttonAddRule",
   "buttonClearAllRules",
 ];
