@@ -15,7 +15,7 @@ class ButtonConfigurationLazyLoading extends ModuleButtonsInterface.ButtonClicke
     const lazyLoadingTime =
       await ModuleStorageLazyLoading.getStorageLazyLoading();
     ModuleDom.showOrHideArrayElementsById(["menuLazyLoading"]);
-    ModuleDom.setValueToElementById(lazyLoadingTime, "inputLazyLoading");
+    ModuleDom.setValueToElementById(lazyLoadingTime, "lazyLoadingInput");
   }
 }
 
@@ -37,22 +37,22 @@ class ButtonAddLazyLoading extends ModuleButtonsInterface.ButtonClicked {
 return number int or false.
 */
 function _getValidLazyLoadingTimeToSaveAndNotifyBadValue() {
-  let lazyLoadingTimeToSave = ModuleDom.getValueElementById("inputLazyLoading");
+  let lazyLoadingTimeToSave = ModuleDom.getValueElementById("lazyLoadingInput");
   // Convert input to type number.
   // Example: 1a -> 1, 1.1 -> 1, a1 -> Nan
   lazyLoadingTimeToSave = parseInt(lazyLoadingTimeToSave);
   // Check value is a number.
   if (isNaN(lazyLoadingTimeToSave)) {
     console.log("Error. Lazy loading time is not a number");
-    ModuleDom.setStyleBoxErrorToElementById("inputLazyLoading");
+    ModuleDom.setStyleBoxErrorToElementById("lazyLoadingInput");
     lazyLoadingTimeToSave = false;
   } else {
     // Quit possible previous red error border.
-    ModuleDom.unsetStyleBoxErrorToElementById("inputLazyLoading");
+    ModuleDom.unsetStyleBoxErrorToElementById("lazyLoadingInput");
     // Set value >= 0. Type number.
     lazyLoadingTimeToSave = Math.abs(lazyLoadingTimeToSave);
     console.log("Lazy loading time to save: '" + lazyLoadingTimeToSave + "'");
-    ModuleDom.setValueToElementById(lazyLoadingTimeToSave, "inputLazyLoading");
+    ModuleDom.setValueToElementById(lazyLoadingTimeToSave, "lazyLoadingInput");
   }
   return lazyLoadingTimeToSave;
 }

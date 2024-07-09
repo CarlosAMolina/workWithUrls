@@ -51,7 +51,7 @@ describe("Check script dom.js: ", function () {
       assert.isFalse(ModuleDom.isHiddenElementById(elementId));
     });
     it("Check function setErrorStyleBoxToElementById and unsetStyleBoxErrorToElementById: ", function () {
-      const elementId = "inputLazyLoading";
+      const elementId = "lazyLoadingInput";
       ModuleDom.setStyleBoxErrorToElementById(elementId);
       assert.equal(
         ModuleDom.getElementById(elementId).style.boxShadow,

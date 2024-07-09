@@ -157,7 +157,7 @@ https://www.scriptol.com/html5/button-on-off.php
   max-height: var(--BUTTON-HEIGHT);
 }
 
-.inputLazyLoading {
+.lazyLoadingInput {
   flex-grow: 1;
 }
 
