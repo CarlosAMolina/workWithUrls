@@ -73,7 +73,6 @@ input[type="radio"] {
 }
 
 /* TODO rename all configs at beginning or end of names*/
-/* TODO? rename and join with oneLineButtons to oneLine to join common code*/
 .configDecodeUrls,
 .configOpenAllPaths,
 .configOpenRules,
