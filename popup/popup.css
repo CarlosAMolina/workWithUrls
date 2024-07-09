@@ -120,7 +120,7 @@ input[type="radio"] {
   width: 100%;
 }
 
-.button:hover,
+.buttonNew:hover,
 .mainButton:hover {
   background-color: #cff2f2;
 }
