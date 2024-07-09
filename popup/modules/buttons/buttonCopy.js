@@ -32,9 +32,9 @@ function _copyRules() {
   ModuleDom.setValueToElementById(
     ModuleUrlsModifier.Rules.getInstance()
       .ruleTransformationsToUseStringRepresentation,
-    "inputRules",
+    "rulesInput",
   );
-  _copyToClipboard("inputRules");
+  _copyToClipboard("rulesInput");
 }
 
 export { ButtonCopy };

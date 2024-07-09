@@ -18,7 +18,7 @@ class OneRuleReader extends ReaderInterface {
 
 class MultipleRulesReader extends ReaderInterface {
   get rules() {
-    return ModuleDom.getValueElementById("inputRules").split("\n");
+    return ModuleDom.getValueElementById("rulesInput").split("\n");
   }
 }
 

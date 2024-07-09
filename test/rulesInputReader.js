@@ -3,7 +3,7 @@ import * as ModuleRulesInputReader from "../popup/modules/rules/inputReader.js";
 import chai from "chai";
 
 function mockDomInputRules(values) {
-  document.getElementById("inputRules").value = values;
+  document.getElementById("rulesInput").value = values;
 }
 
 function mockDomInputRule(valueOld, valueNew) {
