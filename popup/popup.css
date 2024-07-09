@@ -58,7 +58,6 @@ input[type="radio"] {
   margin-top: var(--SPACE-BETWEEN-SECTIONS);
 }
 
-/*TODO refactor unify mainButton with button*/
 .oneLineButtons {
   display: flex;
   flex-direction: row;
@@ -84,7 +83,6 @@ input[type="radio"] {
 }
 
 /* TODO replace buttonNew with button */
-.button,
 .buttonNew,
 .mainButton {
   background-color: #e5f2f2;
@@ -96,11 +94,6 @@ input[type="radio"] {
 .buttonNew {
   padding: 5px; /* padding area on all four sides of an element */
   width: 100%;
-}
-
-.button {
-  margin: 3% auto; /* upper and lower space */
-  padding: 4px; /* padding area on all four sides of an element */
 }
 
 .updateButton {
