@@ -56,7 +56,7 @@ function showMenuStoredRule(rule, rules) {
 
   function _getMenuSummary(buttons, ruleValue) {
     const menuSummary = document.createElement("div");
-    menuSummary.setAttribute("class", "section configRule");
+    menuSummary.setAttribute("class", "section ruleConfig");
     menuSummary.appendChild(buttons.delete);
     menuSummary.appendChild(buttons.edit);
     menuSummary.appendChild(ruleValue);
@@ -65,7 +65,7 @@ function showMenuStoredRule(rule, rules) {
 
   function _getMenuEdit(buttons, editInputValueNew, editInputValueOld) {
     const menuEdit = document.createElement("div");
-    menuEdit.setAttribute("class", "section configRule hidden");
+    menuEdit.setAttribute("class", "section ruleConfig hidden");
     menuEdit.appendChild(buttons.update);
     menuEdit.appendChild(buttons.cancel);
     menuEdit.appendChild(editInputValueOld);
