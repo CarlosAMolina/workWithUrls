@@ -3,6 +3,7 @@
 :root {
   --BUTTON-HEIGHT: 30px;
   --FLEX-PADDING: 5px;
+  --FONT-SIZE: 15px;
   --INPUT-PADDING: 5px;
   --PADDING: 10px;
   --SPACE-BETWEEN-SECTIONS: 10px;
@@ -22,7 +23,7 @@ input,
 label,
 legend,
 textarea {
-  font-size: 15px;
+  font-size: var(--FONT-SIZE);
 }
 
 #popup-content {
@@ -174,5 +175,5 @@ https://www.scriptol.com/html5/button-on-off.php
 
 p {
   margin: 0;
-  font-size: 15px;
+  font-size: var(--FONT-SIZE);
 }
