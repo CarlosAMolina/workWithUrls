@@ -1,6 +1,9 @@
-import * as ModuleDom from "../popup/modules/dom.js";
-import pkgChai from "chai";
+import { describe } from "mocha";
+import { it } from "mocha";
 import chai from "chai";
+import pkgChai from "chai";
+
+import * as ModuleDom from "../popup/modules/dom.js";
 
 describe("Check script dom.js: ", function () {
   const { assert: assert } = pkgChai;
