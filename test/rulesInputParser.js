@@ -1,6 +1,9 @@
+import { describe } from "mocha";
+import { it } from "mocha";
+import chai from "chai";
+
 import * as ModuleRulesInputParser from "../popup/modules/rules/inputParser.js";
 
-import chai from "chai";
 
 describe("Check script inputParser.js:", function () {
   describe("Check class RulesParser: ", function () {
