@@ -18,10 +18,6 @@ Try use private methods at:
 
 ## Set default rules if no others stored.
 
-## Fix HTML
-
-- Main menu buttons with different hight.
-
 ## Tests: use beforeEach
 
 ## Refactor: use map instead for loops
