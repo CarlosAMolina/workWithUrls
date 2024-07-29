@@ -1,3 +1,6 @@
+/* https://eslint.org/docs/latest/use/configure/language-options#specifying-globals */
+/* global browser */
+
 /* References.
 - Local storage:
   https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/storage/local
