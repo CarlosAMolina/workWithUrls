@@ -15,14 +15,14 @@ describe("Check script dom.js: ", function () {
         style: {
           width: "30px",
           height: "30px",
-          background: "url('/icons/ok.png') no-repeat center",
+          background: "url('/icons/ok.svg') no-repeat center",
         },
       };
       const result = new ModuleDom.DocumentModifier().createElement(config);
       chai.expect(result.title).to.equal("Update");
       chai
         .expect(result.style.background)
-        .to.equal("url(/icons/ok.png) no-repeat center");
+        .to.equal("url(/icons/ok.svg) no-repeat center");
     });
   });
   describe("Check class Dom: ", function () {
