@@ -6,13 +6,7 @@ import { describe } from "mocha";
 import { it } from "mocha";
 import chai from "chai";
 
-import * as ModuleMockDom from "./mockDom.js"; // Global mocks.
 import * as ModulePopup from "../popup/popup.js";
-import * as ModuleRule from "../popup/modules/rules/rule.js";
-
-function mockDomInputUrls(valueToMock) {
-  document.getElementById("urlsInput").value = valueToMock;
-}
 
 function mockBrowserStorageLocal() {
   global.browser = {};
@@ -27,8 +21,8 @@ function storageMock() {
     setItem: function (key, value) {
       browser.storage[key] = value || "";
     },
-    get: function (key) {
-      return new Promise(function (resolve, reject) {
+    get: function () {
+      return new Promise(function (resolve) {
         resolve("start of new Promise");
       });
     },
@@ -46,7 +40,7 @@ function storageMock() {
 }
 
 describe("Check script popup.js: ", function () {
-  const urlsInputTest = "test1.com\ntest2.com";
+  // TODO USE? const urlsInputTest = "test1.com\ntest2.com";
   mockBrowserStorageLocal();
   describe("Check function popupMain: ", function () {
     ModulePopup.popupMain(); // Functon instance, required to access inner functions.
