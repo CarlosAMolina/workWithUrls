@@ -1,5 +1,8 @@
-import * as ModuleSleep from "../popup/modules/sleep.js";
+import { describe } from "mocha";
+import { it } from "mocha";
 import pkgChai from "chai";
+
+import * as ModuleSleep from "../popup/modules/sleep.js";
 
 const { assert: assert } = pkgChai;
 
