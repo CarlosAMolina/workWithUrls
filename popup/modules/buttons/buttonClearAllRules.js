@@ -1,3 +1,6 @@
+/* https://eslint.org/docs/latest/use/configure/language-options#specifying-globals */
+/* global browser */
+
 import * as ModuleButtonsInterface from "../../modules/buttons/buttonsInterface.js";
 import * as ModuleDomRules from "../../modules/dom/rules.js";
 import * as ModuleStorageRules from "../../modules/storage/rules.js";
