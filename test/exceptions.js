@@ -1,3 +1,5 @@
+import { describe } from "mocha";
+import { it } from "mocha";
 import chai from "chai";
 
 import * as ModuleExceptionsNotImplemented from "../popup/modules/exceptions/notImplemented.js";
