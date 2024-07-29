@@ -1,6 +1,9 @@
+import { describe } from "mocha";
+import { it } from "mocha";
+import chai from "chai";
+
 import * as ModuleButtonsFactory from "../popup/modules/buttons/buttonsFactory.js";
 import * as ModuleButtonsExceptions from "../popup/modules/buttons/buttonsExceptions.js";
-import chai from "chai";
 
 describe("Check script buttonsFactory.js and buttonsExceptions.js: ", function () {
   describe("Check function getButton: ", function () {
