@@ -1,3 +1,6 @@
+/* https://eslint.org/docs/latest/use/configure/language-options#specifying-globals */
+/* global browser */
+
 import * as ModuleDom from "../dom.js";
 import * as ModuleButtonsInterface from "./buttonsInterface.js";
 
