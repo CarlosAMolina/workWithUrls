@@ -1,3 +1,7 @@
+/* https://eslint.org/docs/latest/use/configure/language-options#specifying-globals */
+/* global browser */
+
+/* References.
 /* Get Lazy Loading time value at the storage.
 :param: no param.
 :return: int.
