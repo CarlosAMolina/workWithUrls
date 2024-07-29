@@ -1,4 +1,3 @@
-import * as ModuleMockDom from "./mockDom.js"; // Global mocks.
 import * as ModuleTextModifier from "../popup/modules/textModifier.js";
 import { describe } from "mocha";
 import { it } from "mocha";
