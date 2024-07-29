@@ -32,7 +32,7 @@ describe("Check script menuStoredRule.js: ", function () {
       ModuleMenuStoredRule.showMenuStoredRule(rule, rules);
       const newResult = ModuleDom.getInfoContainer().innerHTML;
       const expectedResult =
-        '<div><div class="section ruleConfig"><button title="Delete" class="button squareButton"><img src="/icons/trash.svg"></button><button title="Edit" class="button squareButton"><img src="/icons/edit.svg"></button><p>old value ---&gt; new value</p></div><div class="section ruleConfig hidden"><button title="Update" class="button squareButton"><img src="/icons/ok.svg"></button><button title="Cancel update" class="button squareButton"><img src="/icons/cancel.svg"></button><input type="text"><input type="text"></div></div>'
+        '<div><div class="section ruleConfig"><button title="Delete" class="button squareButton"><img src="/icons/trash.svg"></button><button title="Edit" class="button squareButton"><img src="/icons/edit.svg"></button><p>old value ---&gt; new value</p></div><div class="section ruleConfig hidden"><button title="Update" class="button squareButton"><img src="/icons/ok.svg"></button><button title="Cancel update" class="button squareButton"><img src="/icons/cancel.svg"></button><input type="text"><input type="text"></div></div>';
       chai.expect(expectedResult).to.equal(newResult);
     });
     describe("Check function updateValue: ", function () {
