@@ -1,5 +1,7 @@
 import * as ModuleRule from "../popup/modules/rules/rule.js";
 import * as ModuleUrlsModifier from "../popup/modules/urlsModifier.js";
+import { describe } from "mocha";
+import { it } from "mocha";
 import pkgChai from "chai";
 
 const { assert: assert } = pkgChai;
