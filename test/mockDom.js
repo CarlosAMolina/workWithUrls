@@ -1,3 +1,6 @@
+/* https://eslint.org/docs/latest/use/configure/language-options#specifying-globals */
+/* global global */
+
 import fs from "fs";
 import jsdom from "jsdom";
 import path from "path";
