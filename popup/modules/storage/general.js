@@ -1,3 +1,7 @@
+/* https://eslint.org/docs/latest/use/configure/language-options#specifying-globals */
+/* global browser */
+
+/* References.
 /*
 :param key: str.
 :return bool.
