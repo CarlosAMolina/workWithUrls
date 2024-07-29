@@ -3,7 +3,6 @@ import { describe } from "mocha";
 import { it } from "mocha";
 import chai from "chai";
 
-import * as ModuleMockDom from "./mockDom.js"; // Global mocks.
 import * as ModuleRulesInputReader from "../popup/modules/rules/inputReader.js";
 
 function mockDomInputRules(values) {
