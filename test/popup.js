@@ -1,7 +1,10 @@
+import { describe } from "mocha";
+import { it } from "mocha";
+import chai from "chai";
+
 import * as ModuleMockDom from "./mockDom.js"; // Global mocks.
 import * as ModulePopup from "../popup/popup.js";
 import * as ModuleRule from "../popup/modules/rules/rule.js";
-import chai from "chai";
 
 function mockDomInputUrls(valueToMock) {
   document.getElementById("urlsInput").value = valueToMock;
