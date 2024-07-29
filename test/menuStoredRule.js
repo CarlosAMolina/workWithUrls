@@ -1,10 +1,12 @@
+import { describe } from "mocha";
+import { it } from "mocha";
+import chai from "chai";
+
 import * as ModuleDom from "../popup/modules/dom.js";
 import * as ModuleMockDom from "./mockDom.js"; // Global mocks.
 import * as ModuleMenuStoredRule from "../popup/modules/menus/menuStoredRule.js";
 import * as ModuleRule from "../popup/modules/rules/rule.js";
 import * as ModuleUrlsModifier from "../popup/modules/urlsModifier.js";
-
-import chai from "chai";
 
 function mockBrowserStorageLocalGet() {
   global.browser = {};
