@@ -3,7 +3,6 @@ import { describe } from "mocha";
 import { it } from "mocha";
 import chai from "chai";
 
-import * as ModulePopup from "../popup/popup.js"; // TODO not use this import.
 import * as ModuleRule from "../popup/modules/rules/rule.js";
 import * as ModuleStorageRules from "../popup/modules/storage/rules.js";
 import * as ModuleUrlsModifier from "../popup/modules/urlsModifier.js";
