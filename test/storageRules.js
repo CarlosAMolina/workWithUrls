@@ -1,3 +1,7 @@
+/* https://eslint.org/docs/latest/use/configure/language-options#specifying-globals */
+/* global browser */
+/* global global */
+
 import { beforeEach } from "mocha";
 import { describe } from "mocha";
 import { it } from "mocha";
