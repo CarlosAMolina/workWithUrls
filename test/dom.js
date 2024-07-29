@@ -21,8 +21,8 @@ describe("Check script dom.js: ", function () {
       const result = new ModuleDom.DocumentModifier().createElement(config);
       chai.expect(result.title).to.equal("Update");
       chai
-        .expect(result.style.background)
-        .to.equal("url(/icons/ok.svg) no-repeat center");
+        .expect(result.firstElementChild.src)
+        .to.equal("url('/icons/ok.svg') no-repeat center");
     });
   });
   describe("Check class Dom: ", function () {
