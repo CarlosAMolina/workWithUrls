@@ -1,6 +1,5 @@
 import * as ModuleButtonsFactory from "../../modules/buttons/buttonsFactory.js";
 import * as ModuleButtonsInterface from "../../modules/buttons/buttonsInterface.js";
-import * as ModuleDom from "../../modules/dom.js";
 import * as ModuleMenuStoredRule from "../../modules/menus/menuStoredRule.js";
 import * as ModuleRule from "../../modules/rules/rule.js";
 import * as ModuleRulesInputParser from "../../modules/rules/inputParser.js";
