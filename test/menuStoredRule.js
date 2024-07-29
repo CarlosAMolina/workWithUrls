@@ -1,10 +1,13 @@
+/* https://eslint.org/docs/latest/use/configure/language-options#specifying-globals */
+/* global browser */
+/* global global */
+
 import { beforeEach } from "mocha";
 import { describe } from "mocha";
 import { it } from "mocha";
 import chai from "chai";
 
 import * as ModuleDom from "../popup/modules/dom.js";
-import * as ModuleMockDom from "./mockDom.js"; // Global mocks.
 import * as ModuleMenuStoredRule from "../popup/modules/menus/menuStoredRule.js";
 import * as ModuleRule from "../popup/modules/rules/rule.js";
 import * as ModuleUrlsModifier from "../popup/modules/urlsModifier.js";
@@ -19,8 +22,8 @@ function mockBrowserStorageLocalGet() {
 // https://stackoverflow.com/questions/11485420/how-to-mock-localstorage-in-javascript-unit-tests
 function storageMockGet() {
   return {
-    get: function (key) {
-      return new Promise(function (resolve, reject) {
+    get: function () {
+      return new Promise(function (resolve) {
         resolve(new Object({ rd_new_hXXp: "http", rd_old_hXXp: "hXXp" }));
       });
     },
