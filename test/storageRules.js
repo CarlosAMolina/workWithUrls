@@ -25,8 +25,8 @@ function mockBrowserStorageLocalGet() {
 // https://stackoverflow.com/questions/11485420/how-to-mock-localstorage-in-javascript-unit-tests
 function storageMockGet() {
   return {
-    get: function (key) {
-      return new Promise(function (resolve, reject) {
+    get: function () {
+      return new Promise(function (resolve) {
         resolve(new Object({ rd_new_hXXp: "http", rd_old_hXXp: "hXXp" }));
       });
     },
@@ -42,15 +42,15 @@ function mockBrowserStorageLocalSet() {
 function storageMockSet() {
   return {
     set: function (infoToStore) {
-      return new Promise(function (resolve, reject) {
+      return new Promise(function (resolve) {
         for (let [key, value] of Object.entries(infoToStore)) {
           browser.storage[key] = value || "";
         }
         return resolve("done");
       });
     },
-    get: function (key) {
-      return new Promise(function (resolve, reject) {
+    get: function () {
+      return new Promise(function (resolve) {
         resolve(new Object({}));
       });
     },
@@ -71,7 +71,7 @@ function mockBrowserStorageLocalRemove() {
 function storageMockRemove() {
   return {
     remove: function (keys) {
-      return new Promise(function (resolve, reject) {
+      return new Promise(function (resolve) {
         for (let key of keys) {
           delete browser.storage[key];
         }
