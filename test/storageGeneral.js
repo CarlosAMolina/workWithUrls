@@ -1,3 +1,5 @@
+import { describe } from "mocha";
+import { it } from "mocha";
 import chai from "chai";
 
 import * as ModuleStorageGeneral from "../popup/modules/storage/general.js";
