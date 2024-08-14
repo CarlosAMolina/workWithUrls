@@ -3,6 +3,8 @@ import { it } from "mocha";
 
 import * as ModuleExceptionsNotImplemented from "../popup/modules/exceptions/notImplemented.js";
 
+// TODO check exception is raised using `assert.throws`.
+
 describe("Check script notImplemented.js: ", function () {
   describe("Check function NotImplementedException: ", function () {
     it("Check exception is raised: ", function () {
