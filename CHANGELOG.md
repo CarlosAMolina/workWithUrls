@@ -16,9 +16,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 - Improve front.
-- Update manifes.json to version 3.
+- manifes.json:
+  - Update to version 3.
+  - Add Add-on's ID.
 - Svg instead of png icons.
 - Format code using prettier.
+- Refactor code.
 
 ## [2.2.1] - 2023-12-23
 
