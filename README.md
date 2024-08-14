@@ -29,7 +29,7 @@ To open the popup in the browser:
 npm run web
 ```
 
-### Develop
+### Development
 
 Load extension in the browser:
 
