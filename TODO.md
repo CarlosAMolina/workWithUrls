@@ -47,3 +47,5 @@ ModuleUrlsModifier.Rules.setInstance(
 Instead request the local storage, try to work with the rules attributes.
 
 ## Drop dead icons
+
+## Fix all errors raised by `npm run lint`
