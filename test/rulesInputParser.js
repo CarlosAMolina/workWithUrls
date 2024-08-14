@@ -4,7 +4,6 @@ import chai from "chai";
 
 import * as ModuleRulesInputParser from "../popup/modules/rules/inputParser.js";
 
-
 describe("Check script inputParser.js:", function () {
   describe("Check class RulesParser: ", function () {
     it("Check function getValuesRulesWithCorrectFormat: ", function () {
