@@ -28,3 +28,11 @@ To open the popup in the browser:
 ```bash
 npm run web
 ```
+
+### Develop
+
+Load extension in the browser:
+
+```bash
+npm run web-ext
+```
