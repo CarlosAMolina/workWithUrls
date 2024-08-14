@@ -26,8 +26,10 @@ function readFile(path) {
 }
 
 // Main.
-const __dirname = path.resolve();
-const popupHtmlPath = path.resolve(__dirname, "popup/popup.html");
-const popupHtml = readFile(popupHtmlPath);
-mockDomWindow(popupHtml);
-mockDomDocument();
+export function run() {
+  const __dirname = path.resolve();
+  const popupHtmlPath = path.resolve(__dirname, "popup/popup.html");
+  const popupHtml = readFile(popupHtmlPath);
+  mockDomWindow(popupHtml);
+  mockDomDocument();
+}
