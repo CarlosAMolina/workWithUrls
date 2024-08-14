@@ -4,6 +4,11 @@
   "version": "3.0.0",
   "description": "Firefox add-on to work with URLs: open, open paths, obfuscate and deobfuscate.",
   "homepage_url": "https://github.com/CarlosAMolina/workWithUrls",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{fabdbe23-31be-4370-b534-b33989c059b5}"
+    }
+  },
 
   "icons": {
     "158": "icons/iconAddon.png"
