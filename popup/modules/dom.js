@@ -80,9 +80,7 @@ class DocumentModifier {
     let element = document.createElement(config.tag);
     element.setAttribute("title", config.attributes.title);
     element.setAttribute("class", config.attributes.class);
-    // TODO derop unrequired values from config
-    // TODO the result does not have the `/>`, only `>`, check if the addon runs ok.
-    //element.innerHTML = `<img src="${config.style.background}" />`; // TODO rm
+    // TODO drop unrequired values from config
     let img = document.createElement("img");
     img.src = config.style.background;
     element.appendChild(img);
