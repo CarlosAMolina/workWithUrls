@@ -1,5 +1,7 @@
 # Work with URLs
 
+**IMPORTANT** Hi! This is a discontinued project, but you can still install the add-on in your browser. You can also access an online version at <https://cmoli.es/tools/open-urls/src/open-urls.html>.
+
 ## Introduction
 
 Firefox add-on to work with URLs:
